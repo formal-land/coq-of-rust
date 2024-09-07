@@ -1046,7 +1046,7 @@ pub(crate) fn compile_expr<'a>(
                             let parent_symbol = env.tcx.def_key(parent).get_opt_name().unwrap();
 
                             Rc::new(Expr::GetAssociatedFunction {
-                                ty: Rc::new(CoqType::Var("Self".to_string())),
+                                ty: CoqType::var("Self"),
                                 func: format!("{}.{}", symbol.unwrap(), parent_symbol),
                                 generic_tys: vec![],
                             })

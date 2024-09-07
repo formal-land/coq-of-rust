@@ -1,0 +1,1499 @@
+[
+  {
+    "file_name": "core/src/ops/unsize.rs",
+    "item": {
+      "type": "Module",
+      "name": "ops",
+      "body": [
+        {
+          "file_name": "core/src/ops/unsize.rs",
+          "item": {
+            "type": "Module",
+            "name": "unsize",
+            "body": [
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "CoerceUnsized",
+                  "path": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "T"
+                  ],
+                  "body": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*const"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*const"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*const"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*const"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "CoerceUnsized"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*const"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "DispatchFromDyn",
+                  "path": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "DispatchFromDyn"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "T"
+                  ],
+                  "body": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "DispatchFromDyn"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "DispatchFromDyn"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*const"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "DispatchFromDyn"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*const"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/unsize.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Unsize"
+                        ],
+                        "ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "U"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "unsize",
+                    "DispatchFromDyn"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "*mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

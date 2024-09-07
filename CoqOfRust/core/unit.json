@@ -1,0 +1,231 @@
+[
+  {
+    "file_name": "core/src/unit.rs",
+    "item": {
+      "type": "Module",
+      "name": "unit_",
+      "body": [
+        {
+          "file_name": "core/src/unit.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Tuple",
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "iter",
+              "traits",
+              "collect",
+              "FromIterator"
+            ],
+            "trait_ty_params": [
+              [
+                "A",
+                {
+                  "RequiredValue": {
+                    "type": "Tuple",
+                    "tys": []
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "from_iter",
+                "snippet": [
+                  "    fn from_iter<I: IntoIterator<Item = ()>>(iter: I) -> Self {",
+                  "        iter.into_iter().for_each(|()| {})",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [
+                          "I"
+                        ],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "iter",
+                              {
+                                "type": "Var",
+                                "name": "I"
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Tuple",
+                            "tys": []
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "iter",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "iter"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "core",
+                                        "iter",
+                                        "traits",
+                                        "iterator",
+                                        "Iterator"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "trait_tys": [],
+                                      "method_name": "for_each",
+                                      "generic_tys": [
+                                        {
+                                          "type": "Function",
+                                          "args": [
+                                            {
+                                              "type": "Tuple",
+                                              "tys": [
+                                                {
+                                                  "type": "Tuple",
+                                                  "tys": []
+                                                }
+                                              ]
+                                            }
+                                          ],
+                                          "ret": {
+                                            "type": "Tuple",
+                                            "tys": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetTraitMethod": {
+                                            "trait_name": [
+                                              "core",
+                                              "iter",
+                                              "traits",
+                                              "collect",
+                                              "IntoIterator"
+                                            ],
+                                            "self_ty": {
+                                              "type": "Var",
+                                              "name": "I"
+                                            },
+                                            "trait_tys": [],
+                                            "method_name": "into_iter",
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "iter"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Closure"
+                                      }
+                                    },
+                                    {
+                                      "Lambda": {
+                                        "args": [
+                                          [
+                                            "α0",
+                                            {
+                                              "type": "Tuple",
+                                              "tys": []
+                                            }
+                                          ]
+                                        ],
+                                        "body": {
+                                          "Match": {
+                                            "scrutinee": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.alloc"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "α0"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "arms": [
+                                              {
+                                                "Lambda": {
+                                                  "args": [
+                                                    [
+                                                      "γ",
+                                                      null
+                                                    ]
+                                                  ],
+                                                  "body": {
+                                                    "Tuple": {
+                                                      "elements": []
+                                                    }
+                                                  },
+                                                  "is_for_match": true,
+                                                  "is_internal": true
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "is_for_match": false,
+                                        "is_internal": false
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Closure"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,4387 @@
+[
+  {
+    "file_name": "core/src/convert/mod.rs",
+    "item": {
+      "type": "Module",
+      "name": "convert",
+      "body": [
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "Definition",
+            "name": "identity",
+            "path": [
+              "core",
+              "convert",
+              "identity"
+            ],
+            "snippet": [
+              "pub const fn identity<T>(x: T) -> T {",
+              "    x",
+              "}"
+            ],
+            "definition": {
+              "const_params": [],
+              "ty_params": [
+                "T"
+              ],
+              "signature_and_body": {
+                "args": [
+                  [
+                    "x",
+                    {
+                      "type": "Var",
+                      "name": "T"
+                    },
+                    null
+                  ]
+                ],
+                "ret_ty": {
+                  "type": "Var",
+                  "name": "T"
+                },
+                "body": {
+                  "Let": {
+                    "name": "x",
+                    "is_user": false,
+                    "init": {
+                      "Call": {
+                        "func": {
+                          "LocalVar": "M.alloc"
+                        },
+                        "args": [
+                          {
+                            "LocalVar": "x"
+                          }
+                        ],
+                        "kind": "Effectful"
+                      }
+                    },
+                    "body": {
+                      "Call": {
+                        "func": {
+                          "LocalVar": "M.read"
+                        },
+                        "args": [
+                          {
+                            "LocalVar": "x"
+                          }
+                        ],
+                        "kind": "Effectful"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "Trait",
+            "name": "AsRef",
+            "path": [
+              "core",
+              "convert",
+              "AsRef"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "T"
+            ],
+            "body": [
+              [
+                "as_ref",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "Trait",
+            "name": "AsMut",
+            "path": [
+              "core",
+              "convert",
+              "AsMut"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "T"
+            ],
+            "body": [
+              [
+                "as_mut",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "Trait",
+            "name": "Into",
+            "path": [
+              "core",
+              "convert",
+              "Into"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "T"
+            ],
+            "body": [
+              [
+                "into",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Var",
+                          "name": "Self"
+                        }
+                      ],
+                      "ret": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "Trait",
+            "name": "From",
+            "path": [
+              "core",
+              "convert",
+              "From"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "T"
+            ],
+            "body": [
+              [
+                "from",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      ],
+                      "ret": {
+                        "type": "Var",
+                        "name": "Self"
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "Trait",
+            "name": "TryInto",
+            "path": [
+              "core",
+              "convert",
+              "TryInto"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "T"
+            ],
+            "body": [
+              [
+                "Error",
+                {
+                  "Type": []
+                }
+              ],
+              [
+                "try_into",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Var",
+                          "name": "Self"
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "result",
+                            "Result"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          {
+                            "type": "Associated"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "Trait",
+            "name": "TryFrom",
+            "path": [
+              "core",
+              "convert",
+              "TryFrom"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "T"
+            ],
+            "body": [
+              [
+                "Error",
+                {
+                  "Type": []
+                }
+              ],
+              [
+                "try_from",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "result",
+                            "Result"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "Self"
+                          },
+                          {
+                            "type": "Associated"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T",
+              "U"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "U"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "convert",
+                    "AsRef"
+                  ],
+                  "ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "U"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "AsRef"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "U"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "as_ref",
+                "snippet": [
+                  "    fn as_ref(&self) -> &U {",
+                  "        <T as AsRef<U>>::as_ref(*self)",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "core",
+                                        "convert",
+                                        "AsRef"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "T"
+                                      },
+                                      "trait_tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "U"
+                                        }
+                                      ],
+                                      "method_name": "as_ref",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Closure"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T",
+              "U"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "U"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "convert",
+                    "AsRef"
+                  ],
+                  "ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "U"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&mut"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "AsRef"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "U"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "as_ref",
+                "snippet": [
+                  "    fn as_ref(&self) -> &U {",
+                  "        <T as AsRef<U>>::as_ref(*self)",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "core",
+                                        "convert",
+                                        "AsRef"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "T"
+                                      },
+                                      "trait_tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "U"
+                                        }
+                                      ],
+                                      "method_name": "as_ref",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Closure"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T",
+              "U"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "U"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "convert",
+                    "AsMut"
+                  ],
+                  "ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "U"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&mut"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "AsMut"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "U"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "as_mut",
+                "snippet": [
+                  "    fn as_mut(&mut self) -> &mut U {",
+                  "        (*self).as_mut()",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "core",
+                                        "convert",
+                                        "AsMut"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "T"
+                                      },
+                                      "trait_tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "U"
+                                        }
+                                      ],
+                                      "method_name": "as_mut",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Closure"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T",
+              "U"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "convert",
+                    "From"
+                  ],
+                  "ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "U"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "Into"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "U"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "into",
+                "snippet": [
+                  "    fn into(self) -> U {",
+                  "        U::from(self)",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Var",
+                            "name": "U"
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "core",
+                                        "convert",
+                                        "From"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "U"
+                                      },
+                                      "trait_tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ],
+                                      "method_name": "from",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Closure"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "From"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "T"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "from",
+                "snippet": [
+                  "    fn from(t: T) -> T {",
+                  "        t",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "t",
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "t",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "t"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "t"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "From"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Path",
+                    "path": [
+                      "never"
+                    ]
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "from",
+                "snippet": [
+                  "    fn from(t: !) -> T {",
+                  "        t",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "t",
+                              {
+                                "type": "Path",
+                                "path": [
+                                  "never"
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "t",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "t"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "t"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T",
+              "U"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "convert",
+                    "TryFrom"
+                  ],
+                  "ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "U"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "TryInto"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "U"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "Error",
+                "snippet": [
+                  "    type Error = U::Error;"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Type": {
+                      "ty": {
+                        "type": "Associated"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "try_into",
+                "snippet": [
+                  "    fn try_into(self) -> Result<U, U::Error> {",
+                  "        U::try_from(self)",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "U"
+                              },
+                              {
+                                "type": "Associated"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "core",
+                                        "convert",
+                                        "TryFrom"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "U"
+                                      },
+                                      "trait_tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ],
+                                      "method_name": "try_from",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Closure"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T",
+              "U"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "convert",
+                    "Into"
+                  ],
+                  "ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "U"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "TryFrom"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "U"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "Error",
+                "snippet": [
+                  "    type Error = Infallible;"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Type": {
+                      "ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "convert",
+                            "Infallible"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "try_from",
+                "snippet": [
+                  "    fn try_from(value: U) -> Result<Self, Self::Error> {",
+                  "        Ok(U::into(value))",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "value",
+                              {
+                                "type": "Var",
+                                "name": "U"
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              },
+                              {
+                                "type": "Associated"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "value",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "value"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "StructTuple": {
+                                  "path": [
+                                    "core",
+                                    "result",
+                                    "Result",
+                                    "Ok"
+                                  ],
+                                  "fields": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetTraitMethod": {
+                                            "trait_name": [
+                                              "core",
+                                              "convert",
+                                              "Into"
+                                            ],
+                                            "self_ty": {
+                                              "type": "Var",
+                                              "name": "U"
+                                            },
+                                            "trait_tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "T"
+                                              }
+                                            ],
+                                            "method_name": "into",
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "value"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "slice"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "AsRef"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "slice"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "as_ref",
+                "snippet": [
+                  "    fn as_ref(&self) -> &[T] {",
+                  "        self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "slice"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "slice"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "T"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "slice"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "AsMut"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "slice"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "as_mut",
+                "snippet": [
+                  "    fn as_mut(&mut self) -> &mut [T] {",
+                  "        self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "slice"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "slice"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "T"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Path",
+              "path": [
+                "str"
+              ]
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "AsRef"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Path",
+                    "path": [
+                      "str"
+                    ]
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "as_ref",
+                "snippet": [
+                  "    fn as_ref(&self) -> &str {",
+                  "        self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Path",
+                                    "path": [
+                                      "str"
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Path",
+                                "path": [
+                                  "str"
+                                ]
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Path",
+              "path": [
+                "str"
+              ]
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "AsMut"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Path",
+                    "path": [
+                      "str"
+                    ]
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "as_mut",
+                "snippet": [
+                  "    fn as_mut(&mut self) -> &mut str {",
+                  "        self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Path",
+                                    "path": [
+                                      "str"
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Path",
+                                "path": [
+                                  "str"
+                                ]
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TypeEnum",
+            "name": "Infallible",
+            "const_params": [],
+            "ty_params": [],
+            "variants": []
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "marker",
+              "Copy"
+            ],
+            "trait_ty_params": [],
+            "items": []
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "clone",
+              "Clone"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "clone",
+                "snippet": [
+                  "    fn clone(&self) -> Infallible {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "convert",
+                                "Infallible"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Match": {
+                                              "scrutinee": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "arms": []
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "clone_from",
+                "snippet": null,
+                "kind": "Default"
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "fmt",
+              "Debug"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "fmt",
+                "snippet": [
+                  "    fn fmt(&self, _: &mut fmt::Formatter<'_>) -> fmt::Result {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "β1",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "fmt",
+                                        "Formatter"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              "Wild"
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Tuple",
+                                "tys": []
+                              },
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "fmt",
+                                    "Error"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "β1",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "β1"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Match": {
+                                      "scrutinee": {
+                                        "LocalVar": "β1"
+                                      },
+                                      "arms": [
+                                        {
+                                          "Lambda": {
+                                            "args": [
+                                              [
+                                                "γ",
+                                                null
+                                              ]
+                                            ],
+                                            "body": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.never_to_any"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Match": {
+                                                            "scrutinee": {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            "arms": []
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "is_for_match": true,
+                                            "is_internal": true
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "fmt",
+              "Display"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "fmt",
+                "snippet": [
+                  "    fn fmt(&self, _: &mut fmt::Formatter<'_>) -> fmt::Result {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "β1",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "fmt",
+                                        "Formatter"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              "Wild"
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Tuple",
+                                "tys": []
+                              },
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "fmt",
+                                    "Error"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "β1",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "β1"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Match": {
+                                      "scrutinee": {
+                                        "LocalVar": "β1"
+                                      },
+                                      "arms": [
+                                        {
+                                          "Lambda": {
+                                            "args": [
+                                              [
+                                                "γ",
+                                                null
+                                              ]
+                                            ],
+                                            "body": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.never_to_any"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Match": {
+                                                            "scrutinee": {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            "arms": []
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "is_for_match": true,
+                                            "is_internal": true
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "error",
+              "Error"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "description",
+                "snippet": [
+                  "    fn description(&self) -> &str {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "OptionalValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Path",
+                                "path": [
+                                  "str"
+                                ]
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Match": {
+                                              "scrutinee": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "arms": []
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "source",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "type_id",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "cause",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "provide",
+                "snippet": null,
+                "kind": "Default"
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "cmp",
+              "PartialEq"
+            ],
+            "trait_ty_params": [
+              [
+                "Rhs",
+                "Default"
+              ]
+            ],
+            "items": [
+              {
+                "name": "eq",
+                "snippet": [
+                  "    fn eq(&self, _: &Infallible) -> bool {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "β1",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              "Wild"
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Path",
+                            "path": [
+                              "bool"
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "β1",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "β1"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Match": {
+                                      "scrutinee": {
+                                        "LocalVar": "β1"
+                                      },
+                                      "arms": [
+                                        {
+                                          "Lambda": {
+                                            "args": [
+                                              [
+                                                "γ",
+                                                null
+                                              ]
+                                            ],
+                                            "body": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.never_to_any"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Match": {
+                                                            "scrutinee": {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            "arms": []
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "is_for_match": true,
+                                            "is_internal": true
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "ne",
+                "snippet": null,
+                "kind": "Default"
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "cmp",
+              "Eq"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "assert_receiver_is_total_eq",
+                "snippet": null,
+                "kind": "Default"
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "cmp",
+              "PartialOrd"
+            ],
+            "trait_ty_params": [
+              [
+                "Rhs",
+                "Default"
+              ]
+            ],
+            "items": [
+              {
+                "name": "partial_cmp",
+                "snippet": [
+                  "    fn partial_cmp(&self, _other: &Self) -> Option<crate::cmp::Ordering> {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "_other",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "option",
+                                "Option"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "cmp",
+                                    "Ordering"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "_other",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "_other"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.never_to_any"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Match": {
+                                                  "scrutinee": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "arms": []
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "lt",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "le",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "gt",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "ge",
+                "snippet": null,
+                "kind": "Default"
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "cmp",
+              "Ord"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "cmp",
+                "snippet": [
+                  "    fn cmp(&self, _other: &Self) -> crate::cmp::Ordering {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "_other",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "cmp",
+                                "Ordering"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "_other",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "_other"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.never_to_any"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Match": {
+                                                  "scrutinee": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "arms": []
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "max",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "min",
+                "snippet": null,
+                "kind": "Default"
+              },
+              {
+                "name": "clamp",
+                "snippet": null,
+                "kind": "Default"
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "convert",
+              "From"
+            ],
+            "trait_ty_params": [
+              [
+                "T",
+                {
+                  "RequiredValue": {
+                    "type": "Path",
+                    "path": [
+                      "never"
+                    ]
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "from",
+                "snippet": [
+                  "    fn from(x: !) -> Self {",
+                  "        x",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "x",
+                              {
+                                "type": "Path",
+                                "path": [
+                                  "never"
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "convert",
+                                "Infallible"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "x",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "x"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "x"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/convert/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "convert",
+                  "Infallible"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "hash",
+              "Hash"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "hash",
+                "snippet": [
+                  "    fn hash<H: Hasher>(&self, _: &mut H) {",
+                  "        match *self {}",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [
+                          "H"
+                        ],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "convert",
+                                        "Infallible"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "β1",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "H"
+                                  }
+                                ]
+                              },
+                              "Wild"
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Path",
+                            "path": [
+                              "unit"
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "β1",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "β1"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Match": {
+                                      "scrutinee": {
+                                        "LocalVar": "β1"
+                                      },
+                                      "arms": [
+                                        {
+                                          "Lambda": {
+                                            "args": [
+                                              [
+                                                "γ",
+                                                null
+                                              ]
+                                            ],
+                                            "body": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.never_to_any"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Match": {
+                                                            "scrutinee": {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            "arms": []
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "is_for_match": true,
+                                            "is_internal": true
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "hash_slice",
+                "snippet": null,
+                "kind": "Default"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

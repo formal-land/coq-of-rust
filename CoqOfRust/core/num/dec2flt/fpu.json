@@ -1,0 +1,76 @@
+[
+  {
+    "file_name": "core/src/num/dec2flt/fpu.rs",
+    "item": {
+      "type": "Module",
+      "name": "num",
+      "body": [
+        {
+          "file_name": "core/src/num/dec2flt/fpu.rs",
+          "item": {
+            "type": "Module",
+            "name": "dec2flt",
+            "body": [
+              {
+                "file_name": "core/src/num/dec2flt/fpu.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "fpu",
+                  "body": [
+                    {
+                      "file_name": "core/src/num/dec2flt/fpu.rs",
+                      "item": {
+                        "type": "Module",
+                        "name": "fpu_precision",
+                        "body": [
+                          {
+                            "file_name": "core/src/num/dec2flt/fpu.rs",
+                            "item": {
+                              "type": "Definition",
+                              "name": "set_precision",
+                              "path": [
+                                "core",
+                                "num",
+                                "dec2flt",
+                                "fpu",
+                                "fpu_precision",
+                                "set_precision"
+                              ],
+                              "snippet": [
+                                "    pub fn set_precision<T>() {}"
+                              ],
+                              "definition": {
+                                "const_params": [],
+                                "ty_params": [
+                                  "T"
+                                ],
+                                "signature_and_body": {
+                                  "args": [],
+                                  "ret_ty": {
+                                    "type": "Path",
+                                    "path": [
+                                      "unit"
+                                    ]
+                                  },
+                                  "body": {
+                                    "Tuple": {
+                                      "elements": []
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -6,9 +6,9 @@ pub struct CoqOfRustArgs {
     /// Axiomatize the definitions
     #[arg(long)]
     axiomatize: bool,
-    /// Axiomatize the definitions with everything as public
+    /// Also generate a JSON output
     #[arg(long)]
-    axiomatize_public: bool,
+    with_json: bool,
     /// Path to a configuration file
     #[arg(long, default_value = "coq-of-rust-config.json")]
     configuration_file: String,
@@ -29,6 +29,7 @@ pub struct Args {
 pub struct Options {
     pub(crate) in_cargo: bool,
     pub(crate) axiomatize: bool,
+    pub(crate) with_json: bool,
 }
 
 impl Options {
@@ -38,6 +39,7 @@ impl Options {
         Options {
             in_cargo: cargo_coq_of_rust,
             axiomatize: coq_of_rust.axiomatize,
+            with_json: coq_of_rust.with_json,
         }
     }
 }

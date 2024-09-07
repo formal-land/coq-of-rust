@@ -14,6 +14,7 @@ use rustc_hir::{
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
+use serde::Serialize;
 use std::collections::HashMap;
 use std::iter::repeat;
 use std::rc::Rc;
@@ -32,14 +33,14 @@ struct HirFnDeclAndBody<'a> {
 
 type FnArgs = Vec<(String, Rc<CoqType>, Option<Rc<Pattern>>)>;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct FnSigAndBody {
     args: Option<FnArgs>,
     ret_ty: Option<Rc<CoqType>>,
     body: Option<Rc<Expr>>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 enum TraitItem {
     Definition {
         #[allow(dead_code)]
@@ -54,14 +55,14 @@ enum TraitItem {
 }
 
 /// fields common for all function definitions
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct FunDefinition {
     const_params: Vec<String>,
     ty_params: Vec<String>,
     signature_and_body: Rc<FnSigAndBody>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 enum ImplItemKind {
     Const {
         ty: Rc<CoqType>,
@@ -75,13 +76,13 @@ enum ImplItemKind {
     },
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct WherePredicate {
     bound: Rc<TraitBound>,
     ty: Rc<CoqType>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct TraitBound {
     name: Rc<Path>,
     ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
@@ -89,14 +90,14 @@ struct TraitBound {
 
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub(crate) enum VariantItem {
     Struct { fields: Vec<(String, Rc<CoqType>)> },
     Tuple { tys: Vec<Rc<CoqType>> },
 }
 
 /// The value for a field that may have a default value
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub(crate) enum FieldWithDefault<A> {
     /// the value of a field that has no defaults
     RequiredValue(A),
@@ -106,24 +107,24 @@ pub(crate) enum FieldWithDefault<A> {
     Default,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct Snippet(Vec<String>);
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct ImplItem {
     name: String,
     snippet: Option<Rc<Snippet>>,
     kind: Rc<ImplItemKind>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct TraitImplItem {
     name: String,
     snippet: Option<Rc<Snippet>>,
     kind: Rc<FieldWithDefault<Rc<ImplItemKind>>>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct TypeEnumVariant {
     name: String,
     item: Rc<VariantItem>,
@@ -132,7 +133,8 @@ struct TypeEnumVariant {
 
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
+#[serde(tag = "type")]
 enum TopLevelItem {
     Const {
         name: String,
@@ -164,7 +166,9 @@ enum TopLevelItem {
         ty_params: Vec<String>,
         fields: Vec<Rc<CoqType>>,
     },
-    TypeForeign(String),
+    TypeForeign {
+        name: String,
+    },
     Module {
         name: String,
         body: Rc<TopLevel>,
@@ -191,10 +195,12 @@ enum TopLevelItem {
         trait_ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
         items: Vec<Rc<TraitImplItem>>,
     },
-    Error(String),
+    Error {
+        message: String,
+    },
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct TypeStructStruct {
     name: String,
     const_params: Vec<String>,
@@ -202,13 +208,13 @@ struct TypeStructStruct {
     fields: Vec<(String, Rc<CoqType>)>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct TopLevelEntry {
     file_name: String,
     item: Rc<TopLevelItem>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct TopLevel(Vec<Rc<TopLevelEntry>>);
 
 impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
@@ -427,11 +433,13 @@ fn compile_top_level_item_without_local_items<'a>(
                     rustc_hir::ForeignItemKind::Static(..) => {
                         Rc::new(TopLevelItem::Const { name, value: None })
                     }
-                    rustc_hir::ForeignItemKind::Type => Rc::new(TopLevelItem::TypeForeign(name)),
+                    rustc_hir::ForeignItemKind::Type => Rc::new(TopLevelItem::TypeForeign { name }),
                 }
             })
             .collect_vec(),
-        ItemKind::GlobalAsm(_) => vec![Rc::new(TopLevelItem::Error("GlobalAsm".to_string()))],
+        ItemKind::GlobalAsm(_) => vec![Rc::new(TopLevelItem::Error {
+            message: "GlobalAsm".to_string(),
+        })],
         ItemKind::TyAlias(ty, generics) => vec![Rc::new(TopLevelItem::TypeAlias {
             name,
             path,
@@ -439,7 +447,9 @@ fn compile_top_level_item_without_local_items<'a>(
             const_params: get_const_params(env, generics),
             ty_params: get_ty_params(env, generics),
         })],
-        ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error("OpaqueTy".to_string()))],
+        ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error {
+            message: "OpaqueTy".to_string(),
+        })],
         ItemKind::Enum(enum_def, generics) => {
             let const_params = get_const_params(env, generics);
             let ty_params = get_ty_params(env, generics);
@@ -557,7 +567,9 @@ fn compile_top_level_item_without_local_items<'a>(
                 }
             }
         }
-        ItemKind::Union(_, _) => vec![Rc::new(TopLevelItem::Error("Union".to_string()))],
+        ItemKind::Union(_, _) => vec![Rc::new(TopLevelItem::Error {
+            message: "Union".to_string(),
+        })],
         ItemKind::Trait(_, _, generics, _, items) => {
             vec![Rc::new(TopLevelItem::Trait {
                 name,
@@ -584,7 +596,9 @@ fn compile_top_level_item_without_local_items<'a>(
             })]
         }
         ItemKind::TraitAlias(_, _) => {
-            vec![Rc::new(TopLevelItem::Error("TraitAlias".to_string()))]
+            vec![Rc::new(TopLevelItem::Error {
+                message: "TraitAlias".to_string(),
+            })]
         }
         ItemKind::Impl(Impl {
             generics,
@@ -1158,17 +1172,25 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
 
 const LINE_WIDTH: usize = 100;
 
-pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> HashMap<String, String> {
+pub(crate) fn translate_top_level(
+    tcx: &TyCtxt,
+    opts: TopLevelOptions,
+) -> HashMap<String, (String, String)> {
     let top_level = compile_top_level(tcx, opts);
     let top_level_groups = group_top_level_by_file_name(top_level);
 
     top_level_groups
         .into_iter()
-        .map(|(file_name, top_level)| (file_name, top_level.to_pretty(LINE_WIDTH)))
+        .map(|(file_name, top_level)| {
+            (
+                file_name,
+                (top_level.to_pretty(LINE_WIDTH), top_level.to_json()),
+            )
+        })
         .collect()
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub(crate) struct DynNameGen {
     name: String,
     // Resources to be translated into a list of `WherePredicates`.
@@ -1207,13 +1229,15 @@ impl DynNameGen {
                 consts: vec![],
                 tys: vec![ct],
             })
-        } else if let CoqType::Dyn(path) = arg.as_ref() {
+        } else if let CoqType::Dyn { traits } = arg.as_ref() {
             // We suppose `dyn` is only associated with one trait so we can directly extract the first element
-            if let Some(path) = path.first() {
-                let dy_name = self.next(path.clone());
-                Rc::new(CoqType::Var(dy_name))
+            if let Some(trait_) = traits.first() {
+                let dy_name = self.next(trait_.clone());
+                CoqType::var(dy_name.as_ref())
             } else {
-                Rc::new(CoqType::Dyn(path.clone()))
+                Rc::new(CoqType::Dyn {
+                    traits: traits.clone(),
+                })
             }
         } else {
             arg
@@ -1779,7 +1803,7 @@ impl TopLevelItem {
                                         .collect(),
                                     tys: ty_params
                                         .iter()
-                                        .map(|ty_param| Rc::new(CoqType::Var(ty_param.clone())))
+                                        .map(|ty_param| CoqType::var(ty_param))
                                         .collect(),
                                 }
                                 .to_coq(),
@@ -1874,7 +1898,7 @@ impl TopLevelItem {
                     ],
                 }),
             ])],
-            TopLevelItem::TypeForeign(name) => {
+            TopLevelItem::TypeForeign { name } => {
                 vec![coq::TopLevelItem::Comment(vec![coq::Expression::Message(
                     format!("Foreign type '{name}'"),
                 )])]
@@ -2225,7 +2249,7 @@ impl TopLevelItem {
                     ),
                 ))]
             }
-            TopLevelItem::Error(message) => vec![coq::TopLevelItem::Comment(vec![
+            TopLevelItem::Error { message } => vec![coq::TopLevelItem::Comment(vec![
                 coq::Expression::just_name("Error")
                     .apply(&coq::Expression::Message(message.clone())),
             ])],
@@ -2249,5 +2273,9 @@ impl TopLevel {
         let mut w = Vec::new();
         self.to_coq().to_doc().render(width, &mut w).unwrap();
         format!("{}{}\n", HEADER, String::from_utf8(w).unwrap())
+    }
+
+    pub fn to_json(&self) -> String {
+        serde_json::to_string_pretty(self).unwrap()
     }
 }

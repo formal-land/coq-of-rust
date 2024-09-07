@@ -1,0 +1,776 @@
+[
+  {
+    "file_name": "alloc/src/vec/set_len_on_drop.rs",
+    "item": {
+      "type": "Module",
+      "name": "vec",
+      "body": [
+        {
+          "file_name": "alloc/src/vec/set_len_on_drop.rs",
+          "item": {
+            "type": "Module",
+            "name": "set_len_on_drop",
+            "body": [
+              {
+                "file_name": "alloc/src/vec/set_len_on_drop.rs",
+                "item": {
+                  "type": "TypeStructStruct",
+                  "name": "SetLenOnDrop",
+                  "const_params": [],
+                  "ty_params": [],
+                  "fields": [
+                    [
+                      "len",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "usize"
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    [
+                      "local_len",
+                      {
+                        "type": "Path",
+                        "path": [
+                          "usize"
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/set_len_on_drop.rs",
+                "item": {
+                  "type": "Impl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "set_len_on_drop",
+                        "SetLenOnDrop"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "items": [
+                    {
+                      "name": "new",
+                      "snippet": [
+                        "    pub(super) fn new(len: &'a mut usize) -> Self {",
+                        "        SetLenOnDrop { local_len: *len, len }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "len",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Path",
+                                        "path": [
+                                          "usize"
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "alloc",
+                                    "vec",
+                                    "set_len_on_drop",
+                                    "SetLenOnDrop"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "len",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "len"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "StructStruct": {
+                                      "path": [
+                                        "alloc",
+                                        "vec",
+                                        "set_len_on_drop",
+                                        "SetLenOnDrop"
+                                      ],
+                                      "fields": [
+                                        [
+                                          "local_len",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "LocalVar": "len"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        [
+                                          "len",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "len"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ]
+                                      ],
+                                      "base": null
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "increment_len",
+                      "snippet": [
+                        "    pub(super) fn increment_len(&mut self, increment: usize) {",
+                        "        self.local_len += increment;",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "vec",
+                                            "set_len_on_drop",
+                                            "SetLenOnDrop"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ],
+                                [
+                                  "increment",
+                                  {
+                                    "type": "Path",
+                                    "path": [
+                                      "usize"
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Path",
+                                "path": [
+                                  "unit"
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Let": {
+                                      "name": "increment",
+                                      "is_user": false,
+                                      "init": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.alloc"
+                                          },
+                                          "args": [
+                                            {
+                                              "LocalVar": "increment"
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      },
+                                      "body": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.read"
+                                          },
+                                          "args": [
+                                            {
+                                              "Let": {
+                                                "name": null,
+                                                "is_user": true,
+                                                "init": {
+                                                  "Let": {
+                                                    "name": "β",
+                                                    "is_user": false,
+                                                    "init": {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "alloc::vec::set_len_on_drop::SetLenOnDrop"
+                                                          },
+                                                          {
+                                                            "InternalString": "local_len"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    "body": {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.write"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "β"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "BinOp.Wrap.add"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "β"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "increment"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "body": {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.alloc"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Tuple": {
+                                                          "elements": []
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "current_len",
+                      "snippet": [
+                        "    pub(super) fn current_len(&self) -> usize {",
+                        "        self.local_len",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "vec",
+                                            "set_len_on_drop",
+                                            "SetLenOnDrop"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Path",
+                                "path": [
+                                  "usize"
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "InternalString": "alloc::vec::set_len_on_drop::SetLenOnDrop"
+                                              },
+                                              {
+                                                "InternalString": "local_len"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/set_len_on_drop.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "set_len_on_drop",
+                        "SetLenOnDrop"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "drop",
+                    "Drop"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "drop",
+                      "snippet": [
+                        "    fn drop(&mut self) {",
+                        "        *self.len = self.local_len;",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "set_len_on_drop",
+                                              "SetLenOnDrop"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Let": {
+                                              "name": null,
+                                              "is_user": true,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.write"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "self"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "InternalString": "alloc::vec::set_len_on_drop::SetLenOnDrop"
+                                                                },
+                                                                {
+                                                                  "InternalString": "len"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "self"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "InternalString": "alloc::vec::set_len_on_drop::SetLenOnDrop"
+                                                                },
+                                                                {
+                                                                  "InternalString": "local_len"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Tuple": {
+                                                        "elements": []
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

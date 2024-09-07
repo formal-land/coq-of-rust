@@ -1,0 +1,26 @@
+[
+  {
+    "file_name": "core/src/unicode/mod.rs",
+    "item": {
+      "type": "Module",
+      "name": "unicode",
+      "body": [
+        {
+          "file_name": "core/src/unicode/mod.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_UNICODE_VERSION",
+            "value": {
+              "GetConst": [
+                "core",
+                "unicode",
+                "unicode_data",
+                "UNICODE_VERSION"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+]

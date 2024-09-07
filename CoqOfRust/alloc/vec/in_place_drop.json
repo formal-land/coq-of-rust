@@ -1,0 +1,1231 @@
+[
+  {
+    "file_name": "alloc/src/vec/in_place_drop.rs",
+    "item": {
+      "type": "Module",
+      "name": "vec",
+      "body": [
+        {
+          "file_name": "alloc/src/vec/in_place_drop.rs",
+          "item": {
+            "type": "Module",
+            "name": "in_place_drop",
+            "body": [
+              {
+                "file_name": "alloc/src/vec/in_place_drop.rs",
+                "item": {
+                  "type": "TypeStructStruct",
+                  "name": "InPlaceDrop",
+                  "const_params": [],
+                  "ty_params": [
+                    "T"
+                  ],
+                  "fields": [
+                    [
+                      "inner",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "*mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    ],
+                    [
+                      "dst",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "*mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/in_place_drop.rs",
+                "item": {
+                  "type": "Impl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "in_place_drop",
+                        "InPlaceDrop"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "items": [
+                    {
+                      "name": "len",
+                      "snippet": [
+                        "    fn len(&self) -> usize {",
+                        "        unsafe { self.dst.sub_ptr(self.inner) }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "vec",
+                                            "in_place_drop",
+                                            "InPlaceDrop"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "T"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Path",
+                                "path": [
+                                  "usize"
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetAssociatedFunction": {
+                                          "ty": {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "*mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "T"
+                                              }
+                                            ]
+                                          },
+                                          "func": "sub_ptr",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "alloc::vec::in_place_drop::InPlaceDrop"
+                                                    },
+                                                    {
+                                                      "InternalString": "dst"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        {
+                                          "Comment": [
+                                            "MutToConstPointer",
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.pointer_coercion"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "alloc::vec::in_place_drop::InPlaceDrop"
+                                                              },
+                                                              {
+                                                                "InternalString": "inner"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Pure"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/in_place_drop.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "in_place_drop",
+                        "InPlaceDrop"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "drop",
+                    "Drop"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "drop",
+                      "snippet": [
+                        "    fn drop(&mut self) {",
+                        "        unsafe {",
+                        "            ptr::drop_in_place(slice::from_raw_parts_mut(self.inner, self.len()));",
+                        "        }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "in_place_drop",
+                                              "InPlaceDrop"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Let": {
+                                              "name": null,
+                                              "is_user": true,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "GetFunction": {
+                                                            "func": [
+                                                              "core",
+                                                              "ptr",
+                                                              "drop_in_place"
+                                                            ],
+                                                            "generic_tys": [
+                                                              {
+                                                                "type": "Application",
+                                                                "func": {
+                                                                  "type": "Path",
+                                                                  "path": [
+                                                                    "slice"
+                                                                  ]
+                                                                },
+                                                                "consts": [],
+                                                                "tys": [
+                                                                  {
+                                                                    "type": "Var",
+                                                                    "name": "T"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "GetFunction": {
+                                                                  "func": [
+                                                                    "core",
+                                                                    "slice",
+                                                                    "raw",
+                                                                    "from_raw_parts_mut"
+                                                                  ],
+                                                                  "generic_tys": [
+                                                                    {
+                                                                      "type": "Var",
+                                                                      "name": "T"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "self"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "InternalString": "alloc::vec::in_place_drop::InPlaceDrop"
+                                                                            },
+                                                                            {
+                                                                              "InternalString": "inner"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "GetAssociatedFunction": {
+                                                                        "ty": {
+                                                                          "type": "Application",
+                                                                          "func": {
+                                                                            "type": "Path",
+                                                                            "path": [
+                                                                              "alloc",
+                                                                              "vec",
+                                                                              "in_place_drop",
+                                                                              "InPlaceDrop"
+                                                                            ]
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": [
+                                                                            {
+                                                                              "type": "Var",
+                                                                              "name": "T"
+                                                                            }
+                                                                          ]
+                                                                        },
+                                                                        "func": "len",
+                                                                        "generic_tys": []
+                                                                      }
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.read"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "self"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Closure"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Closure"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Closure"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Tuple": {
+                                                        "elements": []
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/in_place_drop.rs",
+                "item": {
+                  "type": "TypeStructStruct",
+                  "name": "InPlaceDstDataSrcBufDrop",
+                  "const_params": [],
+                  "ty_params": [
+                    "Src",
+                    "Dest"
+                  ],
+                  "fields": [
+                    [
+                      "ptr",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "ptr",
+                            "non_null",
+                            "NonNull"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "Dest"
+                          }
+                        ]
+                      }
+                    ],
+                    [
+                      "len",
+                      {
+                        "type": "Path",
+                        "path": [
+                          "usize"
+                        ]
+                      }
+                    ],
+                    [
+                      "src_cap",
+                      {
+                        "type": "Path",
+                        "path": [
+                          "usize"
+                        ]
+                      }
+                    ],
+                    [
+                      "src",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "marker",
+                            "PhantomData"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "Src"
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/in_place_drop.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "Src",
+                    "Dest"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "in_place_drop",
+                        "InPlaceDstDataSrcBufDrop"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "Src"
+                      },
+                      {
+                        "type": "Var",
+                        "name": "Dest"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "drop",
+                    "Drop"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "drop",
+                      "snippet": [
+                        "    fn drop(&mut self) {",
+                        "        unsafe {",
+                        "            let _drop_allocation =",
+                        "                RawVec::<Src>::from_nonnull_in(self.ptr.cast::<Src>(), self.src_cap, Global);",
+                        "            drop_in_place(core::ptr::slice_from_raw_parts_mut::<Dest>(self.ptr.as_ptr(), self.len));",
+                        "        };",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "in_place_drop",
+                                              "InPlaceDstDataSrcBufDrop"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "Src"
+                                            },
+                                            {
+                                              "type": "Var",
+                                              "name": "Dest"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Let": {
+                                              "name": null,
+                                              "is_user": true,
+                                              "init": {
+                                                "Let": {
+                                                  "name": "_drop_allocation",
+                                                  "is_user": true,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetAssociatedFunction": {
+                                                                "ty": {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "alloc",
+                                                                      "raw_vec",
+                                                                      "RawVec"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": [
+                                                                    {
+                                                                      "type": "Var",
+                                                                      "name": "Src"
+                                                                    },
+                                                                    {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "alloc",
+                                                                          "Global"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": []
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "func": "from_nonnull_in",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "GetAssociatedFunction": {
+                                                                      "ty": {
+                                                                        "type": "Application",
+                                                                        "func": {
+                                                                          "type": "Path",
+                                                                          "path": [
+                                                                            "core",
+                                                                            "ptr",
+                                                                            "non_null",
+                                                                            "NonNull"
+                                                                          ]
+                                                                        },
+                                                                        "consts": [],
+                                                                        "tys": [
+                                                                          {
+                                                                            "type": "Var",
+                                                                            "name": "Dest"
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      "func": "cast",
+                                                                      "generic_tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "Src"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.read"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "LocalVar": "self"
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "InternalString": "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop"
+                                                                                },
+                                                                                {
+                                                                                  "InternalString": "ptr"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Closure"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "self"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop"
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "src_cap"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "StructTuple": {
+                                                                  "path": [
+                                                                    "alloc",
+                                                                    "alloc",
+                                                                    "Global"
+                                                                  ],
+                                                                  "fields": []
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Let": {
+                                                      "name": null,
+                                                      "is_user": true,
+                                                      "init": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "GetFunction": {
+                                                                    "func": [
+                                                                      "core",
+                                                                      "ptr",
+                                                                      "drop_in_place"
+                                                                    ],
+                                                                    "generic_tys": [
+                                                                      {
+                                                                        "type": "Application",
+                                                                        "func": {
+                                                                          "type": "Path",
+                                                                          "path": [
+                                                                            "slice"
+                                                                          ]
+                                                                        },
+                                                                        "consts": [],
+                                                                        "tys": [
+                                                                          {
+                                                                            "type": "Var",
+                                                                            "name": "Dest"
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "GetFunction": {
+                                                                          "func": [
+                                                                            "core",
+                                                                            "ptr",
+                                                                            "slice_from_raw_parts_mut"
+                                                                          ],
+                                                                          "generic_tys": [
+                                                                            {
+                                                                              "type": "Var",
+                                                                              "name": "Dest"
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "Call": {
+                                                                            "func": {
+                                                                              "GetAssociatedFunction": {
+                                                                                "ty": {
+                                                                                  "type": "Application",
+                                                                                  "func": {
+                                                                                    "type": "Path",
+                                                                                    "path": [
+                                                                                      "core",
+                                                                                      "ptr",
+                                                                                      "non_null",
+                                                                                      "NonNull"
+                                                                                    ]
+                                                                                  },
+                                                                                  "consts": [],
+                                                                                  "tys": [
+                                                                                    {
+                                                                                      "type": "Var",
+                                                                                      "name": "Dest"
+                                                                                    }
+                                                                                  ]
+                                                                                },
+                                                                                "func": "as_ptr",
+                                                                                "generic_tys": []
+                                                                              }
+                                                                            },
+                                                                            "args": [
+                                                                              {
+                                                                                "Call": {
+                                                                                  "func": {
+                                                                                    "LocalVar": "M.read"
+                                                                                  },
+                                                                                  "args": [
+                                                                                    {
+                                                                                      "Call": {
+                                                                                        "func": {
+                                                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                                        },
+                                                                                        "args": [
+                                                                                          {
+                                                                                            "Call": {
+                                                                                              "func": {
+                                                                                                "LocalVar": "M.read"
+                                                                                              },
+                                                                                              "args": [
+                                                                                                {
+                                                                                                  "LocalVar": "self"
+                                                                                                }
+                                                                                              ],
+                                                                                              "kind": "Effectful"
+                                                                                            }
+                                                                                          },
+                                                                                          {
+                                                                                            "InternalString": "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop"
+                                                                                          },
+                                                                                          {
+                                                                                            "InternalString": "ptr"
+                                                                                          }
+                                                                                        ],
+                                                                                        "kind": "Effectful"
+                                                                                      }
+                                                                                    }
+                                                                                  ],
+                                                                                  "kind": "Effectful"
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "kind": "Closure"
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "Call": {
+                                                                            "func": {
+                                                                              "LocalVar": "M.read"
+                                                                            },
+                                                                            "args": [
+                                                                              {
+                                                                                "Call": {
+                                                                                  "func": {
+                                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                                  },
+                                                                                  "args": [
+                                                                                    {
+                                                                                      "Call": {
+                                                                                        "func": {
+                                                                                          "LocalVar": "M.read"
+                                                                                        },
+                                                                                        "args": [
+                                                                                          {
+                                                                                            "LocalVar": "self"
+                                                                                          }
+                                                                                        ],
+                                                                                        "kind": "Effectful"
+                                                                                      }
+                                                                                    },
+                                                                                    {
+                                                                                      "InternalString": "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop"
+                                                                                    },
+                                                                                    {
+                                                                                      "InternalString": "len"
+                                                                                    }
+                                                                                  ],
+                                                                                  "kind": "Effectful"
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "kind": "Effectful"
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Closure"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "kind": "Closure"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      "body": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Tuple": {
+                                                                "elements": []
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Tuple": {
+                                                        "elements": []
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

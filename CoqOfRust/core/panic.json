@@ -1,0 +1,2139 @@
+[
+  {
+    "file_name": "core/src/panic.rs",
+    "item": {
+      "type": "Module",
+      "name": "intrinsics",
+      "body": [
+        {
+          "file_name": "core/src/panic.rs",
+          "item": {
+            "type": "Module",
+            "name": "mir",
+            "body": [
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "UnwindContinue",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "UnwindContinue",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "UnwindUnreachable",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "UnwindUnreachable",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "UnwindTerminate",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "UnwindTerminate",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "UnwindCleanup",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "UnwindCleanup",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "ReturnTo",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "ReturnTo",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Return",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Return",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Goto",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Goto",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Unreachable",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Unreachable",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Drop",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Drop",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Call",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Call",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "TailCall",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "TailCall",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "UnwindResume",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "UnwindResume",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "StorageLive",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "StorageLive",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "StorageDead",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "StorageDead",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Assume",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Assume",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Deinit",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Deinit",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Checked",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Checked",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Len",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Len",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "PtrMetadata",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "PtrMetadata",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "CopyForDeref",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "CopyForDeref",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Retag",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Retag",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Move",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Move",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Static",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Static",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "StaticMut",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "StaticMut",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Discriminant",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Discriminant",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "SetDiscriminant",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "SetDiscriminant",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Offset",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Offset",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Field",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Field",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "Variant",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "Variant",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "CastTransmute",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "CastTransmute",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "CastPtrToPtr",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "CastPtrToPtr",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "__internal_make_place",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "__internal_make_place",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "__debuginfo",
+                  "body": [
+                    {
+                      "file_name": "core/src/panic.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "panic_cold_explicit",
+                        "path": [
+                          "core",
+                          "intrinsics",
+                          "mir",
+                          "__debuginfo",
+                          "panic_cold_explicit"
+                        ],
+                        "snippet": [
+                          "        const fn panic_cold_explicit() -> ! {",
+                          "            $crate::panicking::panic_explicit()",
+                          "        }"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "never"
+                              ]
+                            },
+                            "body": {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "panicking",
+                                      "panic_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/panic.rs",
+    "item": {
+      "type": "Module",
+      "name": "panic",
+      "body": [
+        {
+          "file_name": "core/src/panic.rs",
+          "item": {
+            "type": "Trait",
+            "name": "PanicPayload",
+            "path": [
+              "core",
+              "panic",
+              "PanicPayload"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "take_box",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "*mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Dyn",
+                            "traits": [
+                              [
+                                "core",
+                                "any",
+                                "Any",
+                                "Trait"
+                              ],
+                              [
+                                "core",
+                                "marker",
+                                "Send",
+                                "AutoTrait"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              [
+                "get",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Dyn",
+                            "traits": [
+                              [
+                                "core",
+                                "any",
+                                "Any",
+                                "Trait"
+                              ],
+                              [
+                                "core",
+                                "marker",
+                                "Send",
+                                "AutoTrait"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              [
+                "as_str",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "self",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              }
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "option",
+                            "Option"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Path",
+                                "path": [
+                                  "str"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "self",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "self"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "StructTuple": {
+                              "path": [
+                                "core",
+                                "option",
+                                "Option",
+                                "None"
+                              ],
+                              "fields": []
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

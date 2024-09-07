@@ -1,0 +1,762 @@
+[
+  {
+    "file_name": "core/src/ffi/mod.rs",
+    "item": {
+      "type": "Module",
+      "name": "ffi",
+      "body": [
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_char",
+            "path": [
+              "core",
+              "ffi",
+              "c_char"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "i8"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_schar",
+            "path": [
+              "core",
+              "ffi",
+              "c_schar"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "i8"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_uchar",
+            "path": [
+              "core",
+              "ffi",
+              "c_uchar"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "u8"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_short",
+            "path": [
+              "core",
+              "ffi",
+              "c_short"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "i16"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_ushort",
+            "path": [
+              "core",
+              "ffi",
+              "c_ushort"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "u16"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_int",
+            "path": [
+              "core",
+              "ffi",
+              "c_int"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "i32"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_uint",
+            "path": [
+              "core",
+              "ffi",
+              "c_uint"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "u32"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_long",
+            "path": [
+              "core",
+              "ffi",
+              "c_long"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "i64"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_ulong",
+            "path": [
+              "core",
+              "ffi",
+              "c_ulong"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "u64"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_longlong",
+            "path": [
+              "core",
+              "ffi",
+              "c_longlong"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "i64"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_ulonglong",
+            "path": [
+              "core",
+              "ffi",
+              "c_ulonglong"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "u64"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_float",
+            "path": [
+              "core",
+              "ffi",
+              "c_float"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "f32"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_double",
+            "path": [
+              "core",
+              "ffi",
+              "c_double"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "f64"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_size_t",
+            "path": [
+              "core",
+              "ffi",
+              "c_size_t"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "usize"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_ptrdiff_t",
+            "path": [
+              "core",
+              "ffi",
+              "c_ptrdiff_t"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "isize"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeAlias",
+            "name": "c_ssize_t",
+            "path": [
+              "core",
+              "ffi",
+              "c_ssize_t"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "ty": {
+              "type": "Path",
+              "path": [
+                "isize"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "Module",
+            "name": "c_char_definition",
+            "body": [
+              {
+                "file_name": "core/src/ffi/mod.rs",
+                "item": {
+                  "type": "TypeAlias",
+                  "name": "c_char",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "c_char_definition",
+                    "c_char"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "ty": {
+                    "type": "Path",
+                    "path": [
+                      "i8"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "Module",
+            "name": "c_int_definition",
+            "body": [
+              {
+                "file_name": "core/src/ffi/mod.rs",
+                "item": {
+                  "type": "TypeAlias",
+                  "name": "c_int",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "c_int_definition",
+                    "c_int"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "ty": {
+                    "type": "Path",
+                    "path": [
+                      "i32"
+                    ]
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/ffi/mod.rs",
+                "item": {
+                  "type": "TypeAlias",
+                  "name": "c_uint",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "c_int_definition",
+                    "c_uint"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "ty": {
+                    "type": "Path",
+                    "path": [
+                      "u32"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "Module",
+            "name": "c_long_definition",
+            "body": [
+              {
+                "file_name": "core/src/ffi/mod.rs",
+                "item": {
+                  "type": "TypeAlias",
+                  "name": "c_long",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "c_long_definition",
+                    "c_long"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "ty": {
+                    "type": "Path",
+                    "path": [
+                      "i64"
+                    ]
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/ffi/mod.rs",
+                "item": {
+                  "type": "TypeAlias",
+                  "name": "c_ulong",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "c_long_definition",
+                    "c_ulong"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "ty": {
+                    "type": "Path",
+                    "path": [
+                      "u64"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TypeEnum",
+            "name": "c_void",
+            "const_params": [],
+            "ty_params": [],
+            "variants": [
+              {
+                "name": "__variant1",
+                "item": {
+                  "Tuple": {
+                    "tys": []
+                  }
+                },
+                "discriminant": null
+              },
+              {
+                "name": "__variant2",
+                "item": {
+                  "Tuple": {
+                    "tys": []
+                  }
+                },
+                "discriminant": null
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/ffi/mod.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "ffi",
+                  "c_void"
+                ]
+              },
+              "consts": [],
+              "tys": []
+            },
+            "of_trait": [
+              "core",
+              "fmt",
+              "Debug"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "fmt",
+                "snippet": [
+                  "    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {",
+                  "        f.debug_struct(\"c_void\").finish()",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "ffi",
+                                        "c_void"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "f",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "fmt",
+                                        "Formatter"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Tuple",
+                                "tys": []
+                              },
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "fmt",
+                                    "Error"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "f",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "f"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetAssociatedFunction": {
+                                          "ty": {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "fmt",
+                                                "builders",
+                                                "DebugStruct"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          },
+                                          "func": "finish",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "fmt",
+                                                            "Formatter"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": []
+                                                      },
+                                                      "func": "debug_struct",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "f"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "String": "c_void"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

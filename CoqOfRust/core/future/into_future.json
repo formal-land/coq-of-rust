@@ -1,0 +1,206 @@
+[
+  {
+    "file_name": "core/src/future/into_future.rs",
+    "item": {
+      "type": "Module",
+      "name": "future",
+      "body": [
+        {
+          "file_name": "core/src/future/into_future.rs",
+          "item": {
+            "type": "Module",
+            "name": "into_future",
+            "body": [
+              {
+                "file_name": "core/src/future/into_future.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "IntoFuture",
+                  "path": [
+                    "core",
+                    "future",
+                    "into_future",
+                    "IntoFuture"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "body": [
+                    [
+                      "Output",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "IntoFuture",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "into_future",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/future/into_future.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "F"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "future",
+                          "future",
+                          "Future"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Var",
+                    "name": "F"
+                  },
+                  "of_trait": [
+                    "core",
+                    "future",
+                    "into_future",
+                    "IntoFuture"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "Output",
+                      "snippet": [
+                        "    type Output = F::Output;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "IntoFuture",
+                      "snippet": [
+                        "    type IntoFuture = F;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "into_future",
+                      "snippet": [
+                        "    fn into_future(self) -> Self::IntoFuture {",
+                        "        self",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Var",
+                                      "name": "F"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Associated"
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

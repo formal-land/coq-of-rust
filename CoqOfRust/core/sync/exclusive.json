@@ -1,0 +1,2955 @@
+[
+  {
+    "file_name": "core/src/sync/exclusive.rs",
+    "item": {
+      "type": "Module",
+      "name": "sync",
+      "body": [
+        {
+          "file_name": "core/src/sync/exclusive.rs",
+          "item": {
+            "type": "Module",
+            "name": "exclusive",
+            "body": [
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TypeStructStruct",
+                  "name": "Exclusive",
+                  "const_params": [],
+                  "ty_params": [
+                    "T"
+                  ],
+                  "fields": [
+                    [
+                      "inner",
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "default",
+                          "Default"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "default",
+                    "Default"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "default",
+                      "snippet": [
+                        "Default"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "sync",
+                                      "exclusive",
+                                      "Exclusive"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "StructStruct": {
+                                    "path": [
+                                      "core",
+                                      "sync",
+                                      "exclusive",
+                                      "Exclusive"
+                                    ],
+                                    "fields": [
+                                      [
+                                        "inner",
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "default",
+                                                  "Default"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Var",
+                                                  "name": "T"
+                                                },
+                                                "trait_tys": [],
+                                                "method_name": "default",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      ]
+                                    ],
+                                    "base": null
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "marker",
+                    "Sync"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "fmt",
+                    "Debug"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "fmt",
+                      "snippet": [
+                        "    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {",
+                        "        f.debug_struct(\"Exclusive\").finish_non_exhaustive()",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "sync",
+                                              "exclusive",
+                                              "Exclusive"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "f",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "fmt",
+                                              "Formatter"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "result",
+                                      "Result"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Tuple",
+                                      "tys": []
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Error"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "f",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "f"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "fmt",
+                                                      "builders",
+                                                      "DebugStruct"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                },
+                                                "func": "finish_non_exhaustive",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "GetAssociatedFunction": {
+                                                            "ty": {
+                                                              "type": "Application",
+                                                              "func": {
+                                                                "type": "Path",
+                                                                "path": [
+                                                                  "core",
+                                                                  "fmt",
+                                                                  "Formatter"
+                                                                ]
+                                                              },
+                                                              "consts": [],
+                                                              "tys": []
+                                                            },
+                                                            "func": "debug_struct",
+                                                            "generic_tys": []
+                                                          }
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "f"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Literal": {
+                                                                    "String": "Exclusive"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Closure"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "Impl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "items": [
+                    {
+                      "name": "new",
+                      "snippet": [
+                        "    pub const fn new(t: T) -> Self {",
+                        "        Self { inner: t }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "t",
+                                  {
+                                    "type": "Var",
+                                    "name": "T"
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "sync",
+                                    "exclusive",
+                                    "Exclusive"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "T"
+                                  }
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "t",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "t"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "StructStruct": {
+                                      "path": [
+                                        "core",
+                                        "sync",
+                                        "exclusive",
+                                        "Exclusive"
+                                      ],
+                                      "fields": [
+                                        [
+                                          "inner",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "t"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ]
+                                      ],
+                                      "base": null
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "into_inner",
+                      "snippet": [
+                        "    pub const fn into_inner(self) -> T {",
+                        "        self.inner",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "sync",
+                                        "exclusive",
+                                        "Exclusive"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Var",
+                                "name": "T"
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              },
+                                              {
+                                                "InternalString": "core::sync::exclusive::Exclusive"
+                                              },
+                                              {
+                                                "InternalString": "inner"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "Impl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "items": [
+                    {
+                      "name": "get_mut",
+                      "snippet": [
+                        "    pub const fn get_mut(&mut self) -> &mut T {",
+                        "        &mut self.inner",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "sync",
+                                            "exclusive",
+                                            "Exclusive"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "T"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "T"
+                                  }
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.SubPointer.get_struct_record_field"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        {
+                                          "InternalString": "core::sync::exclusive::Exclusive"
+                                        },
+                                        {
+                                          "InternalString": "inner"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "get_pin_mut",
+                      "snippet": [
+                        "    pub const fn get_pin_mut(self: Pin<&mut Self>) -> Pin<&mut T> {",
+                        "        // SAFETY: `Exclusive` can only produce `&mut T` if itself is unpinned",
+                        "        // `Pin::map_unchecked_mut` is not const, so we do this conversion manually",
+                        "        unsafe { Pin::new_unchecked(&mut self.get_unchecked_mut().inner) }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "pin",
+                                        "Pin"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "&mut"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "sync",
+                                                "exclusive",
+                                                "Exclusive"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "T"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "pin",
+                                    "Pin"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetAssociatedFunction": {
+                                          "ty": {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "pin",
+                                                "Pin"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "T"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          "func": "new_unchecked",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "pin",
+                                                            "Pin"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "type": "Application",
+                                                            "func": {
+                                                              "type": "Path",
+                                                              "path": [
+                                                                "&mut"
+                                                              ]
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "type": "Application",
+                                                                "func": {
+                                                                  "type": "Path",
+                                                                  "path": [
+                                                                    "core",
+                                                                    "sync",
+                                                                    "exclusive",
+                                                                    "Exclusive"
+                                                                  ]
+                                                                },
+                                                                "consts": [],
+                                                                "tys": [
+                                                                  {
+                                                                    "type": "Var",
+                                                                    "name": "T"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      "func": "get_unchecked_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              },
+                                              {
+                                                "InternalString": "core::sync::exclusive::Exclusive"
+                                              },
+                                              {
+                                                "InternalString": "inner"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "from_mut",
+                      "snippet": [
+                        "    pub const fn from_mut(r: &'_ mut T) -> &'_ mut Exclusive<T> {",
+                        "        // SAFETY: repr is ≥ C, so refs have the same layout; and `Exclusive` properties are `&mut`-agnostic",
+                        "        unsafe { &mut *(r as *mut T as *mut Exclusive<T>) }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "r",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "sync",
+                                        "exclusive",
+                                        "Exclusive"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "r",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "r"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.rust_cast"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Use": {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.alloc"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "r"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Pure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "from_pin_mut",
+                      "snippet": [
+                        "    pub const fn from_pin_mut(r: Pin<&'_ mut T>) -> Pin<&'_ mut Exclusive<T>> {",
+                        "        // SAFETY: `Exclusive` can only produce `&mut T` if itself is unpinned",
+                        "        // `Pin::map_unchecked_mut` is not const, so we do this conversion manually",
+                        "        unsafe { Pin::new_unchecked(Self::from_mut(r.get_unchecked_mut())) }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "r",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "pin",
+                                        "Pin"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "&mut"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "T"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "pin",
+                                    "Pin"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "sync",
+                                            "exclusive",
+                                            "Exclusive"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "T"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "r",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "r"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetAssociatedFunction": {
+                                          "ty": {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "pin",
+                                                "Pin"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Application",
+                                                    "func": {
+                                                      "type": "Path",
+                                                      "path": [
+                                                        "core",
+                                                        "sync",
+                                                        "exclusive",
+                                                        "Exclusive"
+                                                      ]
+                                                    },
+                                                    "consts": [],
+                                                    "tys": [
+                                                      {
+                                                        "type": "Var",
+                                                        "name": "T"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          "func": "new_unchecked",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "sync",
+                                                      "exclusive",
+                                                      "Exclusive"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    }
+                                                  ]
+                                                },
+                                                "func": "from_mut",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "pin",
+                                                            "Pin"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "type": "Application",
+                                                            "func": {
+                                                              "type": "Path",
+                                                              "path": [
+                                                                "&mut"
+                                                              ]
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "type": "Var",
+                                                                "name": "T"
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      "func": "get_unchecked_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "r"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "convert",
+                    "From"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "from",
+                      "snippet": [
+                        "    fn from(t: T) -> Self {",
+                        "        Self::new(t)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "t",
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "sync",
+                                      "exclusive",
+                                      "Exclusive"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "t",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "t"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "GetAssociatedFunction": {
+                                            "ty": {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "core",
+                                                  "sync",
+                                                  "exclusive",
+                                                  "Exclusive"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "type": "Var",
+                                                  "name": "T"
+                                                }
+                                              ]
+                                            },
+                                            "func": "new",
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "t"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "F",
+                    "Args"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "ops",
+                          "function",
+                          "FnOnce"
+                        ],
+                        "ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Tuple"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "Args"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "function",
+                    "FnOnce"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Args",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "Args"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "Output",
+                      "snippet": [
+                        "    type Output = F::Output;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "call_once",
+                      "snippet": [
+                        "    extern \"rust-call\" fn call_once(self, args: Args) -> Self::Output {",
+                        "        self.into_inner().call_once(args)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "sync",
+                                          "exclusive",
+                                          "Exclusive"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "F"
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "args",
+                                    {
+                                      "type": "Var",
+                                      "name": "Args"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Associated"
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "args",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "args"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "ops",
+                                                  "function",
+                                                  "FnOnce"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Var",
+                                                  "name": "F"
+                                                },
+                                                "trait_tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "Args"
+                                                  }
+                                                ],
+                                                "method_name": "call_once",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "sync",
+                                                            "exclusive",
+                                                            "Exclusive"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "type": "Var",
+                                                            "name": "F"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "func": "into_inner",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "F",
+                    "Args"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "ops",
+                          "function",
+                          "FnMut"
+                        ],
+                        "ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Tuple"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "Args"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "function",
+                    "FnMut"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Args",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "Args"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "call_mut",
+                      "snippet": [
+                        "    extern \"rust-call\" fn call_mut(&mut self, args: Args) -> Self::Output {",
+                        "        self.get_mut().call_mut(args)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "sync",
+                                              "exclusive",
+                                              "Exclusive"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "F"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "args",
+                                    {
+                                      "type": "Var",
+                                      "name": "Args"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Associated"
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "args",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "args"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "ops",
+                                                  "function",
+                                                  "FnMut"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Var",
+                                                  "name": "F"
+                                                },
+                                                "trait_tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "Args"
+                                                  }
+                                                ],
+                                                "method_name": "call_mut",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "sync",
+                                                            "exclusive",
+                                                            "Exclusive"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "type": "Var",
+                                                            "name": "F"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "func": "get_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "future",
+                          "future",
+                          "Future"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "future",
+                    "future",
+                    "Future"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "Output",
+                      "snippet": [
+                        "    type Output = T::Output;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "poll",
+                      "snippet": [
+                        "    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {",
+                        "        self.get_pin_mut().poll(cx)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "pin",
+                                          "Pin"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&mut"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "core",
+                                                  "sync",
+                                                  "exclusive",
+                                                  "Exclusive"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "type": "Var",
+                                                  "name": "T"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "cx",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "task",
+                                              "wake",
+                                              "Context"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "task",
+                                      "poll",
+                                      "Poll"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Associated"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "cx",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "cx"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "future",
+                                                  "future",
+                                                  "Future"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Var",
+                                                  "name": "T"
+                                                },
+                                                "trait_tys": [],
+                                                "method_name": "poll",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "sync",
+                                                            "exclusive",
+                                                            "Exclusive"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "type": "Var",
+                                                            "name": "T"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "func": "get_pin_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "cx"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/sync/exclusive.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "R",
+                    "G"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "ops",
+                          "coroutine",
+                          "Coroutine"
+                        ],
+                        "ty_params": [
+                          [
+                            "R",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "R"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "G"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "G"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "exclusive",
+                        "Exclusive"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "G"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "coroutine",
+                    "Coroutine"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "R",
+                      {
+                        "OptionalValue": {
+                          "type": "Var",
+                          "name": "R"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "Yield",
+                      "snippet": [
+                        "    type Yield = G::Yield;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "Return",
+                      "snippet": [
+                        "    type Return = G::Return;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "resume",
+                      "snippet": [
+                        "    fn resume(self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {",
+                        "        G::resume(self.get_pin_mut(), arg)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "pin",
+                                          "Pin"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&mut"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "core",
+                                                  "sync",
+                                                  "exclusive",
+                                                  "Exclusive"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "type": "Var",
+                                                  "name": "G"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "arg",
+                                    {
+                                      "type": "Var",
+                                      "name": "R"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "ops",
+                                      "coroutine",
+                                      "CoroutineState"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Associated"
+                                    },
+                                    {
+                                      "type": "Associated"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "arg",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "arg"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "ops",
+                                                  "coroutine",
+                                                  "Coroutine"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Var",
+                                                  "name": "G"
+                                                },
+                                                "trait_tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "R"
+                                                  }
+                                                ],
+                                                "method_name": "resume",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "sync",
+                                                            "exclusive",
+                                                            "Exclusive"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "type": "Var",
+                                                            "name": "G"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "func": "get_pin_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "arg"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

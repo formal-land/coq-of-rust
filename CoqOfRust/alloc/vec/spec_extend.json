@@ -1,0 +1,1870 @@
+[
+  {
+    "file_name": "alloc/src/vec/spec_extend.rs",
+    "item": {
+      "type": "Module",
+      "name": "vec",
+      "body": [
+        {
+          "file_name": "alloc/src/vec/spec_extend.rs",
+          "item": {
+            "type": "Module",
+            "name": "spec_extend",
+            "body": [
+              {
+                "file_name": "alloc/src/vec/spec_extend.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "SpecExtend",
+                  "path": [
+                    "alloc",
+                    "vec",
+                    "spec_extend",
+                    "SpecExtend"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "T",
+                    "I"
+                  ],
+                  "body": [
+                    [
+                      "spec_extend",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Var",
+                                "name": "I"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Path",
+                              "path": [
+                                "unit"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/spec_extend.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "I",
+                    "A"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "alloc",
+                          "Allocator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "iterator",
+                          "Iterator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "I"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "Vec"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "alloc",
+                    "vec",
+                    "spec_extend",
+                    "SpecExtend"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ],
+                    [
+                      "I",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "I"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "spec_extend",
+                      "snippet": [
+                        "    default fn spec_extend(&mut self, iter: I) {",
+                        "        self.extend_desugared(iter)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "Vec"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            },
+                                            {
+                                              "type": "Var",
+                                              "name": "A"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "iter",
+                                    {
+                                      "type": "Var",
+                                      "name": "I"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "iter",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "iter"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "alloc",
+                                                      "vec",
+                                                      "Vec"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    },
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "A"
+                                                    }
+                                                  ]
+                                                },
+                                                "func": "extend_desugared",
+                                                "generic_tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "I"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "iter"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/spec_extend.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "I",
+                    "A"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "alloc",
+                          "Allocator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "TrustedLen"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "I"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "Vec"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "alloc",
+                    "vec",
+                    "spec_extend",
+                    "SpecExtend"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ],
+                    [
+                      "I",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "I"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "spec_extend",
+                      "snippet": [
+                        "    default fn spec_extend(&mut self, iterator: I) {",
+                        "        self.extend_trusted(iterator)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "Vec"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            },
+                                            {
+                                              "type": "Var",
+                                              "name": "A"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "iterator",
+                                    {
+                                      "type": "Var",
+                                      "name": "I"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "iterator",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "iterator"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "alloc",
+                                                      "vec",
+                                                      "Vec"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    },
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "A"
+                                                    }
+                                                  ]
+                                                },
+                                                "func": "extend_trusted",
+                                                "generic_tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "I"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "iterator"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/spec_extend.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "A"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "alloc",
+                          "Allocator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "Vec"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "alloc",
+                    "vec",
+                    "spec_extend",
+                    "SpecExtend"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ],
+                    [
+                      "I",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "vec",
+                              "into_iter",
+                              "IntoIter"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            },
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "alloc",
+                                  "alloc",
+                                  "Global"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": []
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "spec_extend",
+                      "snippet": [
+                        "    fn spec_extend(&mut self, mut iterator: IntoIter<T>) {",
+                        "        unsafe {",
+                        "            self.append_elements(iterator.as_slice() as _);",
+                        "        }",
+                        "        iterator.forget_remaining_elements();",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "Vec"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            },
+                                            {
+                                              "type": "Var",
+                                              "name": "A"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "iterator",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "alloc",
+                                          "vec",
+                                          "into_iter",
+                                          "IntoIter"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        },
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "alloc",
+                                              "Global"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "iterator",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "iterator"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Let": {
+                                                  "name": null,
+                                                  "is_user": true,
+                                                  "init": {
+                                                    "Let": {
+                                                      "name": null,
+                                                      "is_user": true,
+                                                      "init": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "GetAssociatedFunction": {
+                                                                    "ty": {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "vec",
+                                                                          "Vec"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "T"
+                                                                        },
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "A"
+                                                                        }
+                                                                      ]
+                                                                    },
+                                                                    "func": "append_elements",
+                                                                    "generic_tys": []
+                                                                  }
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "self"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "Use": {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.alloc"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "GetAssociatedFunction": {
+                                                                                        "ty": {
+                                                                                          "type": "Application",
+                                                                                          "func": {
+                                                                                            "type": "Path",
+                                                                                            "path": [
+                                                                                              "alloc",
+                                                                                              "vec",
+                                                                                              "into_iter",
+                                                                                              "IntoIter"
+                                                                                            ]
+                                                                                          },
+                                                                                          "consts": [],
+                                                                                          "tys": [
+                                                                                            {
+                                                                                              "type": "Var",
+                                                                                              "name": "T"
+                                                                                            },
+                                                                                            {
+                                                                                              "type": "Application",
+                                                                                              "func": {
+                                                                                                "type": "Path",
+                                                                                                "path": [
+                                                                                                  "alloc",
+                                                                                                  "alloc",
+                                                                                                  "Global"
+                                                                                                ]
+                                                                                              },
+                                                                                              "consts": [],
+                                                                                              "tys": []
+                                                                                            }
+                                                                                          ]
+                                                                                        },
+                                                                                        "func": "as_slice",
+                                                                                        "generic_tys": []
+                                                                                      }
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "LocalVar": "iterator"
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Closure"
+                                                                                  }
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "kind": "Closure"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      "body": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Tuple": {
+                                                                "elements": []
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Let": {
+                                                      "name": null,
+                                                      "is_user": true,
+                                                      "init": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "GetAssociatedFunction": {
+                                                                    "ty": {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "vec",
+                                                                          "into_iter",
+                                                                          "IntoIter"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "T"
+                                                                        },
+                                                                        {
+                                                                          "type": "Application",
+                                                                          "func": {
+                                                                            "type": "Path",
+                                                                            "path": [
+                                                                              "alloc",
+                                                                              "alloc",
+                                                                              "Global"
+                                                                            ]
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      ]
+                                                                    },
+                                                                    "func": "forget_remaining_elements",
+                                                                    "generic_tys": []
+                                                                  }
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "iterator"
+                                                                  }
+                                                                ],
+                                                                "kind": "Closure"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      "body": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Tuple": {
+                                                                "elements": []
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/spec_extend.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "I",
+                    "A"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "alloc",
+                          "Allocator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "iterator",
+                          "Iterator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "I"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "Vec"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "alloc",
+                    "vec",
+                    "spec_extend",
+                    "SpecExtend"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    [
+                      "I",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "I"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "spec_extend",
+                      "snippet": [
+                        "    default fn spec_extend(&mut self, iterator: I) {",
+                        "        self.spec_extend(iterator.cloned())",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "Vec"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            },
+                                            {
+                                              "type": "Var",
+                                              "name": "A"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "iterator",
+                                    {
+                                      "type": "Var",
+                                      "name": "I"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "iterator",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "iterator"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "alloc",
+                                                  "vec",
+                                                  "spec_extend",
+                                                  "SpecExtend"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "alloc",
+                                                      "vec",
+                                                      "Vec"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    },
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "A"
+                                                    }
+                                                  ]
+                                                },
+                                                "trait_tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "T"
+                                                  },
+                                                  {
+                                                    "type": "Application",
+                                                    "func": {
+                                                      "type": "Path",
+                                                      "path": [
+                                                        "core",
+                                                        "iter",
+                                                        "adapters",
+                                                        "cloned",
+                                                        "Cloned"
+                                                      ]
+                                                    },
+                                                    "consts": [],
+                                                    "tys": [
+                                                      {
+                                                        "type": "Var",
+                                                        "name": "I"
+                                                      }
+                                                    ]
+                                                  }
+                                                ],
+                                                "method_name": "spec_extend",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "iter",
+                                                        "traits",
+                                                        "iterator",
+                                                        "Iterator"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "I"
+                                                      },
+                                                      "trait_tys": [],
+                                                      "method_name": "cloned",
+                                                      "generic_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "T"
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "iterator"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/spec_extend.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "A"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "alloc",
+                          "Allocator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Copy"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "vec",
+                        "Vec"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      {
+                        "type": "Var",
+                        "name": "A"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "alloc",
+                    "vec",
+                    "spec_extend",
+                    "SpecExtend"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    [
+                      "I",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "slice",
+                              "iter",
+                              "Iter"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "spec_extend",
+                      "snippet": [
+                        "    fn spec_extend(&mut self, iterator: slice::Iter<'a, T>) {",
+                        "        let slice = iterator.as_slice();",
+                        "        unsafe { self.append_elements(slice) };",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "Vec"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            },
+                                            {
+                                              "type": "Var",
+                                              "name": "A"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "iterator",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "slice",
+                                          "iter",
+                                          "Iter"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "iterator",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "iterator"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Let": {
+                                                  "name": "slice",
+                                                  "is_user": true,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetAssociatedFunction": {
+                                                                "ty": {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "core",
+                                                                      "slice",
+                                                                      "iter",
+                                                                      "Iter"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": [
+                                                                    {
+                                                                      "type": "Var",
+                                                                      "name": "T"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "func": "as_slice",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "iterator"
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Let": {
+                                                      "name": null,
+                                                      "is_user": true,
+                                                      "init": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "GetAssociatedFunction": {
+                                                                    "ty": {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "vec",
+                                                                          "Vec"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "T"
+                                                                        },
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "A"
+                                                                        }
+                                                                      ]
+                                                                    },
+                                                                    "func": "append_elements",
+                                                                    "generic_tys": []
+                                                                  }
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "self"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "slice"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "kind": "Closure"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      "body": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Tuple": {
+                                                                "elements": []
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,1522 @@
+[
+  {
+    "file_name": "core/src/ops/function.rs",
+    "item": {
+      "type": "Module",
+      "name": "ops",
+      "body": [
+        {
+          "file_name": "core/src/ops/function.rs",
+          "item": {
+            "type": "Module",
+            "name": "function",
+            "body": [
+              {
+                "file_name": "core/src/ops/function.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "Fn",
+                  "path": [
+                    "core",
+                    "ops",
+                    "function",
+                    "Fn"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Args"
+                  ],
+                  "body": [
+                    [
+                      "call",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/function.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "FnMut",
+                  "path": [
+                    "core",
+                    "ops",
+                    "function",
+                    "FnMut"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Args"
+                  ],
+                  "body": [
+                    [
+                      "call_mut",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/function.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "FnOnce",
+                  "path": [
+                    "core",
+                    "ops",
+                    "function",
+                    "FnOnce"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Args"
+                  ],
+                  "body": [
+                    [
+                      "Output",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "call_once",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/function.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "impls",
+                  "body": [
+                    {
+                      "file_name": "core/src/ops/function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "function",
+                                "Fn"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "function",
+                          "Fn"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "call",
+                            "snippet": [
+                              "        extern \"rust-call\" fn call(&self, args: A) -> F::Output {",
+                              "            (**self).call(args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "F"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "function",
+                                                        "Fn"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "call",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "function",
+                                "Fn"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "function",
+                          "FnMut"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "call_mut",
+                            "snippet": [
+                              "        extern \"rust-call\" fn call_mut(&mut self, args: A) -> F::Output {",
+                              "            (**self).call(args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "F"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "function",
+                                                        "Fn"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "call",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "function",
+                                "Fn"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "function",
+                          "FnOnce"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "Output",
+                            "snippet": [
+                              "        type Output = F::Output;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "call_once",
+                            "snippet": [
+                              "        extern \"rust-call\" fn call_once(self, args: A) -> F::Output {",
+                              "            (*self).call(args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "F"
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "function",
+                                                        "Fn"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "call",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "function",
+                                "FnMut"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "function",
+                          "FnMut"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "call_mut",
+                            "snippet": [
+                              "        extern \"rust-call\" fn call_mut(&mut self, args: A) -> F::Output {",
+                              "            (*self).call_mut(args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "F"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "function",
+                                                        "FnMut"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "call_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "function",
+                                "FnMut"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "function",
+                          "FnOnce"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "Output",
+                            "snippet": [
+                              "        type Output = F::Output;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "call_once",
+                            "snippet": [
+                              "        extern \"rust-call\" fn call_once(self, args: A) -> F::Output {",
+                              "            (*self).call_mut(args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "F"
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "function",
+                                                        "FnMut"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "call_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

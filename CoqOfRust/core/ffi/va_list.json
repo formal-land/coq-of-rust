@@ -1,0 +1,2943 @@
+[
+  {
+    "file_name": "core/src/ffi/va_list.rs",
+    "item": {
+      "type": "Module",
+      "name": "ffi",
+      "body": [
+        {
+          "file_name": "core/src/ffi/va_list.rs",
+          "item": {
+            "type": "Module",
+            "name": "va_list",
+            "body": [
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TypeStructStruct",
+                  "name": "VaListImpl",
+                  "const_params": [],
+                  "ty_params": [],
+                  "fields": [
+                    [
+                      "gp_offset",
+                      {
+                        "type": "Path",
+                        "path": [
+                          "i32"
+                        ]
+                      }
+                    ],
+                    [
+                      "fp_offset",
+                      {
+                        "type": "Path",
+                        "path": [
+                          "i32"
+                        ]
+                      }
+                    ],
+                    [
+                      "overflow_arg_area",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "*mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "ffi",
+                                "c_void"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        ]
+                      }
+                    ],
+                    [
+                      "reg_save_area",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "*mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "ffi",
+                                "c_void"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        ]
+                      }
+                    ],
+                    [
+                      "_marker",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "marker",
+                            "PhantomData"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "ffi",
+                                        "c_void"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaListImpl"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "fmt",
+                    "Debug"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "fmt",
+                      "snippet": [
+                        "Debug"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "ffi",
+                                              "va_list",
+                                              "VaListImpl"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "f",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "fmt",
+                                              "Formatter"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "result",
+                                      "Result"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Tuple",
+                                      "tys": []
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Error"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "f",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "f"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "fmt",
+                                                      "Formatter"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                },
+                                                "func": "debug_struct_field5_finish",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "f"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "VaListImpl"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "gp_offset"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "core::ffi::va_list::VaListImpl"
+                                                    },
+                                                    {
+                                                      "InternalString": "gp_offset"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "fp_offset"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "core::ffi::va_list::VaListImpl"
+                                                    },
+                                                    {
+                                                      "InternalString": "fp_offset"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "overflow_arg_area"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "core::ffi::va_list::VaListImpl"
+                                                    },
+                                                    {
+                                                      "InternalString": "overflow_arg_area"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "reg_save_area"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "core::ffi::va_list::VaListImpl"
+                                                    },
+                                                    {
+                                                      "InternalString": "reg_save_area"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "_marker"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "core::ffi::va_list::VaListImpl"
+                                                          },
+                                                          {
+                                                            "InternalString": "_marker"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TypeStructStruct",
+                  "name": "VaList",
+                  "const_params": [],
+                  "ty_params": [],
+                  "fields": [
+                    [
+                      "inner",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "ffi",
+                                "va_list",
+                                "VaListImpl"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        ]
+                      }
+                    ],
+                    [
+                      "_marker",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "marker",
+                            "PhantomData"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "ffi",
+                                    "va_list",
+                                    "VaListImpl"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaList"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "fmt",
+                    "Debug"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "fmt",
+                      "snippet": [
+                        "Debug"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "ffi",
+                                              "va_list",
+                                              "VaList"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "f",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "fmt",
+                                              "Formatter"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "result",
+                                      "Result"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Tuple",
+                                      "tys": []
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Error"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "f",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "f"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "fmt",
+                                                      "Formatter"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                },
+                                                "func": "debug_struct_field2_finish",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "f"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "VaList"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "inner"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "core::ffi::va_list::VaList"
+                                                    },
+                                                    {
+                                                      "InternalString": "inner"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "_marker"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "core::ffi::va_list::VaList"
+                                                          },
+                                                          {
+                                                            "InternalString": "_marker"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "Impl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaListImpl"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "items": [
+                    {
+                      "name": "as_va_list",
+                      "snippet": [
+                        "    pub fn as_va_list<'a>(&'a mut self) -> VaList<'a, 'f> {",
+                        "        VaList { inner: self, _marker: PhantomData }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "ffi",
+                                            "va_list",
+                                            "VaListImpl"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "ffi",
+                                    "va_list",
+                                    "VaList"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "StructStruct": {
+                                      "path": [
+                                        "core",
+                                        "ffi",
+                                        "va_list",
+                                        "VaList"
+                                      ],
+                                      "fields": [
+                                        [
+                                          "inner",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        [
+                                          "_marker",
+                                          {
+                                            "StructTuple": {
+                                              "path": [
+                                                "core",
+                                                "marker",
+                                                "PhantomData"
+                                              ],
+                                              "fields": []
+                                            }
+                                          }
+                                        ]
+                                      ],
+                                      "base": null
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaList"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "deref",
+                    "Deref"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "Target",
+                      "snippet": [
+                        "    type Target = VaListImpl<'f>;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "ffi",
+                                  "va_list",
+                                  "VaListImpl"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": []
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "deref",
+                      "snippet": [
+                        "    fn deref(&self) -> &VaListImpl<'f> {",
+                        "        &self.inner",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "ffi",
+                                              "va_list",
+                                              "VaList"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "ffi",
+                                          "va_list",
+                                          "VaListImpl"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "LocalVar": "self"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                {
+                                                  "InternalString": "core::ffi::va_list::VaList"
+                                                },
+                                                {
+                                                  "InternalString": "inner"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaList"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "deref",
+                    "DerefMut"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "deref_mut",
+                      "snippet": [
+                        "    fn deref_mut(&mut self) -> &mut VaListImpl<'f> {",
+                        "        &mut self.inner",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "ffi",
+                                              "va_list",
+                                              "VaList"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&mut"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "ffi",
+                                          "va_list",
+                                          "VaListImpl"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "LocalVar": "self"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                {
+                                                  "InternalString": "core::ffi::va_list::VaList"
+                                                },
+                                                {
+                                                  "InternalString": "inner"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "sealed_trait",
+                  "body": [
+                    {
+                      "file_name": "core/src/ffi/va_list.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "VaArgSafe",
+                        "path": [
+                          "core",
+                          "ffi",
+                          "va_list",
+                          "sealed_trait",
+                          "VaArgSafe"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": []
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i8"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i16"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i32"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i64"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "usize"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u8"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u16"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u32"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u64"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "isize"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "f64"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*const"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "sealed_trait",
+                    "VaArgSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "Impl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaListImpl"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "items": [
+                    {
+                      "name": "arg",
+                      "snippet": [
+                        "    pub unsafe fn arg<T: sealed_trait::VaArgSafe>(&mut self) -> T {",
+                        "        // SAFETY: the caller must uphold the safety contract for `va_arg`.",
+                        "        unsafe { va_arg(self) }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [
+                              "T"
+                            ],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "ffi",
+                                            "va_list",
+                                            "VaListImpl"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Var",
+                                "name": "T"
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetFunction": {
+                                          "func": [
+                                            "core",
+                                            "ffi",
+                                            "va_list",
+                                            "va_arg"
+                                          ],
+                                          "generic_tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "with_copy",
+                      "snippet": [
+                        "    pub unsafe fn with_copy<F, R>(&self, f: F) -> R",
+                        "    where",
+                        "        F: for<'copy> FnOnce(VaList<'copy, 'f>) -> R,",
+                        "    {",
+                        "        let mut ap = self.clone();",
+                        "        let ret = f(ap.as_va_list());",
+                        "        // SAFETY: the caller must uphold the safety contract for `va_end`.",
+                        "        unsafe {",
+                        "            va_end(&mut ap);",
+                        "        }",
+                        "        ret",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [
+                              "F",
+                              "R"
+                            ],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "ffi",
+                                            "va_list",
+                                            "VaListImpl"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  },
+                                  null
+                                ],
+                                [
+                                  "f",
+                                  {
+                                    "type": "Var",
+                                    "name": "F"
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Var",
+                                "name": "R"
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Let": {
+                                      "name": "f",
+                                      "is_user": false,
+                                      "init": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.alloc"
+                                          },
+                                          "args": [
+                                            {
+                                              "LocalVar": "f"
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      },
+                                      "body": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.read"
+                                          },
+                                          "args": [
+                                            {
+                                              "Let": {
+                                                "name": "ap",
+                                                "is_user": true,
+                                                "init": {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.alloc"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "GetTraitMethod": {
+                                                              "trait_name": [
+                                                                "core",
+                                                                "clone",
+                                                                "Clone"
+                                                              ],
+                                                              "self_ty": {
+                                                                "type": "Application",
+                                                                "func": {
+                                                                  "type": "Path",
+                                                                  "path": [
+                                                                    "core",
+                                                                    "ffi",
+                                                                    "va_list",
+                                                                    "VaListImpl"
+                                                                  ]
+                                                                },
+                                                                "consts": [],
+                                                                "tys": []
+                                                              },
+                                                              "trait_tys": [],
+                                                              "method_name": "clone",
+                                                              "generic_tys": []
+                                                            }
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Closure"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                "body": {
+                                                  "Let": {
+                                                    "name": "ret",
+                                                    "is_user": true,
+                                                    "init": {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.alloc"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "GetTraitMethod": {
+                                                                  "trait_name": [
+                                                                    "core",
+                                                                    "ops",
+                                                                    "function",
+                                                                    "FnOnce"
+                                                                  ],
+                                                                  "self_ty": {
+                                                                    "type": "Var",
+                                                                    "name": "F"
+                                                                  },
+                                                                  "trait_tys": [
+                                                                    {
+                                                                      "type": "Tuple",
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Application",
+                                                                          "func": {
+                                                                            "type": "Path",
+                                                                            "path": [
+                                                                              "core",
+                                                                              "ffi",
+                                                                              "va_list",
+                                                                              "VaList"
+                                                                            ]
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ],
+                                                                  "method_name": "call_once",
+                                                                  "generic_tys": []
+                                                                }
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "f"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "Tuple": {
+                                                                    "elements": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "GetAssociatedFunction": {
+                                                                              "ty": {
+                                                                                "type": "Application",
+                                                                                "func": {
+                                                                                  "type": "Path",
+                                                                                  "path": [
+                                                                                    "core",
+                                                                                    "ffi",
+                                                                                    "va_list",
+                                                                                    "VaListImpl"
+                                                                                  ]
+                                                                                },
+                                                                                "consts": [],
+                                                                                "tys": []
+                                                                              },
+                                                                              "func": "as_va_list",
+                                                                              "generic_tys": []
+                                                                            }
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "ap"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Closure"
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Closure"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    "body": {
+                                                      "Let": {
+                                                        "name": null,
+                                                        "is_user": true,
+                                                        "init": {
+                                                          "Let": {
+                                                            "name": null,
+                                                            "is_user": true,
+                                                            "init": {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.alloc"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "GetFunction": {
+                                                                          "func": [
+                                                                            "core",
+                                                                            "ffi",
+                                                                            "va_list",
+                                                                            "va_end"
+                                                                          ],
+                                                                          "generic_tys": []
+                                                                        }
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "ap"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Closure"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            "body": {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.alloc"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "Tuple": {
+                                                                      "elements": []
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "body": {
+                                                          "LocalVar": "ret"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaListImpl"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "clone",
+                    "Clone"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "clone",
+                      "snippet": [
+                        "    fn clone(&self) -> Self {",
+                        "        let mut dest = crate::mem::MaybeUninit::uninit();",
+                        "        // SAFETY: we write to the `MaybeUninit`, thus it is initialized and `assume_init` is legal",
+                        "        unsafe {",
+                        "            va_copy(dest.as_mut_ptr(), self);",
+                        "            dest.assume_init()",
+                        "        }",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "ffi",
+                                              "va_list",
+                                              "VaListImpl"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "ffi",
+                                      "va_list",
+                                      "VaListImpl"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": []
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Let": {
+                                              "name": "dest",
+                                              "is_user": true,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "GetAssociatedFunction": {
+                                                            "ty": {
+                                                              "type": "Application",
+                                                              "func": {
+                                                                "type": "Path",
+                                                                "path": [
+                                                                  "core",
+                                                                  "mem",
+                                                                  "maybe_uninit",
+                                                                  "MaybeUninit"
+                                                                ]
+                                                              },
+                                                              "consts": [],
+                                                              "tys": [
+                                                                {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "core",
+                                                                      "ffi",
+                                                                      "va_list",
+                                                                      "VaListImpl"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              ]
+                                                            },
+                                                            "func": "uninit",
+                                                            "generic_tys": []
+                                                          }
+                                                        },
+                                                        "args": [],
+                                                        "kind": "Closure"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": null,
+                                                  "is_user": true,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetFunction": {
+                                                                "func": [
+                                                                  "core",
+                                                                  "ffi",
+                                                                  "va_list",
+                                                                  "va_copy"
+                                                                ],
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "GetAssociatedFunction": {
+                                                                      "ty": {
+                                                                        "type": "Application",
+                                                                        "func": {
+                                                                          "type": "Path",
+                                                                          "path": [
+                                                                            "core",
+                                                                            "mem",
+                                                                            "maybe_uninit",
+                                                                            "MaybeUninit"
+                                                                          ]
+                                                                        },
+                                                                        "consts": [],
+                                                                        "tys": [
+                                                                          {
+                                                                            "type": "Application",
+                                                                            "func": {
+                                                                              "type": "Path",
+                                                                              "path": [
+                                                                                "core",
+                                                                                "ffi",
+                                                                                "va_list",
+                                                                                "VaListImpl"
+                                                                              ]
+                                                                            },
+                                                                            "consts": [],
+                                                                            "tys": []
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      "func": "as_mut_ptr",
+                                                                      "generic_tys": []
+                                                                    }
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "dest"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Closure"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetAssociatedFunction": {
+                                                                "ty": {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "core",
+                                                                      "mem",
+                                                                      "maybe_uninit",
+                                                                      "MaybeUninit"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": [
+                                                                    {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "core",
+                                                                          "ffi",
+                                                                          "va_list",
+                                                                          "VaListImpl"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": []
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "func": "assume_init",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "dest"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "clone_from",
+                      "snippet": null,
+                      "kind": "Default"
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ffi",
+                        "va_list",
+                        "VaListImpl"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "drop",
+                    "Drop"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "drop",
+                      "snippet": [
+                        "    fn drop(&mut self) {",
+                        "        // FIXME: this should call `va_end`, but there's no clean way to",
+                        "        // guarantee that `drop` always gets inlined into its caller,",
+                        "        // so the `va_end` would get directly called from the same function as",
+                        "        // the corresponding `va_copy`. `man va_end` states that C requires this,",
+                        "        // and LLVM basically follows the C semantics, so we need to make sure",
+                        "        // that `va_end` is always called from the same function as `va_copy`.",
+                        "        // For more details, see https://github.com/rust-lang/rust/pull/59625",
+                        "        // and https://llvm.org/docs/LangRef.html#llvm-va-end-intrinsic.",
+                        "        //",
+                        "        // This works for now, since `va_end` is a no-op on all current LLVM targets.",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "ffi",
+                                              "va_list",
+                                              "VaListImpl"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Path",
+                                  "path": [
+                                    "unit"
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Tuple": {
+                                        "elements": []
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "va_end",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "va_end"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "va_copy",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "va_copy"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/ffi/va_list.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "va_arg",
+                  "path": [
+                    "core",
+                    "ffi",
+                    "va_list",
+                    "va_arg"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,1731 @@
+[
+  {
+    "file_name": "core/src/intrinsics/simd.rs",
+    "item": {
+      "type": "Module",
+      "name": "intrinsics",
+      "body": [
+        {
+          "file_name": "core/src/intrinsics/simd.rs",
+          "item": {
+            "type": "Module",
+            "name": "simd",
+            "body": [
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_insert",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_insert"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_extract",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_extract"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_add",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_add"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_sub",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_sub"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_mul",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_mul"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_div",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_div"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_rem",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_rem"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_shl",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_shl"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_shr",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_shr"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_and",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_and"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_or",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_or"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_xor",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_xor"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_cast",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_cast"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_as",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_as"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_neg",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_neg"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fabs",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fabs"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fmin",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fmin"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fmax",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fmax"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_eq",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_eq"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_ne",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_ne"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_lt",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_lt"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_le",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_le"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_gt",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_gt"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_ge",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_ge"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_shuffle",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_shuffle"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U",
+                      "V"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_gather",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_gather"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U",
+                      "V"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_scatter",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_scatter"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U",
+                      "V"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_masked_load",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_masked_load"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "V",
+                      "U",
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_masked_store",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_masked_store"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "V",
+                      "U",
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_saturating_add",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_saturating_add"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_saturating_sub",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_saturating_sub"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_add_ordered",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_add_ordered"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_add_unordered",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_add_unordered"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_mul_ordered",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_mul_ordered"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_mul_unordered",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_mul_unordered"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_all",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_all"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_any",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_any"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_max",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_max"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_min",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_min"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_and",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_and"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_or",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_or"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_reduce_xor",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_reduce_xor"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_bitmask",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_bitmask"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_select",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_select"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "M_",
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_select_bitmask",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_select_bitmask"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "M_",
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_arith_offset",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_arith_offset"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_cast_ptr",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_cast_ptr"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_expose_provenance",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_expose_provenance"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_with_exposed_provenance",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_with_exposed_provenance"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_bswap",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_bswap"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_bitreverse",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_bitreverse"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_ctlz",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_ctlz"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_ctpop",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_ctpop"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_cttz",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_cttz"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_ceil",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_ceil"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_floor",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_floor"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_round",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_round"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_trunc",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_trunc"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fsqrt",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fsqrt"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fma",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fma"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fsin",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fsin"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fcos",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fcos"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fexp",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fexp"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_fexp2",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_fexp2"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_flog10",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_flog10"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_flog2",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_flog2"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/simd.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "simd_flog",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "simd",
+                    "simd_flog"
+                  ],
+                  "snippet": null,
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": null,
+                      "ret_ty": null,
+                      "body": null
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

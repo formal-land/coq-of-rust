@@ -1,0 +1,3287 @@
+[
+  {
+    "file_name": "core/src/panic/unwind_safe.rs",
+    "item": {
+      "type": "Module",
+      "name": "panic",
+      "body": [
+        {
+          "file_name": "core/src/panic/unwind_safe.rs",
+          "item": {
+            "type": "Module",
+            "name": "unwind_safe",
+            "body": [
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "UnwindSafe",
+                  "path": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "body": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "RefUnwindSafe",
+                  "path": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "body": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TypeStructTuple",
+                  "name": "AssertUnwindSafe",
+                  "const_params": [],
+                  "ty_params": [
+                    "T"
+                  ],
+                  "fields": [
+                    {
+                      "type": "Var",
+                      "name": "T"
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "panic",
+                          "unwind_safe",
+                          "RefUnwindSafe"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "&"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "panic",
+                          "unwind_safe",
+                          "RefUnwindSafe"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*const"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "panic",
+                          "unwind_safe",
+                          "RefUnwindSafe"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "*mut"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "panic",
+                          "unwind_safe",
+                          "UnwindSafe"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ptr",
+                        "unique",
+                        "Unique"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "panic",
+                          "unwind_safe",
+                          "RefUnwindSafe"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    },
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ptr",
+                        "non_null",
+                        "NonNull"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "UnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "marker",
+                          "Sized"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "cell",
+                        "UnsafeCell"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicIsize"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicI8"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicI16"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicI32"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicI64"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicUsize"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicU8"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicU16"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicU32"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicU64"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicBool"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "sync",
+                        "atomic",
+                        "AtomicPtr"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "panic",
+                    "unwind_safe",
+                    "RefUnwindSafe"
+                  ],
+                  "trait_ty_params": [],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "deref",
+                    "Deref"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "Target",
+                      "snippet": [
+                        "    type Target = T;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "deref",
+                      "snippet": [
+                        "    fn deref(&self) -> &T {",
+                        "        &self.0",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "panic",
+                                              "unwind_safe",
+                                              "AssertUnwindSafe"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          {
+                                            "InternalString": "core::panic::unwind_safe::AssertUnwindSafe"
+                                          },
+                                          {
+                                            "LocalVar": "0"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "deref",
+                    "DerefMut"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "deref_mut",
+                      "snippet": [
+                        "    fn deref_mut(&mut self) -> &mut T {",
+                        "        &mut self.0",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "panic",
+                                              "unwind_safe",
+                                              "AssertUnwindSafe"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&mut"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          {
+                                            "InternalString": "core::panic::unwind_safe::AssertUnwindSafe"
+                                          },
+                                          {
+                                            "LocalVar": "0"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "R",
+                    "F"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "ops",
+                          "function",
+                          "FnOnce"
+                        ],
+                        "ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Tuple",
+                                "tys": []
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "function",
+                    "FnOnce"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Args",
+                      {
+                        "RequiredValue": {
+                          "type": "Tuple",
+                          "tys": []
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "Output",
+                      "snippet": [
+                        "    type Output = R;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Var",
+                              "name": "R"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "call_once",
+                      "snippet": [
+                        "    extern \"rust-call\" fn call_once(self, _args: ()) -> R {",
+                        "        (self.0)()",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "panic",
+                                          "unwind_safe",
+                                          "AssertUnwindSafe"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "F"
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "_args",
+                                    {
+                                      "type": "Tuple",
+                                      "tys": []
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Var",
+                                  "name": "R"
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "_args",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "_args"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "ops",
+                                                  "function",
+                                                  "FnOnce"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Var",
+                                                  "name": "F"
+                                                },
+                                                "trait_tys": [
+                                                  {
+                                                    "type": "Tuple",
+                                                    "tys": []
+                                                  }
+                                                ],
+                                                "method_name": "call_once",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          },
+                                                          {
+                                                            "InternalString": "core::panic::unwind_safe::AssertUnwindSafe"
+                                                          },
+                                                          {
+                                                            "LocalVar": "0"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Tuple": {
+                                                  "elements": []
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "fmt",
+                          "Debug"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "fmt",
+                    "Debug"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "fmt",
+                      "snippet": [
+                        "    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {",
+                        "        f.debug_tuple(\"AssertUnwindSafe\").field(&self.0).finish()",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "panic",
+                                              "unwind_safe",
+                                              "AssertUnwindSafe"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "f",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "fmt",
+                                              "Formatter"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "result",
+                                      "Result"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Tuple",
+                                      "tys": []
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Error"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "f",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "f"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "fmt",
+                                                      "builders",
+                                                      "DebugTuple"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                },
+                                                "func": "finish",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "fmt",
+                                                            "builders",
+                                                            "DebugTuple"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": []
+                                                      },
+                                                      "func": "field",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.alloc"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "GetAssociatedFunction": {
+                                                                  "ty": {
+                                                                    "type": "Application",
+                                                                    "func": {
+                                                                      "type": "Path",
+                                                                      "path": [
+                                                                        "core",
+                                                                        "fmt",
+                                                                        "Formatter"
+                                                                      ]
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": []
+                                                                  },
+                                                                  "func": "debug_tuple",
+                                                                  "generic_tys": []
+                                                                }
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "f"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Literal": {
+                                                                          "String": "AssertUnwindSafe"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Closure"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "core::panic::unwind_safe::AssertUnwindSafe"
+                                                          },
+                                                          {
+                                                            "LocalVar": "0"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "default",
+                          "Default"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "default",
+                    "Default"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "default",
+                      "snippet": [
+                        "    fn default() -> Self {",
+                        "        Self(Default::default())",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "panic",
+                                      "unwind_safe",
+                                      "AssertUnwindSafe"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "StructTuple": {
+                                    "path": [
+                                      "core",
+                                      "panic",
+                                      "unwind_safe",
+                                      "AssertUnwindSafe"
+                                    ],
+                                    "fields": [
+                                      {
+                                        "Call": {
+                                          "func": {
+                                            "GetTraitMethod": {
+                                              "trait_name": [
+                                                "core",
+                                                "default",
+                                                "Default"
+                                              ],
+                                              "self_ty": {
+                                                "type": "Var",
+                                                "name": "T"
+                                              },
+                                              "trait_tys": [],
+                                              "method_name": "default",
+                                              "generic_tys": []
+                                            }
+                                          },
+                                          "args": [],
+                                          "kind": "Closure"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "F"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "future",
+                          "future",
+                          "Future"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "F"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "future",
+                    "future",
+                    "Future"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "Output",
+                      "snippet": [
+                        "    type Output = F::Output;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "poll",
+                      "snippet": [
+                        "    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {",
+                        "        // SAFETY: pin projection. AssertUnwindSafe follows structural pinning.",
+                        "        let pinned_field = unsafe { Pin::map_unchecked_mut(self, |x| &mut x.0) };",
+                        "        F::poll(pinned_field, cx)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "pin",
+                                          "Pin"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&mut"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "core",
+                                                  "panic",
+                                                  "unwind_safe",
+                                                  "AssertUnwindSafe"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "type": "Var",
+                                                  "name": "F"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "cx",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "task",
+                                              "wake",
+                                              "Context"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "task",
+                                      "poll",
+                                      "Poll"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Associated"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "cx",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "cx"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Let": {
+                                                  "name": "pinned_field",
+                                                  "is_user": true,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetAssociatedFunction": {
+                                                                "ty": {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "core",
+                                                                      "pin",
+                                                                      "Pin"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": [
+                                                                    {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "&mut"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Application",
+                                                                          "func": {
+                                                                            "type": "Path",
+                                                                            "path": [
+                                                                              "core",
+                                                                              "panic",
+                                                                              "unwind_safe",
+                                                                              "AssertUnwindSafe"
+                                                                            ]
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": [
+                                                                            {
+                                                                              "type": "Var",
+                                                                              "name": "F"
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "func": "map_unchecked_mut",
+                                                                "generic_tys": [
+                                                                  {
+                                                                    "type": "Var",
+                                                                    "name": "F"
+                                                                  },
+                                                                  {
+                                                                    "type": "Function",
+                                                                    "args": [
+                                                                      {
+                                                                        "type": "Tuple",
+                                                                        "tys": [
+                                                                          {
+                                                                            "type": "Application",
+                                                                            "func": {
+                                                                              "type": "Path",
+                                                                              "path": [
+                                                                                "&mut"
+                                                                              ]
+                                                                            },
+                                                                            "consts": [],
+                                                                            "tys": [
+                                                                              {
+                                                                                "type": "Application",
+                                                                                "func": {
+                                                                                  "type": "Path",
+                                                                                  "path": [
+                                                                                    "core",
+                                                                                    "panic",
+                                                                                    "unwind_safe",
+                                                                                    "AssertUnwindSafe"
+                                                                                  ]
+                                                                                },
+                                                                                "consts": [],
+                                                                                "tys": [
+                                                                                  {
+                                                                                    "type": "Var",
+                                                                                    "name": "F"
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ],
+                                                                    "ret": {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "&mut"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "F"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Lambda": {
+                                                                  "args": [
+                                                                    [
+                                                                      "α0",
+                                                                      {
+                                                                        "type": "Application",
+                                                                        "func": {
+                                                                          "type": "Path",
+                                                                          "path": [
+                                                                            "&mut"
+                                                                          ]
+                                                                        },
+                                                                        "consts": [],
+                                                                        "tys": [
+                                                                          {
+                                                                            "type": "Application",
+                                                                            "func": {
+                                                                              "type": "Path",
+                                                                              "path": [
+                                                                                "core",
+                                                                                "panic",
+                                                                                "unwind_safe",
+                                                                                "AssertUnwindSafe"
+                                                                              ]
+                                                                            },
+                                                                            "consts": [],
+                                                                            "tys": [
+                                                                              {
+                                                                                "type": "Var",
+                                                                                "name": "F"
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  ],
+                                                                  "body": {
+                                                                    "Match": {
+                                                                      "scrutinee": {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.alloc"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "α0"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      },
+                                                                      "arms": [
+                                                                        {
+                                                                          "Lambda": {
+                                                                            "args": [
+                                                                              [
+                                                                                "γ",
+                                                                                null
+                                                                              ]
+                                                                            ],
+                                                                            "body": {
+                                                                              "Let": {
+                                                                                "name": "x",
+                                                                                "is_user": false,
+                                                                                "init": {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.copy"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "LocalVar": "γ"
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                },
+                                                                                "body": {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "Call": {
+                                                                                          "func": {
+                                                                                            "LocalVar": "M.read"
+                                                                                          },
+                                                                                          "args": [
+                                                                                            {
+                                                                                              "LocalVar": "x"
+                                                                                            }
+                                                                                          ],
+                                                                                          "kind": "Effectful"
+                                                                                        }
+                                                                                      },
+                                                                                      {
+                                                                                        "InternalString": "core::panic::unwind_safe::AssertUnwindSafe"
+                                                                                      },
+                                                                                      {
+                                                                                        "LocalVar": "0"
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            },
+                                                                            "is_for_match": true,
+                                                                            "is_internal": true
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "is_for_match": false,
+                                                                  "is_internal": false
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "future",
+                                                                  "future",
+                                                                  "Future"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "type": "Var",
+                                                                  "name": "F"
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "poll",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "pinned_field"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "cx"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/panic/unwind_safe.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "S"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "async_iter",
+                          "async_iter",
+                          "AsyncIterator"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "S"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "panic",
+                        "unwind_safe",
+                        "AssertUnwindSafe"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "S"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "async_iter",
+                    "async_iter",
+                    "AsyncIterator"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "Item",
+                      "snippet": [
+                        "    type Item = S::Item;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "poll_next",
+                      "snippet": [
+                        "    fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<S::Item>> {",
+                        "        // SAFETY: pin projection. AssertUnwindSafe follows structural pinning.",
+                        "        unsafe { self.map_unchecked_mut(|x| &mut x.0) }.poll_next(cx)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "pin",
+                                          "Pin"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&mut"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "core",
+                                                  "panic",
+                                                  "unwind_safe",
+                                                  "AssertUnwindSafe"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "type": "Var",
+                                                  "name": "S"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "cx",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "task",
+                                              "wake",
+                                              "Context"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "task",
+                                      "poll",
+                                      "Poll"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "option",
+                                          "Option"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Associated"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "cx",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "cx"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "async_iter",
+                                                  "async_iter",
+                                                  "AsyncIterator"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Var",
+                                                  "name": "S"
+                                                },
+                                                "trait_tys": [],
+                                                "method_name": "poll_next",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "pin",
+                                                            "Pin"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "type": "Application",
+                                                            "func": {
+                                                              "type": "Path",
+                                                              "path": [
+                                                                "&mut"
+                                                              ]
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "type": "Application",
+                                                                "func": {
+                                                                  "type": "Path",
+                                                                  "path": [
+                                                                    "core",
+                                                                    "panic",
+                                                                    "unwind_safe",
+                                                                    "AssertUnwindSafe"
+                                                                  ]
+                                                                },
+                                                                "consts": [],
+                                                                "tys": [
+                                                                  {
+                                                                    "type": "Var",
+                                                                    "name": "S"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      "func": "map_unchecked_mut",
+                                                      "generic_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "S"
+                                                        },
+                                                        {
+                                                          "type": "Function",
+                                                          "args": [
+                                                            {
+                                                              "type": "Tuple",
+                                                              "tys": [
+                                                                {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "&mut"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": [
+                                                                    {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "core",
+                                                                          "panic",
+                                                                          "unwind_safe",
+                                                                          "AssertUnwindSafe"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "S"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ],
+                                                          "ret": {
+                                                            "type": "Application",
+                                                            "func": {
+                                                              "type": "Path",
+                                                              "path": [
+                                                                "&mut"
+                                                              ]
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "type": "Var",
+                                                                "name": "S"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Lambda": {
+                                                        "args": [
+                                                          [
+                                                            "α0",
+                                                            {
+                                                              "type": "Application",
+                                                              "func": {
+                                                                "type": "Path",
+                                                                "path": [
+                                                                  "&mut"
+                                                                ]
+                                                              },
+                                                              "consts": [],
+                                                              "tys": [
+                                                                {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "core",
+                                                                      "panic",
+                                                                      "unwind_safe",
+                                                                      "AssertUnwindSafe"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": [
+                                                                    {
+                                                                      "type": "Var",
+                                                                      "name": "S"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        ],
+                                                        "body": {
+                                                          "Match": {
+                                                            "scrutinee": {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.alloc"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "α0"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            "arms": [
+                                                              {
+                                                                "Lambda": {
+                                                                  "args": [
+                                                                    [
+                                                                      "γ",
+                                                                      null
+                                                                    ]
+                                                                  ],
+                                                                  "body": {
+                                                                    "Let": {
+                                                                      "name": "x",
+                                                                      "is_user": false,
+                                                                      "init": {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.copy"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "γ"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      },
+                                                                      "body": {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "x"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "InternalString": "core::panic::unwind_safe::AssertUnwindSafe"
+                                                                            },
+                                                                            {
+                                                                              "LocalVar": "0"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  "is_for_match": true,
+                                                                  "is_internal": true
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        "is_for_match": false,
+                                                        "is_internal": false
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "cx"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "size_hint",
+                      "snippet": [
+                        "    fn size_hint(&self) -> (usize, Option<usize>) {",
+                        "        self.0.size_hint()",
+                        "    }"
+                      ],
+                      "kind": {
+                        "OptionalValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "panic",
+                                              "unwind_safe",
+                                              "AssertUnwindSafe"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "S"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Tuple",
+                                  "tys": [
+                                    {
+                                      "type": "Path",
+                                      "path": [
+                                        "usize"
+                                      ]
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "option",
+                                          "Option"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Path",
+                                          "path": [
+                                            "usize"
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "GetTraitMethod": {
+                                            "trait_name": [
+                                              "core",
+                                              "async_iter",
+                                              "async_iter",
+                                              "AsyncIterator"
+                                            ],
+                                            "self_ty": {
+                                              "type": "Var",
+                                              "name": "S"
+                                            },
+                                            "trait_tys": [],
+                                            "method_name": "size_hint",
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "LocalVar": "self"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                {
+                                                  "InternalString": "core::panic::unwind_safe::AssertUnwindSafe"
+                                                },
+                                                {
+                                                  "LocalVar": "0"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]
