@@ -1,0 +1,623 @@
+[
+  {
+    "file_name": "crates/move-core-types/src/move_resource.rs",
+    "item": {
+      "type": "Module",
+      "name": "move_resource",
+      "body": [
+        {
+          "file_name": "crates/move-core-types/src/move_resource.rs",
+          "item": {
+            "type": "Trait",
+            "name": "MoveStructType",
+            "path": [
+              "move_core_types",
+              "move_resource",
+              "MoveStructType"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "value_ADDRESS",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "move_core_types",
+                          "account_address",
+                          "AccountAddress"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    }
+                  }
+                }
+              ],
+              [
+                "value_MODULE_NAME",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "&"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "move_core_types",
+                              "identifier",
+                              "IdentStr"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              [
+                "value_STRUCT_NAME",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "&"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "move_core_types",
+                              "identifier",
+                              "IdentStr"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              [
+                "module_identifier",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "move_core_types",
+                            "identifier",
+                            "Identifier"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetTraitMethod": {
+                              "trait_name": [
+                                "alloc",
+                                "borrow",
+                                "ToOwned"
+                              ],
+                              "self_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "identifier",
+                                    "IdentStr"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              "trait_tys": [],
+                              "method_name": "to_owned",
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "move_core_types",
+                                      "move_resource",
+                                      "MoveStructType",
+                                      "MODULE_NAME"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              [
+                "struct_identifier",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "move_core_types",
+                            "identifier",
+                            "Identifier"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetTraitMethod": {
+                              "trait_name": [
+                                "alloc",
+                                "borrow",
+                                "ToOwned"
+                              ],
+                              "self_ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "identifier",
+                                    "IdentStr"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              "trait_tys": [],
+                              "method_name": "to_owned",
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "move_core_types",
+                                      "move_resource",
+                                      "MoveStructType",
+                                      "STRUCT_NAME"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              [
+                "type_params",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "alloc",
+                            "vec",
+                            "Vec"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "move_core_types",
+                                "language_storage",
+                                "TypeTag"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "alloc",
+                                "alloc",
+                                "Global"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetAssociatedFunction": {
+                              "ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "alloc",
+                                    "vec",
+                                    "Vec"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "language_storage",
+                                        "TypeTag"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  },
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "alloc",
+                                        "alloc",
+                                        "Global"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              "func": "new",
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              [
+                "struct_tag",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "move_core_types",
+                            "language_storage",
+                            "StructTag"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "StructStruct": {
+                          "path": [
+                            "move_core_types",
+                            "language_storage",
+                            "StructTag"
+                          ],
+                          "fields": [
+                            [
+                              "address",
+                              {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "GetConst": [
+                                        "move_core_types",
+                                        "move_resource",
+                                        "MoveStructType",
+                                        "ADDRESS"
+                                      ]
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            ],
+                            [
+                              "name",
+                              {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "move_core_types",
+                                        "move_resource",
+                                        "MoveStructType"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "Self"
+                                      },
+                                      "trait_tys": [],
+                                      "method_name": "struct_identifier",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [],
+                                  "kind": "Closure"
+                                }
+                              }
+                            ],
+                            [
+                              "module",
+                              {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "move_core_types",
+                                        "move_resource",
+                                        "MoveStructType"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "Self"
+                                      },
+                                      "trait_tys": [],
+                                      "method_name": "module_identifier",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [],
+                                  "kind": "Closure"
+                                }
+                              }
+                            ],
+                            [
+                              "type_params",
+                              {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "move_core_types",
+                                        "move_resource",
+                                        "MoveStructType"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "Self"
+                                      },
+                                      "trait_tys": [],
+                                      "method_name": "type_params",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [],
+                                  "kind": "Closure"
+                                }
+                              }
+                            ]
+                          ],
+                          "base": null
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/move_resource.rs",
+          "item": {
+            "type": "Trait",
+            "name": "MoveResource",
+            "path": [
+              "move_core_types",
+              "move_resource",
+              "MoveResource"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "resource_path",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "alloc",
+                            "vec",
+                            "Vec"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u8"
+                            ]
+                          },
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "alloc",
+                                "alloc",
+                                "Global"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetAssociatedFunction": {
+                              "ty": {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "language_storage",
+                                    "StructTag"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              "func": "access_vector",
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.alloc"
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "GetTraitMethod": {
+                                          "trait_name": [
+                                            "move_core_types",
+                                            "move_resource",
+                                            "MoveStructType"
+                                          ],
+                                          "self_ty": {
+                                            "type": "Var",
+                                            "name": "Self"
+                                          },
+                                          "trait_tys": [],
+                                          "method_name": "struct_tag",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  }
+]
