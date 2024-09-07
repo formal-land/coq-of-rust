@@ -34,11 +34,15 @@ impl Callbacks for ToCoq {
         compiler: &Compiler,
         queries: &'tcx Queries<'tcx>,
     ) -> Compilation {
-        let axiomatize = self.opts.axiomatize;
+        let crate::options::Options {
+            axiomatize,
+            with_json,
+            ..
+        } = self.opts;
 
         queries.global_ctxt().unwrap();
 
-        let (crate_name, coq_output) = queries.global_ctxt().unwrap().enter(|ctxt| {
+        let (crate_name, translation) = queries.global_ctxt().unwrap().enter(|ctxt| {
             let current_crate_name = ctxt.crate_name(rustc_hir::def_id::LOCAL_CRATE);
             let current_crate_name_string = current_crate_name.to_string();
 
@@ -46,11 +50,16 @@ impl Callbacks for ToCoq {
 
             (
                 current_crate_name_string.clone(),
-                top_level_to_coq(&ctxt, TopLevelOptions { axiomatize }),
+                translate_top_level(&ctxt, TopLevelOptions { axiomatize }),
             )
         });
 
-        for (file_name, coq_output) in coq_output.clone() {
+        let mut file = File::create(format!("{crate_name}.v")).unwrap();
+        let index_content = get_index_coq_file_content(translation.keys().cloned().collect());
+
+        file.write_all(index_content.as_bytes()).unwrap();
+
+        for (file_name, (coq_translation, json_translation)) in translation {
             let coq_file_name = file_name.replace(".rs", ".v");
             println!("Writing to {coq_file_name:}");
 
@@ -64,13 +73,14 @@ impl Callbacks for ToCoq {
                 continue;
             }
 
-            file.unwrap().write_all(coq_output.as_bytes()).unwrap();
+            file.unwrap().write_all(coq_translation.as_bytes()).unwrap();
+
+            if with_json {
+                let json_file_name = file_name.replace(".rs", ".json");
+                let mut file = File::create(json_file_name).unwrap();
+                file.write_all(json_translation.as_bytes()).unwrap();
+            }
         }
-
-        let mut file = File::create(format!("{crate_name}.v")).unwrap();
-        let index_content = get_index_coq_file_content(coq_output.keys().cloned().collect());
-
-        file.write_all(index_content.as_bytes()).unwrap();
 
         compiler.sess.dcx().abort_if_errors();
 

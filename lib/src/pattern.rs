@@ -2,11 +2,12 @@ use crate::env::emit_warning_with_note;
 use crate::env::Env;
 use crate::expression::*;
 use crate::path::*;
+use serde::Serialize;
 use std::rc::Rc;
 use std::vec;
 
-/// The enum [Pat] represents the patterns which can be matched
-#[derive(Debug)]
+/// This enum represents the patterns which can be matched
+#[derive(Debug, Serialize)]
 pub(crate) enum Pattern {
     Wild,
     Binding {

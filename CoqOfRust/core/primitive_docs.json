@@ -1,0 +1,60 @@
+[
+  {
+    "file_name": "core/src/primitive_docs.rs",
+    "item": {
+      "type": "Impl",
+      "generic_consts": [],
+      "generic_tys": [],
+      "self_ty": {
+        "type": "Tuple",
+        "tys": []
+      },
+      "items": []
+    }
+  },
+  {
+    "file_name": "core/src/primitive_docs.rs",
+    "item": {
+      "type": "Impl",
+      "generic_consts": [],
+      "generic_tys": [
+        "T"
+      ],
+      "self_ty": {
+        "type": "Tuple",
+        "tys": [
+          {
+            "type": "Var",
+            "name": "T"
+          }
+        ]
+      },
+      "items": []
+    }
+  },
+  {
+    "file_name": "core/src/primitive_docs.rs",
+    "item": {
+      "type": "Impl",
+      "generic_consts": [],
+      "generic_tys": [
+        "Ret",
+        "T"
+      ],
+      "self_ty": {
+        "type": "Function",
+        "args": [
+          {
+            "type": "Var",
+            "name": "T"
+          }
+        ],
+        "ret": {
+          "type": "Var",
+          "name": "Ret"
+        }
+      },
+      "items": []
+    }
+  }
+]

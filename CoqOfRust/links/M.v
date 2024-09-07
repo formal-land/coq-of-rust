@@ -45,6 +45,55 @@ Module Integer.
   }.
 End Integer.
 
+(** ** Convenient module names for the integers. *)
+Module i8.
+  Definition t : Set := Integer.t IntegerKind.I8.
+End i8.
+
+Module i16.
+  Definition t : Set := Integer.t IntegerKind.I16.
+End i16.
+
+Module i32.
+  Definition t : Set := Integer.t IntegerKind.I32.
+End i32.
+
+Module i64.
+  Definition t : Set := Integer.t IntegerKind.I64.
+End i64.
+
+Module i128.
+  Definition t : Set := Integer.t IntegerKind.I128.
+End i128.
+
+Module isize.
+  Definition t : Set := Integer.t IntegerKind.Isize.
+End isize.
+
+Module u8.
+  Definition t : Set := Integer.t IntegerKind.U8.
+End u8.
+
+Module u16.
+  Definition t : Set := Integer.t IntegerKind.U16.
+End u16.
+
+Module u32.
+  Definition t : Set := Integer.t IntegerKind.U32.
+End u32.
+
+Module u64.
+  Definition t : Set := Integer.t IntegerKind.U64.
+End u64.
+
+Module u128.
+  Definition t : Set := Integer.t IntegerKind.U128.
+End u128.
+
+Module usize.
+  Definition t : Set := Integer.t IntegerKind.Usize.
+End usize.
+
 Module Char.
   Inductive t : Set :=
   | Make (c : Z).

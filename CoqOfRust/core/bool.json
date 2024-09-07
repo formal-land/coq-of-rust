@@ -1,0 +1,566 @@
+[
+  {
+    "file_name": "core/src/bool.rs",
+    "item": {
+      "type": "Module",
+      "name": "bool",
+      "body": [
+        {
+          "file_name": "core/src/bool.rs",
+          "item": {
+            "type": "Impl",
+            "generic_consts": [],
+            "generic_tys": [],
+            "self_ty": {
+              "type": "Path",
+              "path": [
+                "bool"
+              ]
+            },
+            "items": [
+              {
+                "name": "then_some",
+                "snippet": [
+                  "    pub fn then_some<T>(self, t: T) -> Option<T> {",
+                  "        if self { Some(t) } else { None }",
+                  "    }"
+                ],
+                "kind": {
+                  "Definition": {
+                    "definition": {
+                      "const_params": [],
+                      "ty_params": [
+                        "T"
+                      ],
+                      "signature_and_body": {
+                        "args": [
+                          [
+                            "self",
+                            {
+                              "type": "Path",
+                              "path": [
+                                "bool"
+                              ]
+                            },
+                            null
+                          ],
+                          [
+                            "t",
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            },
+                            null
+                          ]
+                        ],
+                        "ret_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "option",
+                              "Option"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "Let": {
+                            "name": "self",
+                            "is_user": false,
+                            "init": {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.alloc"
+                                },
+                                "args": [
+                                  {
+                                    "LocalVar": "self"
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            },
+                            "body": {
+                              "Let": {
+                                "name": "t",
+                                "is_user": false,
+                                "init": {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.alloc"
+                                    },
+                                    "args": [
+                                      {
+                                        "LocalVar": "t"
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                },
+                                "body": {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.read"
+                                    },
+                                    "args": [
+                                      {
+                                        "Match": {
+                                          "scrutinee": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Tuple": {
+                                                    "elements": []
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "arms": [
+                                            {
+                                              "Lambda": {
+                                                "args": [
+                                                  [
+                                                    "γ",
+                                                    null
+                                                  ]
+                                                ],
+                                                "body": {
+                                                  "Let": {
+                                                    "name": "γ",
+                                                    "is_user": false,
+                                                    "init": {
+                                                      "Use": {
+                                                        "LocalVar": "self"
+                                                      }
+                                                    },
+                                                    "body": {
+                                                      "Let": {
+                                                        "name": null,
+                                                        "is_user": false,
+                                                        "init": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.is_constant_or_break_match"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "γ"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Literal": {
+                                                                  "Bool": true
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        "body": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.alloc"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "StructTuple": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "option",
+                                                                    "Option",
+                                                                    "Some"
+                                                                  ],
+                                                                  "fields": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "t"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "is_for_match": true,
+                                                "is_internal": true
+                                              }
+                                            },
+                                            {
+                                              "Lambda": {
+                                                "args": [
+                                                  [
+                                                    "γ",
+                                                    null
+                                                  ]
+                                                ],
+                                                "body": {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.alloc"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "StructTuple": {
+                                                          "path": [
+                                                            "core",
+                                                            "option",
+                                                            "Option",
+                                                            "None"
+                                                          ],
+                                                          "fields": []
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                "is_for_match": true,
+                                                "is_internal": true
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "then_",
+                "snippet": [
+                  "    pub fn then<T, F: FnOnce() -> T>(self, f: F) -> Option<T> {",
+                  "        if self { Some(f()) } else { None }",
+                  "    }"
+                ],
+                "kind": {
+                  "Definition": {
+                    "definition": {
+                      "const_params": [],
+                      "ty_params": [
+                        "T",
+                        "F"
+                      ],
+                      "signature_and_body": {
+                        "args": [
+                          [
+                            "self",
+                            {
+                              "type": "Path",
+                              "path": [
+                                "bool"
+                              ]
+                            },
+                            null
+                          ],
+                          [
+                            "f",
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            },
+                            null
+                          ]
+                        ],
+                        "ret_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "option",
+                              "Option"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "Let": {
+                            "name": "self",
+                            "is_user": false,
+                            "init": {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.alloc"
+                                },
+                                "args": [
+                                  {
+                                    "LocalVar": "self"
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            },
+                            "body": {
+                              "Let": {
+                                "name": "f",
+                                "is_user": false,
+                                "init": {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.alloc"
+                                    },
+                                    "args": [
+                                      {
+                                        "LocalVar": "f"
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                },
+                                "body": {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.read"
+                                    },
+                                    "args": [
+                                      {
+                                        "Match": {
+                                          "scrutinee": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Tuple": {
+                                                    "elements": []
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "arms": [
+                                            {
+                                              "Lambda": {
+                                                "args": [
+                                                  [
+                                                    "γ",
+                                                    null
+                                                  ]
+                                                ],
+                                                "body": {
+                                                  "Let": {
+                                                    "name": "γ",
+                                                    "is_user": false,
+                                                    "init": {
+                                                      "Use": {
+                                                        "LocalVar": "self"
+                                                      }
+                                                    },
+                                                    "body": {
+                                                      "Let": {
+                                                        "name": null,
+                                                        "is_user": false,
+                                                        "init": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.is_constant_or_break_match"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "γ"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Literal": {
+                                                                  "Bool": true
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        "body": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.alloc"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "StructTuple": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "option",
+                                                                    "Option",
+                                                                    "Some"
+                                                                  ],
+                                                                  "fields": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "GetTraitMethod": {
+                                                                            "trait_name": [
+                                                                              "core",
+                                                                              "ops",
+                                                                              "function",
+                                                                              "FnOnce"
+                                                                            ],
+                                                                            "self_ty": {
+                                                                              "type": "Var",
+                                                                              "name": "F"
+                                                                            },
+                                                                            "trait_tys": [
+                                                                              {
+                                                                                "type": "Tuple",
+                                                                                "tys": []
+                                                                              }
+                                                                            ],
+                                                                            "method_name": "call_once",
+                                                                            "generic_tys": []
+                                                                          }
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "f"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          },
+                                                                          {
+                                                                            "Tuple": {
+                                                                              "elements": []
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Closure"
+                                                                      }
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "is_for_match": true,
+                                                "is_internal": true
+                                              }
+                                            },
+                                            {
+                                              "Lambda": {
+                                                "args": [
+                                                  [
+                                                    "γ",
+                                                    null
+                                                  ]
+                                                ],
+                                                "body": {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.alloc"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "StructTuple": {
+                                                          "path": [
+                                                            "core",
+                                                            "option",
+                                                            "Option",
+                                                            "None"
+                                                          ],
+                                                          "fields": []
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                "is_for_match": true,
+                                                "is_internal": true
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

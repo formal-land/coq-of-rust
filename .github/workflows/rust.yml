@@ -63,8 +63,8 @@ jobs:
             cp ../../../../rust-toolchain ./
             cargo build
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ../../../..
           endGroup
           startGroup "Translate the core library"
@@ -72,8 +72,8 @@ jobs:
             cp ../../../../rust-toolchain ./
             cargo build
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ../../../..
           endGroup
           startGroup "Translate Revm"

@@ -3,11 +3,15 @@ use crate::env::*;
 use crate::expression::*;
 use crate::path::*;
 use rustc_hir::{FnDecl, FnRetTy, Ty};
+use serde::Serialize;
 use std::rc::Rc;
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Serialize)]
+#[serde(tag = "type")]
 pub(crate) enum CoqType {
-    Var(String),
+    Var {
+        name: String,
+    },
     Path {
         path: Rc<Path>,
     },
@@ -22,16 +26,22 @@ pub(crate) enum CoqType {
         args: Vec<Rc<CoqType>>,
         ret: Rc<CoqType>,
     },
-    Tuple(Vec<Rc<CoqType>>),
+    Tuple {
+        tys: Vec<Rc<CoqType>>,
+    },
     // TODO: add the type parameters for the traits
-    Dyn(Vec<Rc<Path>>),
+    Dyn {
+        traits: Vec<Rc<Path>>,
+    },
     Associated,
     Infer,
 }
 
 impl CoqType {
     pub(crate) fn var(name: &str) -> Rc<CoqType> {
-        Rc::new(CoqType::Var(name.to_string()))
+        Rc::new(CoqType::Var {
+            name: name.to_string(),
+        })
     }
 
     pub(crate) fn path(segments: &[&str]) -> Rc<CoqType> {
@@ -138,7 +148,7 @@ pub(crate) fn compile_path_ty_params<'a>(
 impl CoqType {
     pub(crate) fn to_coq(&self) -> coq::Expression {
         match self {
-            CoqType::Var(name) => coq::Expression::just_name(name),
+            CoqType::Var { name } => coq::Expression::just_name(name),
             CoqType::Path { path } => coq::Expression::just_name("Ty.path")
                 .apply(&coq::Expression::String(path.to_string())),
             CoqType::Application { func, consts, tys } => {
@@ -163,12 +173,12 @@ impl CoqType {
                     },
                     ret.to_coq(),
                 ]),
-            CoqType::Tuple(tys) => {
+            CoqType::Tuple { tys } => {
                 coq::Expression::just_name("Ty.tuple").apply(&coq::Expression::List {
                     exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
                 })
             }
-            CoqType::Dyn(traits) => {
+            CoqType::Dyn { traits } => {
                 coq::Expression::just_name("Ty.dyn").apply(&coq::Expression::List {
                     exprs: traits
                         .iter()
@@ -191,7 +201,7 @@ impl CoqType {
     /// merge multiple modules with the same name.
     pub(crate) fn to_name(&self) -> String {
         match self {
-            CoqType::Var(name) => name.clone(),
+            CoqType::Var { name } => name.clone(),
             CoqType::Path { path, .. } => {
                 path.to_name().replace('&', "ref_").replace('*', "pointer_")
             }
@@ -216,7 +226,7 @@ impl CoqType {
                 name.push_str(&ret.to_name());
                 name
             }
-            CoqType::Tuple(tys) => {
+            CoqType::Tuple { tys } => {
                 let mut name = "Tuple_".to_string();
                 for ty in tys {
                     name.push_str(&ty.to_name());
@@ -224,11 +234,11 @@ impl CoqType {
                 }
                 name
             }
-            CoqType::Dyn(paths) => {
+            CoqType::Dyn { traits } => {
                 let mut name = "Dyn".to_string();
-                for path in paths {
+                for trait_ in traits {
                     name.push('_');
-                    name.push_str(&path.to_name());
+                    name.push_str(&trait_.to_name());
                 }
                 name
             }
