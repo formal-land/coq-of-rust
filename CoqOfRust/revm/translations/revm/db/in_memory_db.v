@@ -38,7 +38,7 @@ Module db.
                 [
                   Ty.apply
                     (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer 32 ]
+                    [ Value.Integer IntegerKind.Usize 32 ]
                     [];
                   Ty.path "revm_primitives::bytecode::Bytecode";
                   Ty.path "std::hash::random::RandomState"
@@ -59,10 +59,13 @@ Module db.
                 (Ty.path "std::collections::hash::map::HashMap")
                 []
                 [
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [];
                   Ty.apply
                     (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer 32 ]
+                    [ Value.Integer IntegerKind.Usize 32 ]
                     [];
                   Ty.path "std::hash::random::RandomState"
                 ]);
@@ -125,7 +128,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -185,7 +188,7 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
@@ -238,11 +241,12 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [];
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -270,7 +274,7 @@ Module db.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -309,7 +313,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -356,7 +360,7 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
@@ -377,7 +381,7 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
@@ -411,7 +415,7 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
@@ -485,11 +489,14 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 32 ]
+                                [ Value.Integer IntegerKind.Usize 32 ]
                                 [];
                               Ty.path "std::hash::random::RandomState"
                             ],
@@ -502,7 +509,7 @@ Module db.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -569,15 +576,16 @@ Module db.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "revm_primitives::bytecode::Bytecode",
                                             "is_empty",
                                             []
                                           |),
                                           [ M.read (| code |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -599,13 +607,13 @@ Module db.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloy_primitives::bits::fixed::FixedBytes")
-                                                      [ Value.Integer 32 ]
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
                                                       [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloy_primitives::bits::fixed::FixedBytes")
-                                                        [ Value.Integer 32 ]
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
                                                         []
                                                     ],
                                                     "eq",
@@ -658,7 +666,7 @@ Module db.
                                           [
                                             Ty.apply
                                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer 32 ]
+                                              [ Value.Integer IntegerKind.Usize 32 ]
                                               [];
                                             Ty.path "revm_primitives::bytecode::Bytecode"
                                           ],
@@ -679,7 +687,7 @@ Module db.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloy_primitives::bits::fixed::FixedBytes")
-                                                  [ Value.Integer 32 ]
+                                                  [ Value.Integer IntegerKind.Usize 32 ]
                                                   [];
                                                 Ty.path "revm_primitives::bytecode::Bytecode";
                                                 Ty.path "std::hash::random::RandomState"
@@ -707,25 +715,26 @@ Module db.
                                             ltac:(M.monadic
                                               match γ with
                                               | [ α0 ] =>
-                                                M.match_operator (|
-                                                  M.alloc (| α0 |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::clone::Clone",
-                                                            Ty.path
-                                                              "revm_primitives::bytecode::Bytecode",
-                                                            [],
-                                                            "clone",
-                                                            []
-                                                          |),
-                                                          [ M.read (| code |) ]
-                                                        |)))
-                                                  ]
-                                                |)
-                                              | _ => M.impossible (||)
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::clone::Clone",
+                                                              Ty.path
+                                                                "revm_primitives::bytecode::Bytecode",
+                                                              [],
+                                                              "clone",
+                                                              []
+                                                            |),
+                                                            [ M.read (| code |) ]
+                                                          |)))
+                                                    ]
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       ]
                                     |)
@@ -750,12 +759,12 @@ Module db.
                                 "core::cmp::PartialEq",
                                 Ty.apply
                                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                  [ Value.Integer 32 ]
+                                  [ Value.Integer IntegerKind.Usize 32 ]
                                   [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ Value.Integer 32 ]
+                                    [ Value.Integer IntegerKind.Usize 32 ]
                                     []
                                 ],
                                 "eq",
@@ -788,7 +797,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_insert_contract :
@@ -873,7 +882,7 @@ Module db.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_insert_account_info :
@@ -1138,28 +1147,29 @@ Module db.
                                                 ltac:(M.monadic
                                                   match γ with
                                                   | [ α0 ] =>
-                                                    M.match_operator (|
-                                                      M.alloc (| α0 |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let info := M.copy (| γ |) in
-                                                            M.struct_record_update
-                                                              (M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::default::Default",
-                                                                  Ty.path
-                                                                    "revm::db::in_memory_db::DbAccount",
-                                                                  [],
-                                                                  "default",
+                                                    ltac:(M.monadic
+                                                      (M.match_operator (|
+                                                        M.alloc (| α0 |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let info := M.copy (| γ |) in
+                                                              M.struct_record_update
+                                                                (M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::default::Default",
+                                                                    Ty.path
+                                                                      "revm::db::in_memory_db::DbAccount",
+                                                                    [],
+                                                                    "default",
+                                                                    []
+                                                                  |),
                                                                   []
-                                                                |),
-                                                                []
-                                                              |))
-                                                              [ ("info", M.read (| info |)) ]))
-                                                      ]
-                                                    |)
-                                                  | _ => M.impossible (||)
+                                                                |))
+                                                                [ ("info", M.read (| info |)) ]))
+                                                        ]
+                                                      |)))
+                                                  | _ => M.impossible "wrong number of arguments"
                                                   end))
                                           ]
                                         |);
@@ -1178,7 +1188,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load_account :
@@ -1306,11 +1316,17 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.path "std::hash::random::RandomState"
                             ],
@@ -1331,7 +1347,7 @@ Module db.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_insert_account_storage :
@@ -1473,11 +1489,17 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 []
                             ],
                           [],
@@ -1489,11 +1511,17 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "std::hash::random::RandomState"
                               ]
@@ -1509,11 +1537,17 @@ Module db.
                                 [
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.path "std::hash::random::RandomState"
                                 ],
@@ -1529,7 +1563,7 @@ Module db.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_replace_account_storage :
@@ -1666,8 +1700,8 @@ Module db.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (M.call_closure (|
+                                                      UnOp.not (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "revm_primitives::state::Account",
@@ -1675,7 +1709,8 @@ Module db.
                                                             []
                                                           |),
                                                           [ account ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -1773,15 +1808,23 @@ Module db.
                                                                   Ty.apply
                                                                     (Ty.path "ruint::Uint")
                                                                     [
-                                                                      Value.Integer 256;
-                                                                      Value.Integer 4
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        256;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4
                                                                     ]
                                                                     [];
                                                                   Ty.apply
                                                                     (Ty.path "ruint::Uint")
                                                                     [
-                                                                      Value.Integer 256;
-                                                                      Value.Integer 4
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        256;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4
                                                                     ]
                                                                     [];
                                                                   Ty.path
@@ -1956,15 +1999,23 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path "ruint::Uint")
                                                                   [
-                                                                    Value.Integer 256;
-                                                                    Value.Integer 4
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
                                                                   ]
                                                                   [];
                                                                 Ty.apply
                                                                   (Ty.path "ruint::Uint")
                                                                   [
-                                                                    Value.Integer 256;
-                                                                    Value.Integer 4
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
                                                                   ]
                                                                   [];
                                                                 Ty.path
@@ -2047,11 +2098,17 @@ Module db.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                     [];
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                     [];
                                                   Ty.path "std::hash::random::RandomState"
                                                 ],
@@ -2060,11 +2117,17 @@ Module db.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "ruint::Uint")
-                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
                                                       [];
                                                     Ty.apply
                                                       (Ty.path "ruint::Uint")
-                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
                                                       []
                                                   ]
                                               ],
@@ -2081,7 +2144,10 @@ Module db.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           [];
                                                         Ty.path
                                                           "revm_primitives::state::StorageSlot"
@@ -2095,8 +2161,12 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path "ruint::Uint")
                                                                   [
-                                                                    Value.Integer 256;
-                                                                    Value.Integer 4
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
                                                                   ]
                                                                   [];
                                                                 Ty.path
@@ -2108,11 +2178,17 @@ Module db.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             [];
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             []
                                                         ])
                                                   ]
@@ -2134,7 +2210,10 @@ Module db.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [];
                                                       Ty.path "revm_primitives::state::StorageSlot"
                                                     ],
@@ -2145,11 +2224,17 @@ Module db.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           [];
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           []
                                                       ];
                                                     Ty.function
@@ -2161,8 +2246,12 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path "ruint::Uint")
                                                                   [
-                                                                    Value.Integer 256;
-                                                                    Value.Integer 4
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
                                                                   ]
                                                                   [];
                                                                 Ty.path
@@ -2174,11 +2263,17 @@ Module db.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             [];
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             []
                                                         ])
                                                   ]
@@ -2194,7 +2289,10 @@ Module db.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             [];
                                                           Ty.path
                                                             "revm_primitives::state::StorageSlot";
@@ -2219,39 +2317,42 @@ Module db.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [ α0 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_tuple_field (|
-                                                                      γ,
-                                                                      0
-                                                                    |) in
-                                                                  let γ0_1 :=
-                                                                    M.SubPointer.get_tuple_field (|
-                                                                      γ,
-                                                                      1
-                                                                    |) in
-                                                                  let key := M.copy (| γ0_0 |) in
-                                                                  let value := M.copy (| γ0_1 |) in
-                                                                  Value.Tuple
-                                                                    [
-                                                                      M.read (| key |);
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "revm_primitives::state::StorageSlot",
-                                                                          "present_value",
-                                                                          []
-                                                                        |),
-                                                                        [ value ]
-                                                                      |)
-                                                                    ]))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        γ,
+                                                                        0
+                                                                      |) in
+                                                                    let γ0_1 :=
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        γ,
+                                                                        1
+                                                                      |) in
+                                                                    let key := M.copy (| γ0_0 |) in
+                                                                    let value :=
+                                                                      M.copy (| γ0_1 |) in
+                                                                    Value.Tuple
+                                                                      [
+                                                                        M.read (| key |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "revm_primitives::state::StorageSlot",
+                                                                            "present_value",
+                                                                            []
+                                                                          |),
+                                                                          [ value ]
+                                                                        |)
+                                                                      ]))
+                                                              ]
+                                                            |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 ]
                                               |)
@@ -2266,7 +2367,7 @@ Module db.
                   ]
                 |))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2535,28 +2636,29 @@ Module db.
                                                 ltac:(M.monadic
                                                   match γ with
                                                   | [ α0 ] =>
-                                                    M.match_operator (|
-                                                      M.alloc (| α0 |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let info := M.copy (| γ |) in
-                                                            M.struct_record_update
-                                                              (M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::default::Default",
-                                                                  Ty.path
-                                                                    "revm::db::in_memory_db::DbAccount",
-                                                                  [],
-                                                                  "default",
+                                                    ltac:(M.monadic
+                                                      (M.match_operator (|
+                                                        M.alloc (| α0 |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let info := M.copy (| γ |) in
+                                                              M.struct_record_update
+                                                                (M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::default::Default",
+                                                                    Ty.path
+                                                                      "revm::db::in_memory_db::DbAccount",
+                                                                    [],
+                                                                    "default",
+                                                                    []
+                                                                  |),
                                                                   []
-                                                                |),
-                                                                []
-                                                              |))
-                                                              [ ("info", M.read (| info |)) ]))
-                                                      ]
-                                                    |)
-                                                  | _ => M.impossible (||)
+                                                                |))
+                                                                [ ("info", M.read (| info |)) ]))
+                                                        ]
+                                                      |)))
+                                                  | _ => M.impossible "wrong number of arguments"
                                                   end))
                                           ]
                                         |);
@@ -2589,7 +2691,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2628,7 +2730,7 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 32 ]
+                                [ Value.Integer IntegerKind.Usize 32 ]
                                 [];
                               Ty.path "revm_primitives::bytecode::Bytecode";
                               Ty.path "std::hash::random::RandomState"
@@ -2677,7 +2779,7 @@ Module db.
                                           [
                                             Ty.apply
                                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer 32 ]
+                                              [ Value.Integer IntegerKind.Usize 32 ]
                                               [];
                                             Ty.path "revm_primitives::bytecode::Bytecode"
                                           ],
@@ -2720,7 +2822,7 @@ Module db.
                                           [
                                             Ty.apply
                                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer 32 ]
+                                              [ Value.Integer IntegerKind.Usize 32 ]
                                               [];
                                             Ty.path "revm_primitives::bytecode::Bytecode"
                                           ],
@@ -2834,7 +2936,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2948,11 +3050,17 @@ Module db.
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [];
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [];
                                       Ty.path "std::hash::random::RandomState"
                                     ],
@@ -2993,11 +3101,17 @@ Module db.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                     [];
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                     []
                                                 ],
                                               "get",
@@ -3057,8 +3171,12 @@ Module db.
                                                           (fun γ =>
                                                             ltac:(M.monadic
                                                               match γ with
-                                                              | [] => M.alloc (| Value.Bool true |)
-                                                              | _ => M.impossible (||)
+                                                              | [] =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (| Value.Bool true |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       |)));
                                                   fun γ =>
@@ -3091,7 +3209,10 @@ Module db.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             [];
                                                           Ty.associated
                                                         ],
@@ -3145,8 +3266,12 @@ Module db.
                                                                       Ty.apply
                                                                         (Ty.path "ruint::Uint")
                                                                         [
-                                                                          Value.Integer 256;
-                                                                          Value.Integer 4
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            256;
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            4
                                                                         ]
                                                                         [];
                                                                       Ty.associated
@@ -3195,11 +3320,17 @@ Module db.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [];
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         []
                                                     ],
                                                   "insert",
@@ -3291,7 +3422,10 @@ Module db.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [];
                                                       Ty.associated
                                                     ],
@@ -3365,7 +3499,10 @@ Module db.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "ruint::Uint")
-                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
                                                       [];
                                                     Ty.associated
                                                   ],
@@ -3419,8 +3556,12 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path "ruint::Uint")
                                                                   [
-                                                                    Value.Integer 256;
-                                                                    Value.Integer 4
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
                                                                   ]
                                                                   [];
                                                                 Ty.associated
@@ -3483,11 +3624,17 @@ Module db.
                                               [
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   [];
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   [];
                                                 Ty.path "std::hash::random::RandomState"
                                               ],
@@ -3566,7 +3713,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3606,11 +3753,14 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 32 ]
+                                [ Value.Integer IntegerKind.Usize 32 ]
                                 [];
                               Ty.path "std::hash::random::RandomState"
                             ],
@@ -3650,11 +3800,14 @@ Module db.
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             [];
                                           Ty.apply
                                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                            [ Value.Integer 32 ]
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             []
                                         ],
                                       "get",
@@ -3687,7 +3840,7 @@ Module db.
                                         [
                                           Ty.apply
                                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                            [ Value.Integer 32 ]
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             [];
                                           Ty.associated
                                         ],
@@ -3740,7 +3893,7 @@ Module db.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloy_primitives::bits::fixed::FixedBytes")
-                                                        [ Value.Integer 32 ]
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
                                                         [];
                                                       Ty.associated
                                                     ],
@@ -3785,11 +3938,14 @@ Module db.
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [];
                                       Ty.apply
                                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer 32 ]
+                                        [ Value.Integer IntegerKind.Usize 32 ]
                                         []
                                     ],
                                   "insert",
@@ -3805,7 +3961,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3926,7 +4082,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3960,7 +4116,7 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
@@ -3969,7 +4125,7 @@ Module db.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           []
                       ]
                     |),
@@ -4034,7 +4190,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4116,11 +4272,17 @@ Module db.
                                 [
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.path "std::hash::random::RandomState"
                                 ],
@@ -4128,7 +4290,10 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   []
                               ]
                             |),
@@ -4200,8 +4365,11 @@ Module db.
                                                       (fun γ =>
                                                         ltac:(M.monadic
                                                           match γ with
-                                                          | [] => M.alloc (| Value.Bool true |)
-                                                          | _ => M.impossible (||)
+                                                          | [] =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Bool true |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   |)));
                                               fun γ =>
@@ -4270,7 +4438,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4304,16 +4472,22 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [];
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "get",
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ]
                     |),
                     [
                       M.SubPointer.get_struct_record_field (|
@@ -4365,7 +4539,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4398,8 +4572,14 @@ Module db.
                 (Ty.path "std::collections::hash::map::HashMap")
                 []
                 [
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [];
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [];
                   Ty.path "std::hash::random::RandomState"
                 ])
           ];
@@ -4446,7 +4626,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4513,11 +4693,13 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [];
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [];
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -4534,7 +4716,7 @@ Module db.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4588,11 +4770,13 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [];
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [];
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -4603,7 +4787,7 @@ Module db.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4644,7 +4828,7 @@ Module db.
                 ("account_state",
                   Value.StructTuple "revm::db::in_memory_db::AccountState::NotExisting" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_not_existing :
@@ -4719,7 +4903,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_info : M.IsAssociatedFunction Self "info" info.
@@ -4780,7 +4964,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4830,7 +5014,7 @@ Module db.
                 ("info", M.read (| info |));
                 ("account_state", Value.StructTuple "revm::db::in_memory_db::AccountState::None" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4931,7 +5115,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4999,7 +5183,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5018,7 +5202,7 @@ Module db.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic (Value.StructTuple "revm::db::in_memory_db::AccountState::None" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5071,9 +5255,9 @@ Module db.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5098,7 +5282,7 @@ Module db.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5138,7 +5322,7 @@ Module db.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5179,7 +5363,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_storage_cleared :
@@ -5194,7 +5378,10 @@ Module db.
         fields :=
           [
             Ty.path "revm_primitives::bytecode::Bytecode";
-            Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ Value.Integer 32 ] []
+            Ty.apply
+              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+              [ Value.Integer IntegerKind.Usize 32 ]
+              []
           ];
       } *)
     
@@ -5231,7 +5418,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5268,7 +5455,7 @@ Module db.
                     "core::default::Default",
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [],
                     [],
                     "default",
@@ -5277,7 +5464,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5321,7 +5508,7 @@ Module db.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [],
                     [],
                     "clone",
@@ -5336,7 +5523,7 @@ Module db.
                   ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5379,7 +5566,7 @@ Module db.
                   [ M.read (| bytecode |); M.read (| hash |) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_bytecode :
@@ -5460,18 +5647,21 @@ Module db.
                                             Value.StructRecord
                                               "revm_primitives::state::AccountInfo"
                                               [
-                                                ("nonce", Value.Integer 1);
+                                                ("nonce", Value.Integer IntegerKind.U64 1);
                                                 ("balance",
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [],
                                                       "from",
                                                       [ Ty.path "i32" ]
                                                     |),
-                                                    [ Value.Integer 10000000 ]
+                                                    [ Value.Integer IntegerKind.I32 10000000 ]
                                                   |));
                                                 ("code",
                                                   Value.StructTuple
@@ -5539,7 +5729,7 @@ Module db.
                                             "with_last_byte",
                                             []
                                           |),
-                                          [ Value.Integer 1 ]
+                                          [ Value.Integer IntegerKind.U8 1 ]
                                         |)
                                       |)
                                     ]
@@ -5560,18 +5750,21 @@ Module db.
                                             Value.StructRecord
                                               "revm_primitives::state::AccountInfo"
                                               [
-                                                ("nonce", Value.Integer 0);
+                                                ("nonce", Value.Integer IntegerKind.U64 0);
                                                 ("balance",
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [],
                                                       "from",
                                                       [ Ty.path "i32" ]
                                                     |),
-                                                    [ Value.Integer 10000000 ]
+                                                    [ Value.Integer IntegerKind.I32 10000000 ]
                                                   |));
                                                 ("code",
                                                   Value.StructTuple
@@ -5600,7 +5793,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5628,7 +5821,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5649,7 +5842,10 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "default",
                     []
@@ -5657,7 +5853,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5679,7 +5875,7 @@ Module db.
                     "core::default::Default",
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [],
                     [],
                     "default",
@@ -5688,7 +5884,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

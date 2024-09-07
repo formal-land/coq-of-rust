@@ -27,7 +27,7 @@ Module mem.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_forget : M.IsFunction "core::mem::forget" forget.
@@ -46,7 +46,7 @@ Module mem.
           M.get_function (| "core::intrinsics::forget", [ T ] |),
           [ M.read (| t |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_forget_unsized : M.IsFunction "core::mem::forget_unsized" forget_unsized.
@@ -61,7 +61,7 @@ Module mem.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::size_of", [ T ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_size_of : M.IsFunction "core::mem::size_of" size_of.
@@ -81,7 +81,7 @@ Module mem.
           M.get_function (| "core::intrinsics::size_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_size_of_val : M.IsFunction "core::mem::size_of_val" size_of_val.
@@ -101,7 +101,7 @@ Module mem.
           M.get_function (| "core::intrinsics::size_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_size_of_val_raw : M.IsFunction "core::mem::size_of_val_raw" size_of_val_raw.
@@ -116,7 +116,7 @@ Module mem.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_min_align_of : M.IsFunction "core::mem::min_align_of" min_align_of.
@@ -136,7 +136,7 @@ Module mem.
           M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_min_align_of_val : M.IsFunction "core::mem::min_align_of_val" min_align_of_val.
@@ -151,7 +151,7 @@ Module mem.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_align_of : M.IsFunction "core::mem::align_of" align_of.
@@ -171,7 +171,7 @@ Module mem.
           M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_align_of_val : M.IsFunction "core::mem::align_of_val" align_of_val.
@@ -191,7 +191,7 @@ Module mem.
           M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_align_of_val_raw : M.IsFunction "core::mem::align_of_val_raw" align_of_val_raw.
@@ -206,7 +206,7 @@ Module mem.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::needs_drop", [ T ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_needs_drop : M.IsFunction "core::mem::needs_drop" needs_drop.
@@ -252,7 +252,7 @@ Module mem.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_zeroed : M.IsFunction "core::mem::zeroed" zeroed.
@@ -303,7 +303,7 @@ Module mem.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| UnOp.Pure.not (Value.Bool false) |)) in
+                    (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       M.alloc (|
@@ -322,8 +322,8 @@ Module mem.
                               |),
                               [ val ]
                             |);
-                            Value.Integer 1;
-                            Value.Integer 1
+                            Value.Integer IntegerKind.U8 1;
+                            Value.Integer IntegerKind.Usize 1
                           ]
                         |)
                       |) in
@@ -342,7 +342,7 @@ Module mem.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_uninitialized : M.IsFunction "core::mem::uninitialized" uninitialized.
@@ -364,7 +364,7 @@ Module mem.
           M.get_function (| "core::intrinsics::typed_swap", [ T ] |),
           [ M.read (| x |); M.read (| y |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_swap : M.IsFunction "core::mem::swap" swap.
@@ -389,7 +389,7 @@ Module mem.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_take : M.IsFunction "core::mem::take" take.
@@ -433,7 +433,7 @@ Module mem.
             |) in
           result
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_replace : M.IsFunction "core::mem::replace" replace.
@@ -445,7 +445,7 @@ Module mem.
       ltac:(M.monadic
         (let _x := M.alloc (| _x |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_drop : M.IsFunction "core::mem::drop" drop.
@@ -461,7 +461,7 @@ Module mem.
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (| M.read (| x |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_copy : M.IsFunction "core::mem::copy" copy.
@@ -501,16 +501,18 @@ Module mem.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.ge
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.ge (|
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Src ] |),
                                 []
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Dst ] |),
                                 []
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -551,15 +553,16 @@ Module mem.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.gt
-                          (M.call_closure (|
+                        BinOp.gt (|
+                          M.call_closure (|
                             M.get_function (| "core::mem::align_of", [ Dst ] |),
                             []
-                          |))
-                          (M.call_closure (|
+                          |),
+                          M.call_closure (|
                             M.get_function (| "core::mem::align_of", [ Src ] |),
                             []
-                          |))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -579,7 +582,7 @@ Module mem.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_transmute_copy : M.IsFunction "core::mem::transmute_copy" transmute_copy.
@@ -619,7 +622,7 @@ Module mem.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -667,7 +670,7 @@ Module mem.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -719,7 +722,7 @@ Module mem.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -775,7 +778,7 @@ Module mem.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -805,7 +808,7 @@ Module mem.
               [ M.read (| v |) ]
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_discriminant : M.IsFunction "core::mem::discriminant" discriminant.
@@ -820,7 +823,7 @@ Module mem.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::variant_count", [ T ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_variant_count : M.IsFunction "core::mem::variant_count" variant_count.

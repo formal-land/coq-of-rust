@@ -25,12 +25,12 @@ Definition create_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 "new",
                 []
               |),
-              [ Value.Integer 3 ]
+              [ Value.Integer IntegerKind.I32 3 ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_create_box : M.IsFunction "scoping_rules_raii::create_box" create_box.
@@ -73,7 +73,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer 5 ]
+              [ Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
         let~ _ :=
@@ -88,7 +88,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   "new",
                   []
                 |),
-                [ Value.Integer 4 ]
+                [ Value.Integer IntegerKind.I32 4 ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
@@ -106,7 +106,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [ ("start", Value.Integer 0); ("end_", Value.Integer 1000) ]
+                    [
+                      ("start", Value.Integer IntegerKind.U32 0);
+                      ("end_", Value.Integer IntegerKind.U32 1000)
+                    ]
                 ]
               |)
             |),
@@ -158,7 +161,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_raii::main" main.

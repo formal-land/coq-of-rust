@@ -28,13 +28,13 @@ Module Impl_Mapping_t_K_V.
       let* self := M.read self in
       let* key := M.read key in
       M.pure (Mapping.get key self)
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
-  
+
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
-  
+
   (** fn insert(&mut self, key: K, value: V) *)
   Definition insert
     (K V : Ty.t) (ε : list Value.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
@@ -45,9 +45,9 @@ Module Impl_Mapping_t_K_V.
       let new_self_content := Mapping.insert key value self_content in
       let* _ := assign self new_self_content in
       M.pure (Value.Tuple [])
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
-  
+
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).

@@ -19,7 +19,7 @@ Module vec.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| s |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -56,7 +56,7 @@ Module vec.
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
               [ M.read (| M.use (M.alloc (| M.read (| s |) |)) |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -85,7 +85,7 @@ Module vec.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| v |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -125,7 +125,7 @@ Module vec.
                   [ M.read (| v |) ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -173,7 +173,7 @@ Module vec.
                   [ M.read (| it |) ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -100,7 +100,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -166,7 +166,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -196,7 +196,7 @@ Module errors.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -297,7 +297,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -352,7 +352,7 @@ Module errors.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -405,7 +405,7 @@ Module errors.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -499,7 +499,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -574,7 +574,7 @@ Module errors.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -614,7 +614,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -644,7 +644,7 @@ Module errors.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -698,7 +698,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -775,7 +775,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -841,7 +841,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -868,7 +868,7 @@ Module errors.
           Value.StructRecord
             "move_binary_format::errors::ExecutionState"
             [ ("stack_trace", M.read (| stack_trace |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -888,7 +888,7 @@ Module errors.
             "move_binary_format::errors::ExecutionState",
             "stack_trace"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_stack_trace : M.IsAssociatedFunction Self "stack_trace" stack_trace.
@@ -941,7 +941,7 @@ Module errors.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -971,7 +971,7 @@ Module errors.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1017,7 +1017,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1078,7 +1078,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1128,7 +1128,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1333,7 +1333,7 @@ Module errors.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1409,7 +1409,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1702,7 +1702,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1951,7 +1951,7 @@ Module errors.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2320,7 +2320,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2357,7 +2357,7 @@ Module errors.
               "major_status"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_major_status : M.IsAssociatedFunction Self "major_status" major_status.
@@ -2385,7 +2385,7 @@ Module errors.
               "sub_status"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sub_status : M.IsAssociatedFunction Self "sub_status" sub_status.
@@ -2420,7 +2420,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_message : M.IsAssociatedFunction Self "message" message.
@@ -2458,7 +2458,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_exec_state : M.IsAssociatedFunction Self "exec_state" exec_state.
@@ -2491,7 +2491,7 @@ Module errors.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_remove_exec_state :
@@ -2518,7 +2518,7 @@ Module errors.
             "move_binary_format::errors::VMError_",
             "location"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
@@ -2544,7 +2544,7 @@ Module errors.
             "move_binary_format::errors::VMError_",
             "indices"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_indices : M.IsAssociatedFunction Self "indices" indices.
@@ -2570,7 +2570,7 @@ Module errors.
             "move_binary_format::errors::VMError_",
             "offsets"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_offsets : M.IsAssociatedFunction Self "offsets" offsets.
@@ -2607,7 +2607,7 @@ Module errors.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_status_type : M.IsAssociatedFunction Self "status_type" status_type.
@@ -2725,7 +2725,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_all_data : M.IsAssociatedFunction Self "all_data" all_data.
@@ -2844,7 +2844,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_partial : M.IsAssociatedFunction Self "to_partial" to_partial.
@@ -2884,7 +2884,7 @@ Module errors.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3086,7 +3086,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3158,7 +3158,7 @@ Module errors.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3345,7 +3345,7 @@ Module errors.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3461,7 +3461,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_all_data : M.IsAssociatedFunction Self "all_data" all_data.
@@ -3582,7 +3582,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -3666,7 +3666,7 @@ Module errors.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3694,7 +3694,7 @@ Module errors.
               "major_status"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_major_status : M.IsAssociatedFunction Self "major_status" major_status.
@@ -3730,8 +3730,8 @@ Module errors.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3753,7 +3753,8 @@ Module errors.
                                               "sub_status"
                                             |)
                                           ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3797,7 +3798,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_sub_status :
@@ -3834,8 +3835,8 @@ Module errors.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3857,7 +3858,8 @@ Module errors.
                                               "message"
                                             |)
                                           ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3900,7 +3902,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_message : M.IsAssociatedFunction Self "with_message" with_message.
@@ -3936,8 +3938,8 @@ Module errors.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3960,7 +3962,8 @@ Module errors.
                                               "exec_state"
                                             |)
                                           ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -4004,7 +4007,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_exec_state :
@@ -4056,7 +4059,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_at_index : M.IsAssociatedFunction Self "at_index" at_index.
@@ -4116,7 +4119,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_at_indices : M.IsAssociatedFunction Self "at_indices" at_indices.
@@ -4171,7 +4174,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_at_code_offset :
@@ -4249,7 +4252,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_at_code_offsets :
@@ -4331,15 +4334,16 @@ Module errors.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "alloc::string::String",
                                             "is_empty",
                                             []
                                           |),
                                           [ M.read (| msg |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -4408,7 +4412,7 @@ Module errors.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_append_message_with_separator :
@@ -4518,7 +4522,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4621,12 +4625,12 @@ Module errors.
                                             []
                                           |),
                                           [
-                                            Value.Integer 0;
+                                            Value.Integer IntegerKind.Usize 0;
                                             Value.UnicodeChar 32;
                                             Value.StructTuple
                                               "core::fmt::rt::Alignment::Unknown"
                                               [];
-                                            Value.Integer 4;
+                                            Value.Integer IntegerKind.U32 4;
                                             Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                             Value.StructTuple "core::fmt::rt::Count::Implied" []
                                           ]
@@ -5242,7 +5246,7 @@ Module errors.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5346,12 +5350,12 @@ Module errors.
                                             []
                                           |),
                                           [
-                                            Value.Integer 0;
+                                            Value.Integer IntegerKind.Usize 0;
                                             Value.UnicodeChar 32;
                                             Value.StructTuple
                                               "core::fmt::rt::Alignment::Unknown"
                                               [];
-                                            Value.Integer 4;
+                                            Value.Integer IntegerKind.U32 4;
                                             Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                             Value.StructTuple "core::fmt::rt::Count::Implied" []
                                           ]
@@ -6036,7 +6040,7 @@ Module errors.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6194,7 +6198,7 @@ Module errors.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_offset_out_of_bounds :
@@ -6322,7 +6326,7 @@ Module errors.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_bounds_error :
@@ -6359,7 +6363,7 @@ Module errors.
             M.read (| idx |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verification_error :
@@ -6402,7 +6406,7 @@ Module errors.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6584,7 +6588,7 @@ Module errors.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6609,7 +6613,7 @@ Module errors.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::option::Option::None" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

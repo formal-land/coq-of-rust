@@ -46,7 +46,7 @@ Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
 Axiom Hash :
   (Ty.path "call_builder::Hash") =
-    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum LangError

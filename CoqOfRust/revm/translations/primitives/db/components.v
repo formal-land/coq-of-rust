@@ -48,7 +48,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -140,7 +140,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -223,7 +223,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -287,7 +287,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -311,7 +311,10 @@ Module db.
                   (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [];
                     Ty.associated
                   ],
                 "map_err",
@@ -351,7 +354,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -381,7 +384,7 @@ Module db.
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [];
                     Ty.associated
                   ],
@@ -421,7 +424,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -516,7 +519,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -580,7 +583,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -609,7 +612,10 @@ Module db.
                   (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [];
                     Ty.associated
                   ],
                 "map_err",
@@ -649,7 +655,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -679,7 +685,7 @@ Module db.
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [];
                     Ty.associated
                   ],
@@ -719,7 +725,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -777,7 +783,7 @@ Module db.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

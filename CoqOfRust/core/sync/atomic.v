@@ -30,7 +30,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
               [ Value.Bool false ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -86,7 +86,7 @@ Module sync.
               |),
               [ M.call_closure (| M.get_function (| "core::ptr::null_mut", [ T ] |), [] |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -181,7 +181,7 @@ Module sync.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -245,7 +245,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -270,7 +270,7 @@ Module sync.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -324,9 +324,9 @@ Module sync.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -365,7 +365,7 @@ Module sync.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -412,7 +412,7 @@ Module sync.
                     [ M.rust_cast (M.read (| v |)) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -436,7 +436,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -467,7 +467,7 @@ Module sync.
                   |)
                 ]
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -485,7 +485,7 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -502,7 +502,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -521,7 +521,7 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -537,8 +537,8 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.ne (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                   "primitive_into_inner",
@@ -553,9 +553,10 @@ Module sync.
                     |)
                   |)
                 ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U8 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -573,8 +574,8 @@ Module sync.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u8" ] |),
                 [
                   (* MutToConstPointer *)
@@ -595,9 +596,10 @@ Module sync.
                     |));
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U8 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -645,7 +647,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -714,8 +716,8 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        BinOp.Pure.ne
-                          (M.call_closure (|
+                        BinOp.ne (|
+                          M.call_closure (|
                             M.get_function (|
                               "core::sync::atomic::atomic_swap",
                               [ Ty.path "u8" ]
@@ -738,13 +740,14 @@ Module sync.
                               M.rust_cast (M.read (| val |));
                               M.read (| order |)
                             ]
-                          |))
-                          (Value.Integer 0)
+                          |),
+                          Value.Integer IntegerKind.U8 0
+                        |)
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -810,7 +813,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -1081,7 +1084,7 @@ Module sync.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq (M.read (| current |)) (M.read (| new |))
+                                        BinOp.eq (| M.read (| current |), M.read (| new |) |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1121,7 +1124,7 @@ Module sync.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq (M.read (| old |)) (M.read (| current |))
+                                    BinOp.eq (| M.read (| old |), M.read (| current |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1182,7 +1185,7 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
-                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
+                                  [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -1196,14 +1199,14 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
+                                  [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
                               |)))
                         ]
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -1320,7 +1323,7 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
-                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
+                              [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1334,13 +1337,13 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Err"
-                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
+                              [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
                           |)))
                     ]
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -1359,8 +1362,8 @@ Module sync.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
@@ -1380,9 +1383,10 @@ Module sync.
                   M.rust_cast (M.read (| val |));
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U8 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -1444,7 +1448,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -1462,8 +1466,8 @@ Module sync.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
@@ -1483,9 +1487,10 @@ Module sync.
                   M.rust_cast (M.read (| val |));
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U8 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -1503,8 +1508,8 @@ Module sync.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
@@ -1524,9 +1529,10 @@ Module sync.
                   M.rust_cast (M.read (| val |));
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U8 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -1550,7 +1556,7 @@ Module sync.
               |),
               [ M.read (| self |); Value.Bool true; M.read (| order |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_not : M.IsAssociatedFunction Self "fetch_not" fetch_not.
@@ -1588,7 +1594,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -1726,7 +1732,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -1764,7 +1770,7 @@ Module sync.
                     [ M.read (| p |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -1791,7 +1797,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr :
@@ -1826,7 +1832,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut :
@@ -1851,7 +1857,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1861,7 +1867,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut :
@@ -1886,7 +1892,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -1914,7 +1920,7 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -1951,7 +1957,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -1999,7 +2005,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load :
@@ -2055,7 +2061,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store :
@@ -2103,7 +2109,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap :
@@ -2177,7 +2183,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -2240,7 +2246,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -2306,7 +2312,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -2452,7 +2458,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -2495,7 +2501,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_ptr_add :
@@ -2538,7 +2544,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_ptr_sub :
@@ -2599,7 +2605,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_byte_add :
@@ -2660,7 +2666,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_byte_sub :
@@ -2716,7 +2722,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or :
@@ -2772,7 +2778,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and :
@@ -2828,7 +2834,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor :
@@ -2863,7 +2869,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr :
@@ -2888,7 +2894,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
               [ M.read (| b |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2922,7 +2928,7 @@ Module sync.
               |),
               [ M.read (| p |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2969,7 +2975,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2993,7 +2999,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3037,7 +3043,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3085,7 +3091,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3109,7 +3115,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -3138,7 +3144,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -3160,7 +3166,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3170,7 +3176,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -3187,7 +3193,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -3210,7 +3216,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3220,7 +3226,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -3252,7 +3258,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -3291,7 +3297,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -3336,7 +3342,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -3375,7 +3381,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -3447,7 +3453,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -3495,7 +3501,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -3548,7 +3554,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -3588,7 +3594,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -3627,7 +3633,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -3666,7 +3672,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -3705,7 +3711,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -3744,7 +3750,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -3783,7 +3789,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -3917,7 +3923,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -3957,7 +3963,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -3996,7 +4002,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -4025,7 +4031,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -4066,7 +4072,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4090,7 +4096,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4134,7 +4140,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4182,7 +4188,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4206,7 +4212,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -4235,7 +4241,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -4257,7 +4263,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4267,7 +4273,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -4284,7 +4290,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -4307,7 +4313,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4317,7 +4323,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -4349,7 +4355,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -4388,7 +4394,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -4433,7 +4439,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -4472,7 +4478,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -4544,7 +4550,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -4592,7 +4598,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -4645,7 +4651,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -4685,7 +4691,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -4724,7 +4730,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -4763,7 +4769,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -4802,7 +4808,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -4841,7 +4847,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -4880,7 +4886,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -5014,7 +5020,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -5054,7 +5060,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -5093,7 +5099,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -5122,7 +5128,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -5163,7 +5169,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5187,7 +5193,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI16", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5231,7 +5237,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5279,7 +5285,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -5303,7 +5309,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -5332,7 +5338,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -5354,7 +5360,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5364,7 +5370,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -5381,7 +5387,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -5404,7 +5410,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5414,7 +5420,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -5446,7 +5452,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -5485,7 +5491,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -5530,7 +5536,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -5569,7 +5575,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -5641,7 +5647,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -5689,7 +5695,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -5742,7 +5748,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -5782,7 +5788,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -5821,7 +5827,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -5860,7 +5866,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -5899,7 +5905,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -5938,7 +5944,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -5977,7 +5983,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -6111,7 +6117,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -6151,7 +6157,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -6190,7 +6196,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -6219,7 +6225,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -6260,7 +6266,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6284,7 +6290,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU16", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6328,7 +6334,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6376,7 +6382,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -6400,7 +6406,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -6429,7 +6435,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -6451,7 +6457,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6461,7 +6467,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -6478,7 +6484,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -6501,7 +6507,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6511,7 +6517,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -6543,7 +6549,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -6582,7 +6588,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -6627,7 +6633,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -6666,7 +6672,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -6738,7 +6744,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -6786,7 +6792,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -6839,7 +6845,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -6879,7 +6885,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -6918,7 +6924,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -6957,7 +6963,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -6996,7 +7002,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -7035,7 +7041,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -7074,7 +7080,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -7208,7 +7214,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -7248,7 +7254,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -7287,7 +7293,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -7316,7 +7322,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -7357,7 +7363,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7381,7 +7387,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI32", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7425,7 +7431,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7473,7 +7479,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -7497,7 +7503,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -7526,7 +7532,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -7548,7 +7554,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -7558,7 +7564,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -7575,7 +7581,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -7598,7 +7604,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -7608,7 +7614,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -7640,7 +7646,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -7679,7 +7685,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -7724,7 +7730,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -7763,7 +7769,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -7835,7 +7841,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -7883,7 +7889,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -7936,7 +7942,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -7976,7 +7982,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -8015,7 +8021,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -8054,7 +8060,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -8093,7 +8099,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -8132,7 +8138,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -8171,7 +8177,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -8305,7 +8311,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -8345,7 +8351,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -8384,7 +8390,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -8413,7 +8419,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -8454,7 +8460,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8478,7 +8484,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU32", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8522,7 +8528,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8570,7 +8576,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -8594,7 +8600,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -8623,7 +8629,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -8645,7 +8651,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -8655,7 +8661,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -8672,7 +8678,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -8695,7 +8701,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -8705,7 +8711,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -8737,7 +8743,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -8776,7 +8782,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -8821,7 +8827,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -8860,7 +8866,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -8932,7 +8938,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -8980,7 +8986,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -9033,7 +9039,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -9073,7 +9079,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -9112,7 +9118,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -9151,7 +9157,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -9190,7 +9196,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -9229,7 +9235,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -9268,7 +9274,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -9402,7 +9408,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -9442,7 +9448,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -9481,7 +9487,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -9510,7 +9516,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -9551,7 +9557,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9575,7 +9581,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI64", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9619,7 +9625,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9667,7 +9673,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -9691,7 +9697,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -9720,7 +9726,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -9742,7 +9748,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9752,7 +9758,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -9769,7 +9775,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -9792,7 +9798,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9802,7 +9808,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -9834,7 +9840,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -9873,7 +9879,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -9918,7 +9924,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -9957,7 +9963,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -10029,7 +10035,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -10077,7 +10083,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -10130,7 +10136,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -10170,7 +10176,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -10209,7 +10215,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -10248,7 +10254,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -10287,7 +10293,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -10326,7 +10332,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -10365,7 +10371,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -10499,7 +10505,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -10539,7 +10545,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -10578,7 +10584,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -10607,7 +10613,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -10648,7 +10654,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10672,7 +10678,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU64", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10716,7 +10722,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10764,7 +10770,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -10788,7 +10794,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -10817,7 +10823,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -10839,7 +10845,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -10849,7 +10855,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -10866,7 +10872,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -10889,7 +10895,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -10899,7 +10905,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -10931,7 +10937,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -10970,7 +10976,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -11015,7 +11021,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -11054,7 +11060,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -11126,7 +11132,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -11174,7 +11180,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -11227,7 +11233,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -11267,7 +11273,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -11306,7 +11312,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -11345,7 +11351,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -11384,7 +11390,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -11423,7 +11429,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -11462,7 +11468,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -11596,7 +11602,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -11636,7 +11642,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -11675,7 +11681,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -11704,7 +11710,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -11745,7 +11751,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11769,7 +11775,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11813,7 +11819,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11861,7 +11867,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -11885,7 +11891,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -11914,7 +11920,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -11936,7 +11942,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -11946,7 +11952,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -11963,7 +11969,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -11986,7 +11992,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -11996,7 +12002,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -12028,7 +12034,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -12067,7 +12073,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -12112,7 +12118,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -12151,7 +12157,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -12223,7 +12229,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -12274,7 +12280,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -12327,7 +12333,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -12367,7 +12373,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -12406,7 +12412,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -12445,7 +12451,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -12484,7 +12490,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -12523,7 +12529,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -12562,7 +12568,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -12696,7 +12702,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -12736,7 +12742,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -12775,7 +12781,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -12804,7 +12810,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -12845,7 +12851,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12869,7 +12875,7 @@ Module sync.
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12913,7 +12919,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12961,7 +12967,7 @@ Module sync.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -12985,7 +12991,7 @@ Module sync.
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -13014,7 +13020,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -13036,7 +13042,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -13046,7 +13052,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -13063,7 +13069,7 @@ Module sync.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -13086,7 +13092,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -13096,7 +13102,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -13128,7 +13134,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -13167,7 +13173,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -13212,7 +13218,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -13251,7 +13257,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -13323,7 +13329,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -13374,7 +13380,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -13427,7 +13433,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -13467,7 +13473,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -13506,7 +13512,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -13545,7 +13551,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -13584,7 +13590,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -13623,7 +13629,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -13662,7 +13668,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -13796,7 +13802,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -13836,7 +13842,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -13875,7 +13881,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -13904,7 +13910,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -13916,7 +13922,7 @@ Module sync.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
-              [ Value.Integer 0 ]
+              [ Value.Integer IntegerKind.Isize 0 ]
             |)
           |))).
     
@@ -13926,7 +13932,7 @@ Module sync.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
-              [ Value.Integer 0 ]
+              [ Value.Integer IntegerKind.Usize 0 ]
             |)
           |))).
     
@@ -13977,7 +13983,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_strongest_failure_ordering :
@@ -14097,7 +14103,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_store : M.IsFunction "core::sync::atomic::atomic_store" atomic_store.
@@ -14215,7 +14221,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_load : M.IsFunction "core::sync::atomic::atomic_load" atomic_load.
@@ -14293,7 +14299,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_swap : M.IsFunction "core::sync::atomic::atomic_swap" atomic_swap.
@@ -14371,7 +14377,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_add : M.IsFunction "core::sync::atomic::atomic_add" atomic_add.
@@ -14449,7 +14455,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_sub : M.IsFunction "core::sync::atomic::atomic_sub" atomic_sub.
@@ -14852,7 +14858,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_compare_exchange :
@@ -15260,7 +15266,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_compare_exchange_weak :
@@ -15339,7 +15345,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_and : M.IsFunction "core::sync::atomic::atomic_and" atomic_and.
@@ -15417,7 +15423,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_nand : M.IsFunction "core::sync::atomic::atomic_nand" atomic_nand.
@@ -15495,7 +15501,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_or : M.IsFunction "core::sync::atomic::atomic_or" atomic_or.
@@ -15573,7 +15579,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_xor : M.IsFunction "core::sync::atomic::atomic_xor" atomic_xor.
@@ -15651,7 +15657,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_max : M.IsFunction "core::sync::atomic::atomic_max" atomic_max.
@@ -15729,7 +15735,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_min : M.IsFunction "core::sync::atomic::atomic_min" atomic_min.
@@ -15807,7 +15813,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_umax : M.IsFunction "core::sync::atomic::atomic_umax" atomic_umax.
@@ -15885,7 +15891,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_atomic_umin : M.IsFunction "core::sync::atomic::atomic_umin" atomic_umin.
@@ -15981,7 +15987,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_fence : M.IsFunction "core::sync::atomic::fence" fence.
@@ -16090,7 +16096,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_compiler_fence :
@@ -16129,7 +16135,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16181,7 +16187,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16234,7 +16240,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16255,7 +16261,7 @@ Module sync.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (M.call_closure (| M.get_function (| "core::hint::spin_loop", [] |), [] |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_spin_loop_hint :

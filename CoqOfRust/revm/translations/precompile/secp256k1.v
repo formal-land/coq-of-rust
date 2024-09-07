@@ -11,7 +11,7 @@ Module secp256k1.
             [
               M.call_closure (|
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
-                [ Value.Integer 1 ]
+                [ Value.Integer IntegerKind.U64 1 ]
               |);
               Value.StructTuple
                 "revm_primitives::precompile::Precompile::Standard"
@@ -105,7 +105,7 @@ Module secp256k1.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                      [ Value.Integer 64 ]
+                                      [ Value.Integer IntegerKind.Usize 64 ]
                                       [],
                                     "as_slice",
                                     []
@@ -141,7 +141,7 @@ Module secp256k1.
                                           [
                                             Ty.apply
                                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer 32 ]
+                                              [ Value.Integer IntegerKind.Usize 32 ]
                                               [];
                                             Ty.path "secp256k1::Error"
                                           ],
@@ -262,7 +262,7 @@ Module secp256k1.
                                           [
                                             Ty.apply
                                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer 32 ]
+                                              [ Value.Integer IntegerKind.Usize 32 ]
                                               [];
                                             Ty.path "secp256k1::Error"
                                           ],
@@ -313,7 +313,10 @@ Module secp256k1.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::Index",
-                            Ty.apply (Ty.path "array") [ Value.Integer 65 ] [ Ty.path "u8" ],
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 65 ]
+                              [ Ty.path "u8" ],
                             [
                               Ty.apply
                                 (Ty.path "core::ops::range::RangeFrom")
@@ -336,7 +339,7 @@ Module secp256k1.
                             |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
-                              [ ("start", Value.Integer 1) ]
+                              [ ("start", Value.Integer IntegerKind.Usize 1) ]
                           ]
                         |)
                       ]
@@ -356,7 +359,7 @@ Module secp256k1.
                             "core::ops::index::IndexMut",
                             Ty.apply
                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                              [ Value.Integer 32 ]
+                              [ Value.Integer IntegerKind.Usize 32 ]
                               [],
                             [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
                             ],
@@ -367,17 +370,17 @@ Module secp256k1.
                             hash;
                             Value.StructRecord
                               "core::ops::range::RangeTo"
-                              [ ("end_", Value.Integer 12) ]
+                              [ ("end_", Value.Integer IntegerKind.Usize 12) ]
                           ]
                         |);
-                        Value.Integer 0
+                        Value.Integer IntegerKind.U8 0
                       ]
                     |)
                   |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| hash |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_ecrecover :
@@ -427,13 +430,14 @@ Module secp256k1.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.get_constant (|
                                     "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
                                   |)
-                                |))
-                                (M.read (| gas_limit |))
+                                |),
+                                M.read (| gas_limit |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -493,8 +497,8 @@ Module secp256k1.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (LogicalOp.and (|
+                              UnOp.not (|
+                                LogicalOp.and (|
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
@@ -525,7 +529,7 @@ Module secp256k1.
                                                 "core::ops::index::Index",
                                                 Ty.apply
                                                   (Ty.path "array")
-                                                  [ Value.Integer 128 ]
+                                                  [ Value.Integer IntegerKind.Usize 128 ]
                                                   [ Ty.path "u8" ],
                                                 [
                                                   Ty.apply
@@ -546,7 +550,7 @@ Module secp256k1.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "array")
-                                                          [ Value.Integer 128 ]
+                                                          [ Value.Integer IntegerKind.Usize 128 ]
                                                           [ Ty.path "u8" ]
                                                       ],
                                                     [],
@@ -558,8 +562,8 @@ Module secp256k1.
                                                 Value.StructRecord
                                                   "core::ops::range::Range"
                                                   [
-                                                    ("start", Value.Integer 32);
-                                                    ("end_", Value.Integer 63)
+                                                    ("start", Value.Integer IntegerKind.Usize 32);
+                                                    ("end_", Value.Integer IntegerKind.Usize 63)
                                                   ]
                                               ]
                                             |)
@@ -571,19 +575,21 @@ Module secp256k1.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ := M.read (| γ |) in
-                                                      let b := M.copy (| γ |) in
-                                                      BinOp.Pure.eq
-                                                        (M.read (| b |))
-                                                        (Value.Integer 0)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let b := M.copy (| γ |) in
+                                                        BinOp.eq (|
+                                                          M.read (| b |),
+                                                          Value.Integer IntegerKind.U8 0
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |),
@@ -600,7 +606,7 @@ Module secp256k1.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "array")
-                                                    [ Value.Integer 128 ]
+                                                    [ Value.Integer IntegerKind.Usize 128 ]
                                                     [ Ty.path "u8" ]
                                                 ],
                                               [],
@@ -609,7 +615,7 @@ Module secp256k1.
                                             |),
                                             [ input ]
                                           |),
-                                          M.alloc (| Value.Integer 63 |)
+                                          M.alloc (| Value.Integer IntegerKind.Usize 63 |)
                                         |),
                                         [
                                           fun γ =>
@@ -622,7 +628,7 @@ Module secp256k1.
                                                       (let _ :=
                                                         M.is_constant_or_break_match (|
                                                           M.read (| γ |),
-                                                          Value.Integer 27
+                                                          Value.Integer IntegerKind.U8 27
                                                         |) in
                                                       Value.Tuple []));
                                                   fun γ =>
@@ -630,7 +636,7 @@ Module secp256k1.
                                                       (let _ :=
                                                         M.is_constant_or_break_match (|
                                                           M.read (| γ |),
-                                                          Value.Integer 28
+                                                          Value.Integer IntegerKind.U8 28
                                                         |) in
                                                       Value.Tuple []))
                                                 ],
@@ -638,15 +644,19 @@ Module secp256k1.
                                                   (fun γ =>
                                                     ltac:(M.monadic
                                                       match γ with
-                                                      | [] => M.alloc (| Value.Bool true |)
-                                                      | _ => M.impossible (||)
+                                                      | [] =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Bool true |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                                         ]
                                       |)
                                     |)))
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -695,7 +705,7 @@ Module secp256k1.
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 32 ]
+                                [ Value.Integer IntegerKind.Usize 32 ]
                                 []
                             ];
                           Ty.path "core::array::TryFromSliceError"
@@ -713,7 +723,7 @@ Module secp256k1.
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 32 ]
+                                [ Value.Integer IntegerKind.Usize 32 ]
                                 []
                             ],
                           [
@@ -729,7 +739,10 @@ Module secp256k1.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
-                              Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ],
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 128 ]
+                                [ Ty.path "u8" ],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ],
                               "index",
@@ -745,7 +758,7 @@ Module secp256k1.
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 128 ]
+                                        [ Value.Integer IntegerKind.Usize 128 ]
                                         [ Ty.path "u8" ]
                                     ],
                                   [],
@@ -756,7 +769,10 @@ Module secp256k1.
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
-                                [ ("start", Value.Integer 0); ("end_", Value.Integer 32) ]
+                                [
+                                  ("start", Value.Integer IntegerKind.Usize 0);
+                                  ("end_", Value.Integer IntegerKind.Usize 32)
+                                ]
                             ]
                           |)
                         ]
@@ -766,9 +782,8 @@ Module secp256k1.
                 |) in
               let~ recid :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.U8
-                    (M.read (|
+                  BinOp.Wrap.sub (|
+                    M.read (|
                       M.SubPointer.get_array_field (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -776,17 +791,23 @@ Module secp256k1.
                             Ty.apply
                               (Ty.path "alloc::borrow::Cow")
                               []
-                              [ Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ] ],
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 128 ]
+                                  [ Ty.path "u8" ]
+                              ],
                             [],
                             "deref",
                             []
                           |),
                           [ input ]
                         |),
-                        M.alloc (| Value.Integer 63 |)
+                        M.alloc (| Value.Integer IntegerKind.Usize 63 |)
                       |)
-                    |))
-                    (Value.Integer 27)
+                    |),
+                    Value.Integer IntegerKind.U8 27
+                  |)
                 |) in
               let~ sig :=
                 M.alloc (|
@@ -802,7 +823,7 @@ Module secp256k1.
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 64 ]
+                                [ Value.Integer IntegerKind.Usize 64 ]
                                 []
                             ];
                           Ty.path "core::array::TryFromSliceError"
@@ -820,7 +841,7 @@ Module secp256k1.
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 64 ]
+                                [ Value.Integer IntegerKind.Usize 64 ]
                                 []
                             ],
                           [
@@ -836,7 +857,10 @@ Module secp256k1.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
-                              Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ],
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 128 ]
+                                [ Ty.path "u8" ],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ],
                               "index",
@@ -852,7 +876,7 @@ Module secp256k1.
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 128 ]
+                                        [ Value.Integer IntegerKind.Usize 128 ]
                                         [ Ty.path "u8" ]
                                     ],
                                   [],
@@ -863,7 +887,10 @@ Module secp256k1.
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
-                                [ ("start", Value.Integer 64); ("end_", Value.Integer 128) ]
+                                [
+                                  ("start", Value.Integer IntegerKind.Usize 64);
+                                  ("end_", Value.Integer IntegerKind.Usize 128)
+                                ]
                             ]
                           |)
                         ]
@@ -891,7 +918,7 @@ Module secp256k1.
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 32 ]
+                                [ Value.Integer IntegerKind.Usize 32 ]
                                 [];
                               Ty.path "secp256k1::Error"
                             ],
@@ -904,7 +931,7 @@ Module secp256k1.
                                   [
                                     Ty.apply
                                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                      [ Value.Integer 32 ]
+                                      [ Value.Integer IntegerKind.Usize 32 ]
                                       []
                                   ]
                               ]
@@ -924,52 +951,53 @@ Module secp256k1.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let o := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::convert::Into",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                              "into",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                  "to_vec",
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let o := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::convert::Into",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
                                                   []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloy_primitives::bits::fixed::FixedBytes")
-                                                        [ Value.Integer 32 ]
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                                "into",
+                                                []
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                    "to_vec",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::bits::fixed::FixedBytes")
+                                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                                          [],
                                                         [],
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [ o ]
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [ o ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -993,7 +1021,7 @@ Module secp256k1.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ec_recover_run :
@@ -1001,6 +1029,6 @@ Module secp256k1.
   
   Module ec_recover_run.
     Definition value_ECRECOVER_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 3000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3000 |))).
   End ec_recover_run.
 End secp256k1.

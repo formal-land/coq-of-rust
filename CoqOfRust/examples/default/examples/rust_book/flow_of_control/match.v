@@ -37,7 +37,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ number := M.alloc (| Value.Integer 13 |) in
+        let~ number := M.alloc (| Value.Integer IntegerKind.I32 13 |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -80,7 +80,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.I32 1
+                    |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
@@ -107,27 +111,42 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 2
+                            |) in
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 3
+                            |) in
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 5
+                            |) in
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 7 |) in
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 7
+                            |) in
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 11 |) in
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 11
+                            |) in
                           Value.Tuple []))
                     ],
                     M.closure
@@ -135,30 +154,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "This is a prime
+                            ltac:(M.monadic
+                              (let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_const",
+                                          []
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            Value.Array
+                                              [ M.read (| Value.String "This is a prime
 " |) ]
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)
-                          | _ => M.impossible (||)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -216,11 +236,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                    M.alloc (| Value.Integer 0 |)));
+                    M.alloc (| Value.Integer IntegerKind.I32 0 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.Integer 1 |)))
+                    M.alloc (| Value.Integer IntegerKind.I32 1 |)))
               ]
             |)
           |) in
@@ -271,7 +291,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match::main" main.

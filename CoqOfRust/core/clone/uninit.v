@@ -43,7 +43,7 @@ Module clone.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -133,10 +133,12 @@ Module clone.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                UnOp.Pure.not
-                                                  (BinOp.Pure.eq
-                                                    (M.read (| M.read (| left_val |) |))
-                                                    (M.read (| M.read (| right_val |) |)))
+                                                UnOp.not (|
+                                                  BinOp.eq (|
+                                                    M.read (| M.read (| left_val |) |),
+                                                    M.read (| M.read (| right_val |) |)
+                                                  |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -308,7 +310,7 @@ Module clone.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -348,12 +350,12 @@ Module clone.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
-                    [ M.read (| src |); M.read (| dst |); Value.Integer 1 ]
+                    [ M.read (| src |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -433,10 +435,12 @@ Module clone.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                UnOp.Pure.not
-                                                  (BinOp.Pure.eq
-                                                    (M.read (| M.read (| left_val |) |))
-                                                    (M.read (| M.read (| right_val |) |)))
+                                                UnOp.not (|
+                                                  BinOp.eq (|
+                                                    M.read (| M.read (| left_val |) |),
+                                                    M.read (| M.read (| right_val |) |)
+                                                  |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -526,7 +530,7 @@ Module clone.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -585,8 +589,9 @@ Module clone.
             (let data := M.alloc (| data |) in
             Value.StructRecord
               "core::clone::uninit::InitializingSlice"
-              [ ("data", M.read (| data |)); ("initialized_len", Value.Integer 0) ]))
-        | _, _, _ => M.impossible
+              [ ("data", M.read (| data |)); ("initialized_len", Value.Integer IntegerKind.Usize 0)
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_fully_uninit :
@@ -641,10 +646,13 @@ Module clone.
                     "core::clone::uninit::InitializingSlice",
                     "initialized_len"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_push :
@@ -721,7 +729,7 @@ Module clone.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

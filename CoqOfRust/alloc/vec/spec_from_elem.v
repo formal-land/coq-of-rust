@@ -49,7 +49,7 @@ Module vec.
                 |) in
               v
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -160,7 +160,7 @@ Module vec.
                   v
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -207,7 +207,7 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| elem |), Value.Integer IntegerKind.I8 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -284,7 +284,7 @@ Module vec.
                   v
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -330,7 +330,7 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| elem |), Value.Integer IntegerKind.U8 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -407,7 +407,7 @@ Module vec.
                   v
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -466,7 +466,7 @@ Module vec.
                 M.alloc (| Value.Tuple [] |) in
               v
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

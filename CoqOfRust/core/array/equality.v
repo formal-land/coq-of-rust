@@ -34,7 +34,7 @@ Module array.
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -65,7 +65,7 @@ Module array.
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -153,7 +153,7 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -228,7 +228,7 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -316,7 +316,7 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -391,7 +391,7 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -435,7 +435,7 @@ Module array.
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -466,7 +466,7 @@ Module array.
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -512,7 +512,7 @@ Module array.
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -543,7 +543,7 @@ Module array.
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -587,7 +587,7 @@ Module array.
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -618,7 +618,7 @@ Module array.
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -664,7 +664,7 @@ Module array.
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -695,7 +695,7 @@ Module array.
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -775,7 +775,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -827,7 +827,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -886,7 +886,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -907,8 +907,8 @@ Module array.
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.not (|
+              M.call_closure (|
                 M.get_trait_method (|
                   "core::array::equality::SpecArrayEq",
                   T,
@@ -917,8 +917,9 @@ Module array.
                   []
                 |),
                 [ M.read (| a |); M.read (| b |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

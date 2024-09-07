@@ -86,7 +86,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -158,7 +158,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -178,7 +178,7 @@ Module kzg.
         | [], [], [] =>
           ltac:(M.monadic
             (Value.StructTuple "revm_primitives::kzg::env_settings::EnvKzgSettings::Default" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -208,7 +208,7 @@ Module kzg.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -299,7 +299,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -414,7 +414,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -492,117 +492,134 @@ Module kzg.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.read (|
-                                              let~ settings :=
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.read (|
+                                                let~ settings :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "c_kzg::bindings::KZGSettings";
+                                                            Ty.path "c_kzg::bindings::Error"
+                                                          ],
+                                                        "expect",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "c_kzg::bindings::KZGSettings",
+                                                            "load_trusted_setup",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::convert::AsRef",
+                                                                Ty.path
+                                                                  "revm_primitives::kzg::trusted_setup_points::G1Points",
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4096
+                                                                    ]
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            48
+                                                                        ]
+                                                                        [ Ty.path "u8" ]
+                                                                    ]
+                                                                ],
+                                                                "as_ref",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.get_constant (|
+                                                                    "revm_primitives::kzg::trusted_setup_points::G1_POINTS"
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::convert::AsRef",
+                                                                Ty.path
+                                                                  "revm_primitives::kzg::trusted_setup_points::G2Points",
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        65
+                                                                    ]
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            96
+                                                                        ]
+                                                                        [ Ty.path "u8" ]
+                                                                    ]
+                                                                ],
+                                                                "as_ref",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.get_constant (|
+                                                                    "revm_primitives::kzg::trusted_setup_points::G2_POINTS"
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.read (|
+                                                          Value.String
+                                                            "failed to load default trusted setup"
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |) in
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
-                                                        (Ty.path "core::result::Result")
+                                                        (Ty.path "alloc::boxed::Box")
                                                         []
                                                         [
                                                           Ty.path "c_kzg::bindings::KZGSettings";
-                                                          Ty.path "c_kzg::bindings::Error"
+                                                          Ty.path "alloc::alloc::Global"
                                                         ],
-                                                      "expect",
+                                                      "new",
                                                       []
                                                     |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "c_kzg::bindings::KZGSettings",
-                                                          "load_trusted_setup",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::convert::AsRef",
-                                                              Ty.path
-                                                                "revm_primitives::kzg::trusted_setup_points::G1Points",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [ Value.Integer 4096 ]
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "array")
-                                                                      [ Value.Integer 48 ]
-                                                                      [ Ty.path "u8" ]
-                                                                  ]
-                                                              ],
-                                                              "as_ref",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.get_constant (|
-                                                                  "revm_primitives::kzg::trusted_setup_points::G1_POINTS"
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::convert::AsRef",
-                                                              Ty.path
-                                                                "revm_primitives::kzg::trusted_setup_points::G2Points",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [ Value.Integer 65 ]
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "array")
-                                                                      [ Value.Integer 96 ]
-                                                                      [ Ty.path "u8" ]
-                                                                  ]
-                                                              ],
-                                                              "as_ref",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.get_constant (|
-                                                                  "revm_primitives::kzg::trusted_setup_points::G2_POINTS"
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |);
-                                                      M.read (|
-                                                        Value.String
-                                                          "failed to load default trusted setup"
-                                                      |)
-                                                    ]
+                                                    [ M.read (| settings |) ]
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
-                                                      []
-                                                      [
-                                                        Ty.path "c_kzg::bindings::KZGSettings";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    "new",
-                                                    []
-                                                  |),
-                                                  [ M.read (| settings |) ]
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -638,7 +655,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

@@ -20,10 +20,10 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
               let x := M.copy (| γ0_0 |) in
               let y := M.copy (| γ0_1 |) in
-              BinOp.Wrap.add Integer.I32 (M.read (| x |)) (M.read (| y |))))
+              BinOp.Wrap.add (| M.read (| x |), M.read (| y |) |)))
         ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_sum : M.IsFunction "pattern_in_function_parameters::sum" sum.
@@ -75,7 +75,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.le (M.read (| start |)) (M.read (| end_ |))
+                                      BinOp.le (| M.read (| start |), M.read (| end_ |) |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -84,10 +84,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                   |) in
                                 let~ count :=
                                   M.alloc (|
-                                    BinOp.Wrap.sub
-                                      Integer.U32
-                                      (M.read (| end_ |))
-                                      (M.read (| start |))
+                                    BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -98,13 +95,15 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.Pure.lt
-                                                  (M.read (| start |))
-                                                  (Value.Integer 55296),
+                                                BinOp.lt (|
+                                                  M.read (| start |),
+                                                  Value.Integer IntegerKind.U32 55296
+                                                |),
                                                 ltac:(M.monadic
-                                                  (BinOp.Pure.le
-                                                    (Value.Integer 57344)
-                                                    (M.read (| end_ |))))
+                                                  (BinOp.le (|
+                                                    Value.Integer IntegerKind.U32 57344,
+                                                    M.read (| end_ |)
+                                                  |)))
                                               |)
                                             |)) in
                                         let _ :=
@@ -135,10 +134,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Wrap.sub
-                                                    Integer.U32
-                                                    (M.read (| count |))
-                                                    (Value.Integer 2048)
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| count |),
+                                                    Value.Integer IntegerKind.U32 2048
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -185,7 +184,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
               |)))
         ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_steps_between :

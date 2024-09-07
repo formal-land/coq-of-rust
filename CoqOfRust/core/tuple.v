@@ -24,7 +24,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -46,7 +46,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -124,7 +124,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -146,7 +146,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -168,7 +168,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -190,7 +190,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -212,7 +212,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -253,7 +253,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -291,7 +291,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -303,7 +303,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_Tuple_T_.
   
-  Module Impl_core_convert_From_array_1_T_for_Tuple_T_.
+  Module Impl_core_convert_From_array_Usize_1_T_for_Tuple_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T ].
     
     (*
@@ -330,7 +330,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -339,12 +339,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_1_T_for_Tuple_T_.
+  End Impl_core_convert_From_array_Usize_1_T_for_Tuple_T_.
   
-  Module Impl_core_convert_From_Tuple_T__for_array_1_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T__for_array_Usize_1_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -370,7 +371,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -380,7 +381,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T__for_array_1_T.
+  End Impl_core_convert_From_Tuple_T__for_array_Usize_1_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_U_T_.
     Definition Self (U T : Ty.t) : Ty.t := Ty.tuple [ U; T ].
@@ -414,7 +415,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -446,7 +447,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -565,7 +566,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -667,7 +668,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -769,7 +770,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -871,7 +872,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -973,7 +974,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1038,7 +1039,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1086,7 +1087,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1098,7 +1099,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default U T)) ].
   End Impl_core_default_Default_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_U_T_.
   
-  Module Impl_core_convert_From_array_2_T_for_Tuple_T_T_.
+  Module Impl_core_convert_From_array_Usize_2_T_for_Tuple_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T ].
     
     (*
@@ -1127,7 +1128,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1136,12 +1137,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_2_T_for_Tuple_T_T_.
+  End Impl_core_convert_From_array_Usize_2_T_for_Tuple_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T__for_array_2_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T__for_array_Usize_2_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -1169,7 +1171,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1179,7 +1181,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T__for_array_2_T.
+  End Impl_core_convert_From_Tuple_T_T__for_array_Usize_2_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
     Definition Self (V U T : Ty.t) : Ty.t := Ty.tuple [ V; U; T ].
@@ -1223,7 +1225,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1265,7 +1267,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1421,7 +1423,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1612,7 +1614,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1803,7 +1805,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1994,7 +1996,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2185,7 +2187,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2270,7 +2272,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2328,7 +2330,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2340,7 +2342,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_V_U_T_.
   
-  Module Impl_core_convert_From_array_3_T_for_Tuple_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_3_T_for_Tuple_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T ].
     
     (*
@@ -2374,7 +2376,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2383,12 +2385,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_3_T_for_Tuple_T_T_T_.
+  End Impl_core_convert_From_array_Usize_3_T_for_Tuple_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T__for_array_3_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T__for_array_Usize_3_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -2421,7 +2424,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2431,7 +2434,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T__for_array_3_T.
+  End Impl_core_convert_From_Tuple_T_T_T__for_array_Usize_3_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
     Definition Self (W V U T : Ty.t) : Ty.t := Ty.tuple [ W; V; U; T ].
@@ -2485,7 +2488,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2537,7 +2540,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2726,7 +2729,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3007,7 +3010,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3288,7 +3291,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3570,7 +3573,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3852,7 +3855,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3958,7 +3961,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4026,7 +4029,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4038,7 +4041,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_4_T_for_Tuple_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_4_T_for_Tuple_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T ].
     
     (*
@@ -4079,7 +4082,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4088,12 +4091,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_4_T_for_Tuple_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_4_T_for_Tuple_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T__for_array_4_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T__for_array_Usize_4_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -4133,7 +4137,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4143,7 +4147,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T__for_array_4_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T__for_array_Usize_4_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
     Definition Self (X W V U T : Ty.t) : Ty.t := Ty.tuple [ X; W; V; U; T ].
@@ -4207,7 +4211,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4269,7 +4273,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4501,7 +4505,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4882,7 +4886,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5263,7 +5267,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5645,7 +5649,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -6027,7 +6031,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6175,7 +6179,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6258,7 +6262,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6270,7 +6274,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_5_T_for_Tuple_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_5_T_for_Tuple_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T ].
     
     (*
@@ -6314,7 +6318,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6323,12 +6327,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 5 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_5_T_for_Tuple_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_5_T_for_Tuple_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T__for_array_5_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 5 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T__for_array_Usize_5_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -6371,7 +6376,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6381,7 +6386,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T__for_array_5_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T__for_array_Usize_5_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
     Definition Self (Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Y; X; W; V; U; T ].
@@ -6455,7 +6460,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -6527,7 +6532,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6803,7 +6808,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7284,7 +7289,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7765,7 +7770,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8247,7 +8252,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8729,7 +8734,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8913,7 +8918,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9006,7 +9011,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9018,7 +9023,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_Y_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_6_T_for_Tuple_T_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_6_T_for_Tuple_T_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T ].
     
     (*
@@ -9065,7 +9070,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9074,12 +9079,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 6 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_6_T_for_Tuple_T_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_6_T_for_Tuple_T_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T__for_array_6_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 6 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T__for_array_Usize_6_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -9125,7 +9131,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9135,7 +9141,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T_T__for_array_6_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T_T__for_array_Usize_6_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
     Definition Self (Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Z; Y; X; W; V; U; T ].
@@ -9224,7 +9230,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -9311,7 +9317,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9629,7 +9635,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -10228,7 +10234,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -10827,7 +10833,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -11427,7 +11433,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -12027,7 +12033,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12252,7 +12258,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12355,7 +12361,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12367,7 +12373,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_7_T_for_Tuple_T_T_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_7_T_for_Tuple_T_T_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T ].
     
     (*
@@ -12417,7 +12423,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12426,12 +12432,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 7 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_7_T_for_Tuple_T_T_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_7_T_for_Tuple_T_T_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T__for_array_7_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 7 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T__for_array_Usize_7_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -12480,7 +12487,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12490,7 +12497,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T__for_array_7_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T__for_array_Usize_7_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
     Definition Self (A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ A; Z; Y; X; W; V; U; T ].
@@ -12589,7 +12596,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -12686,7 +12693,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -13047,7 +13054,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -13762,7 +13769,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -14477,7 +14484,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -15193,7 +15200,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -15909,7 +15916,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -16171,7 +16178,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -16284,7 +16291,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -16296,7 +16303,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_8_T_for_Tuple_T_T_T_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_8_T_for_Tuple_T_T_T_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T ].
     
     (*
@@ -16349,7 +16356,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -16358,12 +16365,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_8_T_for_Tuple_T_T_T_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_8_T_for_Tuple_T_T_T_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T__for_array_8_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T__for_array_Usize_8_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -16415,7 +16423,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -16425,7 +16433,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T__for_array_8_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T__for_array_Usize_8_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (B A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ B; A; Z; Y; X; W; V; U; T ].
@@ -16534,7 +16542,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -16641,7 +16649,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -17049,7 +17057,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -17884,7 +17892,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -18719,7 +18727,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -19555,7 +19563,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -20391,7 +20399,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20694,7 +20702,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20817,7 +20825,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20829,7 +20837,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_9_T_for_Tuple_T_T_T_T_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_9_T_for_Tuple_T_T_T_T_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T ].
     
     (*
@@ -20885,7 +20893,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20894,12 +20902,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 9 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_9_T_for_Tuple_T_T_T_T_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_9_T_for_Tuple_T_T_T_T_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T__for_array_9_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 9 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T__for_array_Usize_9_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -20954,7 +20963,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20964,7 +20973,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T__for_array_9_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T__for_array_Usize_9_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -21084,7 +21093,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -21201,7 +21210,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -21663,7 +21672,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -22623,7 +22632,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -23583,7 +23592,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -24544,7 +24553,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -25505,7 +25514,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -25852,7 +25861,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -25986,7 +25995,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -25998,7 +26007,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default C B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_C_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_10_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_10_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T; T ].
     
     (*
@@ -26057,7 +26066,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -26066,12 +26075,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 10 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_10_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_10_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T__for_array_10_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 10 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T__for_array_Usize_10_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -26129,7 +26139,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -26139,7 +26149,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T__for_array_10_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T__for_array_Usize_10_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (D C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -26275,7 +26285,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -26408,7 +26418,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -26923,7 +26933,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -28012,7 +28022,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -29101,7 +29111,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -30191,7 +30201,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -31281,7 +31291,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -31673,7 +31683,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -31817,7 +31827,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -31829,7 +31839,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default D C B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_D_where_core_default_Default_C_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_11_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_11_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ].
     
     (*
@@ -31891,7 +31901,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -31900,12 +31910,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 11 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_11_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_11_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T__for_array_11_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 11 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T__for_array_Usize_11_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -31966,7 +31977,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -31976,7 +31987,7 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T__for_array_11_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T__for_array_Usize_11_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_E_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (E D C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -32134,7 +32145,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -32289,7 +32300,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -32860,7 +32871,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -34082,7 +34093,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -35304,7 +35315,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -36527,7 +36538,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -37750,7 +37761,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -38189,7 +38200,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -38343,7 +38354,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -38355,7 +38366,7 @@ Module tuple.
         (* Instance *) [ ("default", InstanceField.Method (default E D C B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_E_where_core_default_Default_D_where_core_default_Default_C_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_convert_From_array_12_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_T_.
+  Module Impl_core_convert_From_array_Usize_12_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ].
     
     (*
@@ -38420,7 +38431,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -38429,12 +38440,13 @@ Module tuple.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 12 ] [ T ] ]
+        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_12_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_T_.
+  End Impl_core_convert_From_array_Usize_12_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_T_.
   
-  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T_T__for_array_12_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 12 ] [ T ].
+  Module Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T_T__for_array_Usize_12_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ].
     
     (*
                 fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
@@ -38498,7 +38510,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -38508,5 +38520,5 @@ Module tuple.
         (Self T)
         (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T_T__for_array_12_T.
+  End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T_T__for_array_Usize_12_T.
 End tuple.

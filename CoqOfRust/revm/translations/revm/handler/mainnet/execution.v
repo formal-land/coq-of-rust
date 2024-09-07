@@ -178,30 +178,31 @@ Module handler.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::gas::Gas",
-                                          "erase_cost",
-                                          []
-                                        |),
-                                        [ M.read (| gas |); M.read (| remaining |) ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::gas::Gas",
-                                          "record_refund",
-                                          []
-                                        |),
-                                        [ M.read (| gas |); M.read (| refunded |) ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "erase_cost",
+                                            []
+                                          |),
+                                          [ M.read (| gas |); M.read (| remaining |) ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "record_refund",
+                                            []
+                                          |),
+                                          [ M.read (| gas |); M.read (| refunded |) ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -239,19 +240,20 @@ Module handler.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::gas::Gas",
-                                          "erase_cost",
-                                          []
-                                        |),
-                                        [ M.read (| gas |); M.read (| remaining |) ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "erase_cost",
+                                            []
+                                          |),
+                                          [ M.read (| gas |); M.read (| remaining |) ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -299,7 +301,7 @@ Module handler.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_frame_return_with_refund_flag :
@@ -360,7 +362,7 @@ Module handler.
                 |) in
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_last_frame_return :
@@ -395,7 +397,7 @@ Module handler.
                 M.read (| inputs |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_call : M.IsFunction "revm::handler::mainnet::execution::call" call.
@@ -490,7 +492,7 @@ Module handler.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_call_return :
@@ -666,7 +668,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_insert_call_outcome :
@@ -713,7 +715,7 @@ Module handler.
                 M.read (| inputs |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_create : M.IsFunction "revm::handler::mainnet::execution::create" create.
@@ -822,7 +824,7 @@ Module handler.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_create_return :
@@ -995,7 +997,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_insert_create_outcome :
@@ -1044,7 +1046,7 @@ Module handler.
                 M.read (| inputs |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_eofcreate :
@@ -1158,7 +1160,7 @@ Module handler.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_eofcreate_return :
@@ -1347,7 +1349,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_insert_eofcreate_outcome :

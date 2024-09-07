@@ -56,41 +56,43 @@ Module struct_defs.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let e := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::errors::PartialVMError",
-                                  "finish",
-                                  []
-                                |),
-                                [
-                                  M.read (| e |);
-                                  Value.StructTuple
-                                    "move_binary_format::errors::Location::Module"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "self_id",
-                                          []
-                                        |),
-                                        [ M.read (| module |) ]
-                                      |)
-                                    ]
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let e := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    "finish",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| e |);
+                                    Value.StructTuple
+                                      "move_binary_format::errors::Location::Module"
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "self_id",
+                                            []
+                                          |),
+                                          [ M.read (| module |) ]
+                                        |)
+                                      ]
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module :
@@ -335,7 +337,7 @@ Module struct_defs.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module_impl :
@@ -565,7 +567,7 @@ Module struct_defs.
                 [ ("module", M.read (| module |)); ("handle_to_def", M.read (| handle_to_def |)) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -632,7 +634,7 @@ Module struct_defs.
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -953,97 +955,99 @@ Module struct_defs.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let parent := M.copy (| γ0_0 |) in
-                                        let children := M.copy (| γ0_1 |) in
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::set::IntoIter")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::StructDefinitionIndex";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            [],
-                                            "map",
-                                            [
-                                              Ty.tuple
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                          let parent := M.copy (| γ0_0 |) in
+                                          let children := M.copy (| γ0_1 |) in
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::set::IntoIter")
+                                                []
                                                 [
                                                   Ty.path
                                                     "move_binary_format::file_format::StructDefinitionIndex";
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructDefinitionIndex"
-                                                ];
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::StructDefinitionIndex"
-                                                    ]
-                                                ]
-                                                (Ty.tuple
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              [],
+                                              "map",
+                                              [
+                                                Ty.tuple
                                                   [
                                                     Ty.path
                                                       "move_binary_format::file_format::StructDefinitionIndex";
                                                     Ty.path
                                                       "move_binary_format::file_format::StructDefinitionIndex"
-                                                  ])
-                                            ]
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::collect::IntoIterator",
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::set::BTreeSet")
-                                                  []
+                                                  ];
+                                                Ty.function
                                                   [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::StructDefinitionIndex";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ],
-                                                [],
-                                                "into_iter",
-                                                []
-                                              |),
-                                              [ M.read (| children |) ]
-                                            |);
-                                            M.closure
-                                              (fun γ =>
-                                                ltac:(M.monadic
-                                                  match γ with
-                                                  | [ α0 ] =>
-                                                    M.match_operator (|
-                                                      M.alloc (| α0 |),
+                                                    Ty.tuple
                                                       [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let child := M.copy (| γ |) in
-                                                            Value.Tuple
-                                                              [
-                                                                M.read (| parent |);
-                                                                M.read (| child |)
-                                                              ]))
+                                                        Ty.path
+                                                          "move_binary_format::file_format::StructDefinitionIndex"
                                                       ]
-                                                    |)
-                                                  | _ => M.impossible (||)
-                                                  end))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                                  ]
+                                                  (Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex";
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                                    ])
+                                              ]
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::collect::IntoIterator",
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::set::BTreeSet")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinitionIndex";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  "into_iter",
+                                                  []
+                                                |),
+                                                [ M.read (| children |) ]
+                                              |);
+                                              M.closure
+                                                (fun γ =>
+                                                  ltac:(M.monadic
+                                                    match γ with
+                                                    | [ α0 ] =>
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let child := M.copy (| γ |) in
+                                                                Value.Tuple
+                                                                  [
+                                                                    M.read (| parent |);
+                                                                    M.read (| child |)
+                                                                  ]))
+                                                          ]
+                                                        |)))
+                                                    | _ => M.impossible "wrong number of arguments"
+                                                    end))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -1168,7 +1172,7 @@ Module struct_defs.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
@@ -1487,7 +1491,7 @@ Module struct_defs.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_struct_defs :
@@ -1659,8 +1663,8 @@ Module struct_defs.
                               (fun γ =>
                                 ltac:(M.monadic
                                   match γ with
-                                  | [] => M.alloc (| Value.Tuple [] |)
-                                  | _ => M.impossible (||)
+                                  | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           |)));
                       fun γ =>
@@ -1694,57 +1698,58 @@ Module struct_defs.
                                 ltac:(M.monadic
                                   match γ with
                                   | [] =>
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "core::result::Result::Err"
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::errors::PartialVMError",
-                                                    "with_message",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError",
-                                                        "new",
-                                                        []
-                                                      |),
-                                                      [
-                                                        Value.StructTuple
-                                                          "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              Value.StructTuple
+                                                "core::result::Result::Err"
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
+                                                      "with_message",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
+                                                          "new",
                                                           []
-                                                      ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "alloc::borrow::ToOwned",
-                                                        Ty.path "str",
-                                                        [],
-                                                        "to_owned",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Reference field when checking recursive structs"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
+                                                        |),
+                                                        [
+                                                          Value.StructTuple
+                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "alloc::borrow::ToOwned",
+                                                          Ty.path "str",
+                                                          [],
+                                                          "to_owned",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "Reference field when checking recursive structs"
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  | _ => M.impossible (||)
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           |)));
                       fun γ =>
@@ -2300,7 +2305,7 @@ Module struct_defs.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_signature_token :

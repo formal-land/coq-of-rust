@@ -43,41 +43,42 @@ Module cyclic_dependencies.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let e := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::errors::PartialVMError",
-                                "finish",
-                                []
-                              |),
-                              [
-                                M.read (| e |);
-                                Value.StructTuple
-                                  "move_binary_format::errors::Location::Module"
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "self_id",
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
-                                    |)
-                                  ]
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let e := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
+                                  "finish",
+                                  []
+                                |),
+                                [
+                                  M.read (| e |);
+                                  Value.StructTuple
+                                    "move_binary_format::errors::Location::Module"
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "self_id",
+                                          []
+                                        |),
+                                        [ M.read (| module |) ]
+                                      |)
+                                    ]
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module :
@@ -369,7 +370,7 @@ Module cyclic_dependencies.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_impl :
@@ -465,8 +466,8 @@ Module cyclic_dependencies.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -491,7 +492,8 @@ Module cyclic_dependencies.
                                         [ M.read (| cursor |) ]
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -813,7 +815,7 @@ Module cyclic_dependencies.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Bool false ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_detect_cycles :

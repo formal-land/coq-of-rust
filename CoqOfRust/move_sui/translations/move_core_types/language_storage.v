@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module language_storage.
-  Definition value_CODE_TAG : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+  Definition value_CODE_TAG : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
   
-  Definition value_RESOURCE_TAG : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+  Definition value_RESOURCE_TAG : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
   Definition value_CORE_CODE_ADDRESS : Value.t :=
     M.run ltac:(M.monadic (M.get_constant (| "move_core_types::account_address::ONE" |))).
@@ -42,47 +44,50 @@ Module language_storage.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::arith::Add",
-                                      Ty.apply
-                                        (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                        []
-                                        [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                        ],
-                                      [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::arith::Add",
                                         Ty.apply
                                           (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                           []
                                           [
                                             Ty.path
                                               "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ]
-                                      ],
-                                      "add",
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE"
+                                          ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                            ]
+                                        ],
+                                        "add",
+                                        []
+                                      |),
+                                      [
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE"
+                                          |)
+                                        |);
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE"
+                                          |)
                                         |)
-                                      |);
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE"
-                                        |)
-                                      |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end)))
               ]
             |)
@@ -209,7 +214,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 0;
+                            Value.Integer IntegerKind.U32 0;
                             M.read (| Value.String "bool" |)
                           ]
                         |)
@@ -233,7 +238,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.U32 1;
                             M.read (| Value.String "u8" |)
                           ]
                         |)
@@ -257,7 +262,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 2;
+                            Value.Integer IntegerKind.U32 2;
                             M.read (| Value.String "u64" |)
                           ]
                         |)
@@ -281,7 +286,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 3;
+                            Value.Integer IntegerKind.U32 3;
                             M.read (| Value.String "u128" |)
                           ]
                         |)
@@ -305,7 +310,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 4;
+                            Value.Integer IntegerKind.U32 4;
                             M.read (| Value.String "address" |)
                           ]
                         |)
@@ -329,7 +334,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 5;
+                            Value.Integer IntegerKind.U32 5;
                             M.read (| Value.String "signer" |)
                           ]
                         |)
@@ -363,7 +368,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 6;
+                            Value.Integer IntegerKind.U32 6;
                             M.read (| Value.String "vector" |);
                             M.read (| __field0 |)
                           ]
@@ -398,7 +403,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 7;
+                            Value.Integer IntegerKind.U32 7;
                             M.read (| Value.String "struct" |);
                             M.read (| __field0 |)
                           ]
@@ -423,7 +428,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 8;
+                            Value.Integer IntegerKind.U32 8;
                             M.read (| Value.String "u16" |)
                           ]
                         |)
@@ -447,7 +452,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 9;
+                            Value.Integer IntegerKind.U32 9;
                             M.read (| Value.String "u32" |)
                           ]
                         |)
@@ -471,7 +476,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 10;
+                            Value.Integer IntegerKind.U32 10;
                             M.read (| Value.String "u256" |)
                           ]
                         |)
@@ -479,7 +484,7 @@ Module language_storage.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -522,7 +527,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -560,19 +565,19 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "StructTag" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.rust_cast (Value.Bool false))
-                                      (Value.Integer 1))
-                                    (Value.Integer 1))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  BinOp.Wrap.add (|
+                                    BinOp.Wrap.add (|
+                                      M.rust_cast (Value.Bool false),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -852,7 +857,7 @@ Module language_storage.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -893,7 +898,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -931,13 +936,13 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ResourceKey" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1099,7 +1104,7 @@ Module language_storage.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1140,7 +1145,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1178,13 +1183,13 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ModuleId" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1346,7 +1351,7 @@ Module language_storage.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1387,7 +1392,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1616,7 +1621,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1671,7 +1676,7 @@ Module language_storage.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1796,7 +1801,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1898,7 +1903,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1935,7 +1940,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2123,7 +2128,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2277,7 +2282,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2421,7 +2426,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2461,7 +2466,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_string :
@@ -2509,7 +2514,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
             [ ("data", M.read (| self |)); ("with_prefix", M.read (| with_prefix |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_display :
@@ -2687,23 +2692,24 @@ Module language_storage.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                            ],
+                                          "new",
                                           []
-                                          [
-                                            Ty.path
-                                              "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ],
-                                        "new",
-                                        []
-                                      |),
-                                      [ Value.Integer 0 ]
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                        |),
+                                        [ Value.Integer IntegerKind.U64 0 ]
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2751,7 +2757,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
@@ -2778,7 +2784,7 @@ Module language_storage.
             M.get_function (| "move_core_types::parser::parse_type_tag", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2858,7 +2864,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2997,7 +3003,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3105,7 +3111,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3149,7 +3155,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3248,7 +3254,7 @@ Module language_storage.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3430,7 +3436,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3585,7 +3591,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3628,7 +3634,10 @@ Module language_storage.
                             (Ty.path "alloc::boxed::Box")
                             []
                             [
-                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
@@ -3696,7 +3705,7 @@ Module language_storage.
               |) in
             key
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_access_vector :
@@ -3812,7 +3821,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ascii_string :
@@ -3928,7 +3937,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_std_string :
@@ -3976,7 +3985,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_module_id : M.IsAssociatedFunction Self "module_id" module_id.
@@ -4007,7 +4016,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_string :
@@ -4059,7 +4068,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
             [ ("data", M.read (| self |)); ("with_prefix", M.read (| with_prefix |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_display :
@@ -4285,37 +4294,29 @@ Module language_storage.
                       "new",
                       []
                     |),
-                    [ Value.Integer 0 ]
+                    [ Value.Integer IntegerKind.U64 0 ]
                   |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let accum := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let val := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path
-                                                  "move_core_types::gas_algebra::GasQuantity")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                                ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let accum := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let val := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path
                                                     "move_core_types::gas_algebra::GasQuantity")
@@ -4323,35 +4324,44 @@ Module language_storage.
                                                   [
                                                     Ty.path
                                                       "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [
-                                              M.read (| accum |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_core_types::language_storage::TypeTag",
-                                                  "abstract_size_for_gas_metering",
-                                                  []
-                                                |),
-                                                [ M.read (| val |) ]
-                                              |)
-                                            ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "move_core_types::gas_algebra::GasQuantity")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [
+                                                M.read (| accum |);
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_core_types::language_storage::TypeTag",
+                                                    "abstract_size_for_gas_metering",
+                                                    []
+                                                  |),
+                                                  [ M.read (| val |) ]
+                                                |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
@@ -4378,7 +4388,7 @@ Module language_storage.
             M.get_function (| "move_core_types::parser::parse_struct_tag", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4439,7 +4449,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4516,7 +4526,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4578,7 +4588,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4615,7 +4625,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4674,7 +4684,7 @@ Module language_storage.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4760,7 +4770,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4840,7 +4850,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4871,7 +4881,7 @@ Module language_storage.
               "address"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
@@ -4891,7 +4901,7 @@ Module language_storage.
             "move_core_types::language_storage::ResourceKey",
             "type_"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_type_ : M.IsAssociatedFunction Self "type_" type_.
@@ -4909,7 +4919,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::ResourceKey"
             [ ("address", M.read (| address |)); ("type_", M.read (| type_ |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4965,7 +4975,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5042,7 +5052,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5104,7 +5114,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5141,7 +5151,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5200,7 +5210,7 @@ Module language_storage.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5286,7 +5296,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5366,7 +5376,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5412,7 +5422,7 @@ Module language_storage.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5441,7 +5451,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::ModuleId"
             [ ("address", M.read (| address |)); ("name", M.read (| name |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -5472,7 +5482,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -5492,7 +5502,7 @@ Module language_storage.
             "move_core_types::language_storage::ModuleId",
             "address"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
@@ -5526,7 +5536,10 @@ Module language_storage.
                             (Ty.path "alloc::boxed::Box")
                             []
                             [
-                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
@@ -5592,7 +5605,7 @@ Module language_storage.
               |) in
             key
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_access_vector :
@@ -5624,7 +5637,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_string :
@@ -5663,7 +5676,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::IdDisplay"
             [ ("id", M.read (| self |)); ("with_prefix", M.read (| with_prefix |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_display :
@@ -5752,7 +5765,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_short_str_lossless :
@@ -5809,7 +5822,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6333,7 +6346,7 @@ Module language_storage.
                                               |)
                                             ]
                                           |);
-                                          Value.Integer 1
+                                          Value.Integer IntegerKind.Usize 1
                                         ]
                                       |)
                                     ]
@@ -6625,7 +6638,7 @@ Module language_storage.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7042,7 +7055,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7125,7 +7138,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7167,7 +7180,7 @@ Module language_storage.
                 [ M.read (| t |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

@@ -41,7 +41,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ name_buf := M.alloc (| repeat (| Value.Integer 0, Value.Integer 12 |) |) in
+        let~ name_buf :=
+          M.alloc (|
+            repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 12 |)
+          |) in
         let~ _ :=
           let~ _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
@@ -105,7 +108,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_clobbered_registers::main" main.

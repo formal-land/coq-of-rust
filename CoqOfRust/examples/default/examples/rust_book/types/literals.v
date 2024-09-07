@@ -25,10 +25,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 1 |) in
-        let~ y := M.alloc (| Value.Integer 2 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.U8 1 |) in
+        let~ y := M.alloc (| Value.Integer IntegerKind.U32 2 |) in
         let~ z := M.copy (| UnsupportedLiteral |) in
-        let~ i := M.alloc (| Value.Integer 1 |) in
+        let~ i := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
         let~ f := M.copy (| UnsupportedLiteral |) in
         let~ _ :=
           let~ _ :=
@@ -259,7 +259,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "literals::main" main.

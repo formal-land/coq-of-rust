@@ -22,18 +22,26 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                M.alloc (| Value.Integer 0 |)));
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.I32 0
+                  |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_1 |),
+                    Value.Integer IntegerKind.I32 0
+                  |) in
+                M.alloc (| Value.Integer IntegerKind.I32 0 |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                M.alloc (| Value.Integer 1 |)))
+                M.alloc (| Value.Integer IntegerKind.I32 1 |)))
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_matching : M.IsFunction "constructor_as_function::matching" matching.
@@ -74,7 +82,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -166,7 +174,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 3 ]
+                                        [ Value.Integer IntegerKind.Usize 3 ]
                                         [ Ty.path "i32" ];
                                       Ty.path "alloc::alloc::Global"
                                     ],
@@ -176,7 +184,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     Value.Array
-                                      [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                                      [
+                                        Value.Integer IntegerKind.I32 1;
+                                        Value.Integer IntegerKind.I32 2;
+                                        Value.Integer IntegerKind.I32 3
+                                      ]
                                   |)
                                 ]
                               |)
@@ -233,7 +245,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "constructor_as_function::main" main.

@@ -47,7 +47,7 @@ Module pin.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -105,7 +105,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -151,7 +151,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -227,7 +227,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -273,7 +273,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -319,7 +319,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -365,7 +365,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -411,7 +411,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -470,7 +470,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -519,7 +519,7 @@ Module pin.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -555,7 +555,7 @@ Module pin.
             |),
             [ M.read (| pointer |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new :
@@ -576,7 +576,7 @@ Module pin.
           M.read (|
             M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "__pointer" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -599,7 +599,7 @@ Module pin.
         ltac:(M.monadic
           (let pointer := M.alloc (| pointer |) in
           Value.StructRecord "core::pin::Pin" [ ("__pointer", M.read (| pointer |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_unchecked :
@@ -640,7 +640,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ref :
@@ -684,7 +684,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut :
@@ -759,7 +759,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_deref_mut :
@@ -799,7 +799,7 @@ Module pin.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set :
@@ -825,7 +825,7 @@ Module pin.
           M.read (|
             M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "__pointer" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner_unchecked :
@@ -890,7 +890,7 @@ Module pin.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_unchecked :
@@ -911,7 +911,7 @@ Module pin.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "__pointer" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_ref :
@@ -938,7 +938,7 @@ Module pin.
             |),
             [ M.read (| r |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_static_ref :
@@ -969,7 +969,7 @@ Module pin.
                   M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "__pointer" |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_ref :
@@ -993,7 +993,7 @@ Module pin.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "__pointer" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -1019,7 +1019,7 @@ Module pin.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "__pointer" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_unchecked_mut :
@@ -1089,7 +1089,7 @@ Module pin.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_unchecked_mut :
@@ -1116,7 +1116,7 @@ Module pin.
             |),
             [ M.read (| r |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_static_mut :
@@ -1163,7 +1163,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1210,7 +1210,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1272,7 +1272,7 @@ Module pin.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1310,7 +1310,7 @@ Module pin.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1348,7 +1348,7 @@ Module pin.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

@@ -89,7 +89,7 @@ Module interpreter.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -186,23 +186,24 @@ Module interpreter.
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "last_checkpoint"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "last_checkpoint"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -247,7 +248,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -331,7 +332,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -373,7 +374,7 @@ Module interpreter.
                     |),
                     []
                   |));
-                ("last_checkpoint", Value.Integer 0)
+                ("last_checkpoint", Value.Integer IntegerKind.Usize 0)
               ]
           |))).
     
@@ -470,7 +471,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -502,7 +503,7 @@ Module interpreter.
               |),
               []
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -532,9 +533,14 @@ Module interpreter.
                 "with_capacity",
                 []
               |),
-              [ BinOp.Wrap.mul Integer.Usize (Value.Integer 4) (Value.Integer 1024) ]
+              [
+                BinOp.Wrap.mul (|
+                  Value.Integer IntegerKind.Usize 4,
+                  Value.Integer IntegerKind.Usize 1024
+                |)
+              ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -580,11 +586,11 @@ Module interpreter.
                       "with_capacity",
                       []
                     |),
-                    [ Value.Integer 32 ]
+                    [ Value.Integer IntegerKind.Usize 32 ]
                   |));
-                ("last_checkpoint", Value.Integer 0)
+                ("last_checkpoint", Value.Integer IntegerKind.Usize 0)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_capacity :
@@ -655,7 +661,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_context : M.IsAssociatedFunction Self "new_context" new_context.
@@ -790,7 +796,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_free_context :
@@ -806,9 +812,8 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.Usize
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -824,15 +829,16 @@ Module interpreter.
                     "buffer"
                   |)
                 ]
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::interpreter::shared_memory::SharedMemory",
                   "last_checkpoint"
                 |)
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -847,17 +853,18 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.eq (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                   "len",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.Usize 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -885,7 +892,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_current_expansion_cost :
@@ -920,23 +927,23 @@ Module interpreter.
                         "revm_interpreter::interpreter::shared_memory::SharedMemory",
                         "buffer"
                       |);
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "revm_interpreter::interpreter::shared_memory::SharedMemory",
                             "last_checkpoint"
                           |)
-                        |))
-                        (M.read (| new_size |));
-                      Value.Integer 0
+                        |),
+                        M.read (| new_size |)
+                      |);
+                      Value.Integer IntegerKind.U8 0
                     ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_resize : M.IsAssociatedFunction Self "resize" resize.
@@ -965,11 +972,11 @@ Module interpreter.
                   "core::ops::range::Range"
                   [
                     ("start", M.read (| offset |));
-                    ("end_", BinOp.Wrap.add Integer.Usize (M.read (| offset |)) (M.read (| size |)))
+                    ("end_", BinOp.Wrap.add (| M.read (| offset |), M.read (| size |) |))
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice : M.IsAssociatedFunction Self "slice" slice.
@@ -1192,7 +1199,7 @@ Module interpreter.
                     |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_range : M.IsAssociatedFunction Self "slice_range" slice_range.
@@ -1215,9 +1222,7 @@ Module interpreter.
             let size := M.alloc (| size |) in
             M.read (|
               let~ end_ :=
-                M.alloc (|
-                  BinOp.Wrap.add Integer.Usize (M.read (| offset |)) (M.read (| size |))
-                |) in
+                M.alloc (| BinOp.Wrap.add (| M.read (| offset |), M.read (| size |) |) |) in
               M.alloc (|
                 M.read (|
                   M.match_operator (|
@@ -1345,7 +1350,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_mut : M.IsAssociatedFunction Self "slice_mut" slice_mut.
@@ -1369,12 +1374,12 @@ Module interpreter.
                     "slice",
                     []
                   |),
-                  [ M.read (| self |); M.read (| offset |); Value.Integer 1 ]
+                  [ M.read (| self |); M.read (| offset |); Value.Integer IntegerKind.Usize 1 ]
                 |),
-                M.alloc (| Value.Integer 0 |)
+                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_byte : M.IsAssociatedFunction Self "get_byte" get_byte.
@@ -1398,7 +1403,7 @@ Module interpreter.
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [];
                     Ty.path "core::array::TryFromSliceError"
                   ],
@@ -1413,7 +1418,7 @@ Module interpreter.
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                        [ Value.Integer 32 ]
+                        [ Value.Integer IntegerKind.Usize 32 ]
                         []
                     ],
                     "try_into",
@@ -1426,13 +1431,13 @@ Module interpreter.
                         "slice",
                         []
                       |),
-                      [ M.read (| self |); M.read (| offset |); Value.Integer 32 ]
+                      [ M.read (| self |); M.read (| offset |); Value.Integer IntegerKind.Usize 32 ]
                     |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_word : M.IsAssociatedFunction Self "get_word" get_word.
@@ -1453,9 +1458,14 @@ Module interpreter.
                 "core::convert::Into",
                 Ty.apply
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer 32 ]
+                  [ Value.Integer IntegerKind.Usize 32 ]
                   [],
-                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ],
                 "into",
                 []
               |),
@@ -1470,7 +1480,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_u256 : M.IsAssociatedFunction Self "get_u256" get_u256.
@@ -1505,7 +1515,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_byte : M.IsAssociatedFunction Self "set_byte" set_byte.
@@ -1539,7 +1549,7 @@ Module interpreter.
                           "core::ops::index::Index",
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [],
                           [ Ty.path "core::ops::range::RangeFull" ],
                           "index",
@@ -1552,7 +1562,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_word : M.IsAssociatedFunction Self "set_word" set_word.
@@ -1586,7 +1596,10 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [],
                             "to_be_bytes",
                             []
@@ -1599,7 +1612,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_u256 : M.IsAssociatedFunction Self "set_u256" set_u256.
@@ -1627,15 +1640,16 @@ Module interpreter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "is_empty",
                                   []
                                 |),
                                 [ M.read (| value |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
@@ -1676,7 +1690,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set : M.IsAssociatedFunction Self "set" set.
@@ -1722,16 +1736,17 @@ Module interpreter.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ge
-                                    (M.read (| data_offset |))
-                                    (M.call_closure (|
+                                  BinOp.ge (|
+                                    M.read (| data_offset |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| data |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1760,7 +1775,7 @@ Module interpreter.
                                               M.read (| len |)
                                             ]
                                           |);
-                                          Value.Integer 0
+                                          Value.Integer IntegerKind.U8 0
                                         ]
                                       |)
                                     |) in
@@ -1776,10 +1791,7 @@ Module interpreter.
                       M.call_closure (|
                         M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
                         [
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| data_offset |))
-                            (M.read (| len |));
+                          BinOp.Wrap.add (| M.read (| data_offset |), M.read (| len |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -1793,10 +1805,7 @@ Module interpreter.
                     |) in
                   let~ data_len :=
                     M.alloc (|
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (| data_end |))
-                        (M.read (| data_offset |))
+                      BinOp.Wrap.sub (| M.read (| data_end |), M.read (| data_offset |) |)
                     |) in
                   let~ _ :=
                     M.match_operator (|
@@ -1816,11 +1825,11 @@ Module interpreter.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (LogicalOp.and (|
-                                                BinOp.Pure.lt
-                                                  (M.read (| data_offset |))
-                                                  (M.call_closure (|
+                                            UnOp.not (|
+                                              LogicalOp.and (|
+                                                BinOp.lt (|
+                                                  M.read (| data_offset |),
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -1830,11 +1839,12 @@ Module interpreter.
                                                       []
                                                     |),
                                                     [ M.read (| data |) ]
-                                                  |)),
+                                                  |)
+                                                |),
                                                 ltac:(M.monadic
-                                                  (BinOp.Pure.le
-                                                    (M.read (| data_end |))
-                                                    (M.call_closure (|
+                                                  (BinOp.le (|
+                                                    M.read (| data_end |),
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -1844,8 +1854,10 @@ Module interpreter.
                                                         []
                                                       |),
                                                       [ M.read (| data |) ]
-                                                    |))))
-                                              |))
+                                                    |)
+                                                  |)))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -1926,24 +1938,21 @@ Module interpreter.
                             |),
                             [
                               M.read (| self |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (M.read (| memory_offset |))
-                                (M.read (| data_len |));
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| len |))
-                                (M.read (| data_len |))
+                              BinOp.Wrap.add (|
+                                M.read (| memory_offset |),
+                                M.read (| data_len |)
+                              |);
+                              BinOp.Wrap.sub (| M.read (| len |), M.read (| data_len |) |)
                             ]
                           |);
-                          Value.Integer 0
+                          Value.Integer IntegerKind.U8 0
                         ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_data : M.IsAssociatedFunction Self "set_data" set_data.
@@ -1983,8 +1992,7 @@ Module interpreter.
                         "core::ops::range::Range"
                         [
                           ("start", M.read (| src |));
-                          ("end_",
-                            BinOp.Wrap.add Integer.Usize (M.read (| src |)) (M.read (| len |)))
+                          ("end_", BinOp.Wrap.add (| M.read (| src |), M.read (| len |) |))
                         ];
                       M.read (| dst |)
                     ]
@@ -1992,7 +2000,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy : M.IsAssociatedFunction Self "copy" copy.
@@ -2069,7 +2077,7 @@ Module interpreter.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_context_memory :
@@ -2152,7 +2160,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_context_memory_mut :
@@ -2169,14 +2177,14 @@ Module interpreter.
       | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
-          BinOp.Wrap.div
-            Integer.U64
-            (M.call_closure (|
+          BinOp.Wrap.div (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
-              [ M.read (| len |); Value.Integer 31 ]
-            |))
-            (Value.Integer 32)))
-      | _, _, _ => M.impossible
+              [ M.read (| len |); Value.Integer IntegerKind.U64 31 ]
+            |),
+            Value.Integer IntegerKind.U64 32
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_num_words :

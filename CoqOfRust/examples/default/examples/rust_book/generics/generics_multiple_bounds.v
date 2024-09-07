@@ -81,7 +81,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_compare_prints :
@@ -168,7 +168,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_compare_types : M.IsFunction "generics_multiple_bounds::compare_types" compare_types.
@@ -193,7 +193,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ string := M.copy (| Value.String "words" |) in
         let~ array :=
-          M.alloc (| Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ] |) in
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.I32 1;
+                Value.Integer IntegerKind.I32 2;
+                Value.Integer IntegerKind.I32 3
+              ]
+          |) in
         let~ vec :=
           M.alloc (|
             M.call_closure (|
@@ -210,7 +217,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "alloc::boxed::Box")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
@@ -218,7 +228,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [
                       M.alloc (|
-                        Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                        Value.Array
+                          [
+                            Value.Integer IntegerKind.I32 1;
+                            Value.Integer IntegerKind.I32 2;
+                            Value.Integer IntegerKind.I32 3
+                          ]
                       |)
                     ]
                   |)
@@ -242,7 +257,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_function (|
                 "generics_multiple_bounds::compare_types",
                 [
-                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 3 ]
+                    [ Ty.path "i32" ];
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
@@ -254,7 +272,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_multiple_bounds::main" main.

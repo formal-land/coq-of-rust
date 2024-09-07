@@ -19,7 +19,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_u8 :
@@ -36,7 +36,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_u16 :
@@ -56,7 +56,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_u32 :
@@ -76,7 +76,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_u64 :
@@ -96,7 +96,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_u128 :
@@ -116,7 +116,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_u256 :
@@ -136,7 +136,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_bool :
@@ -156,7 +156,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_address :
@@ -176,7 +176,7 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_signer :
@@ -331,7 +331,7 @@ Module annotated_visitor.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_vector :
@@ -510,7 +510,7 @@ Module annotated_visitor.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_traverse_struct :
@@ -551,7 +551,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -576,7 +576,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -601,7 +601,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -626,7 +626,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -651,7 +651,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -676,7 +676,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -701,7 +701,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -726,7 +726,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -751,7 +751,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -779,7 +779,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| driver |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -807,7 +807,7 @@ Module annotated_visitor.
             |),
             [ M.read (| self |); M.read (| driver |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1087,7 +1087,7 @@ Module annotated_visitor.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1173,7 +1173,7 @@ Module annotated_visitor.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1232,9 +1232,9 @@ Module annotated_visitor.
               ("bytes", M.read (| bytes |));
               ("layout", M.read (| layout |));
               ("len", M.read (| len |));
-              ("off", Value.Integer 0)
+              ("off", Value.Integer IntegerKind.U64 0)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1256,7 +1256,7 @@ Module annotated_visitor.
               "layout"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_element_layout :
@@ -1279,7 +1279,7 @@ Module annotated_visitor.
               "len"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -1294,22 +1294,23 @@ Module annotated_visitor.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.lt
-            (M.read (|
+          BinOp.lt (|
+            M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "move_core_types::annotated_visitor::VecDriver",
                 "off"
               |)
-            |))
-            (M.read (|
+            |),
+            M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "move_core_types::annotated_visitor::VecDriver",
                 "len"
               |)
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_has_element : M.IsAssociatedFunction Self "has_element" has_element.
@@ -1348,21 +1349,22 @@ Module annotated_visitor.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ge
-                                    (M.read (|
+                                  BinOp.ge (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "move_core_types::annotated_visitor::VecDriver",
                                         "off"
                                       |)
-                                    |))
-                                    (M.read (|
+                                    |),
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "move_core_types::annotated_visitor::VecDriver",
                                         "len"
                                       |)
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1478,7 +1480,7 @@ Module annotated_visitor.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add Integer.U64 (M.read (| β |)) (Value.Integer 1)
+                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U64 1 |)
                               |) in
                             M.alloc (|
                               Value.StructTuple "core::option::Option::Some" [ M.read (| res |) ]
@@ -1488,7 +1490,7 @@ Module annotated_visitor.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next_element : M.IsAssociatedFunction Self "next_element" next_element.
@@ -1539,27 +1541,28 @@ Module annotated_visitor.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let v := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
-                                  "is_some",
-                                  []
-                                |),
-                                [ v ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let v := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
+                                    "is_some",
+                                    []
+                                  |),
+                                  [ v ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_skip_element : M.IsAssociatedFunction Self "skip_element" skip_element.
@@ -1588,9 +1591,9 @@ Module annotated_visitor.
             [
               ("bytes", M.read (| bytes |));
               ("layout", M.read (| layout |));
-              ("off", Value.Integer 0)
+              ("off", Value.Integer IntegerKind.Usize 0)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1612,7 +1615,7 @@ Module annotated_visitor.
               "layout"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_struct_layout :
@@ -1675,7 +1678,7 @@ Module annotated_visitor.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_peek_field : M.IsAssociatedFunction Self "peek_field" peek_field.
@@ -1843,7 +1846,7 @@ Module annotated_visitor.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -1858,7 +1861,7 @@ Module annotated_visitor.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next_field : M.IsAssociatedFunction Self "next_field" next_field.
@@ -1955,94 +1958,98 @@ Module annotated_visitor.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let res := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::annotated_value::MoveFieldLayout"
-                                            ];
-                                          Ty.tuple []
-                                        ]
-                                    ],
-                                  "map",
-                                  [
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let res := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "&")
+                                      (Ty.path "core::option::Option")
                                       []
-                                      [ Ty.path "move_core_types::annotated_value::MoveFieldLayout"
-                                      ];
-                                    Ty.function
                                       [
                                         Ty.tuple
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::annotated_value::MoveFieldLayout"
-                                                  ];
-                                                Ty.tuple []
-                                              ]
+                                                Ty.path
+                                                  "move_core_types::annotated_value::MoveFieldLayout"
+                                              ];
+                                            Ty.tuple []
                                           ]
-                                      ]
-                                      (Ty.apply
+                                      ],
+                                    "map",
+                                    [
+                                      Ty.apply
                                         (Ty.path "&")
                                         []
                                         [
                                           Ty.path
                                             "move_core_types::annotated_value::MoveFieldLayout"
-                                        ])
-                                  ]
-                                |),
-                                [
-                                  M.read (| res |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
+                                        ];
+                                      Ty.function
+                                        [
+                                          Ty.tuple
                                             [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                  let γ0_1 :=
-                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                  let f := M.copy (| γ0_0 |) in
-                                                  M.read (| f |)))
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::annotated_value::MoveFieldLayout"
+                                                    ];
+                                                  Ty.tuple []
+                                                ]
                                             ]
-                                          |)
-                                        | _ => M.impossible (||)
-                                        end))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::annotated_value::MoveFieldLayout"
+                                          ])
+                                    ]
+                                  |),
+                                  [
+                                    M.read (| res |);
+                                    M.closure
+                                      (fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                      let γ0_1 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                      let f := M.copy (| γ0_0 |) in
+                                                      M.read (| f |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_skip_field : M.IsAssociatedFunction Self "skip_field" skip_field.
@@ -2115,7 +2122,10 @@ Module annotated_visitor.
                                   (Ty.path "core::result::Result")
                                   []
                                   [
-                                    Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "u8" ];
                                     Ty.path "move_core_types::annotated_visitor::Error"
                                   ],
                                 [],
@@ -2192,7 +2202,7 @@ Module annotated_visitor.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer 0
+                                  Value.Integer IntegerKind.U8 0
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
@@ -2212,7 +2222,7 @@ Module annotated_visitor.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.U8 1
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
@@ -2286,7 +2296,7 @@ Module annotated_visitor.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 1 ]
+                                                [ Value.Integer IntegerKind.Usize 1 ]
                                                 [ Ty.path "u8" ];
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
@@ -2397,7 +2407,7 @@ Module annotated_visitor.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ];
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
@@ -2508,7 +2518,7 @@ Module annotated_visitor.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 4 ]
+                                                [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ];
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
@@ -2619,7 +2629,7 @@ Module annotated_visitor.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 8 ]
+                                                [ Value.Integer IntegerKind.Usize 8 ]
                                                 [ Ty.path "u8" ];
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
@@ -2730,7 +2740,7 @@ Module annotated_visitor.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 16 ]
+                                                [ Value.Integer IntegerKind.Usize 16 ]
                                                 [ Ty.path "u8" ];
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
@@ -2844,7 +2854,7 @@ Module annotated_visitor.
                                           [
                                             Ty.apply
                                               (Ty.path "array")
-                                              [ Value.Integer 32 ]
+                                              [ Value.Integer IntegerKind.Usize 32 ]
                                               [ Ty.path "u8" ];
                                             Ty.path "move_core_types::annotated_visitor::Error"
                                           ],
@@ -2958,7 +2968,7 @@ Module annotated_visitor.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 32 ]
+                                                [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "u8" ];
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
@@ -3073,7 +3083,7 @@ Module annotated_visitor.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 32 ]
+                                                [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "u8" ];
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
@@ -3211,17 +3221,18 @@ Module annotated_visitor.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (Value.StructTuple
-                                                        "move_core_types::annotated_visitor::Error::UnexpectedEof"
-                                                        []))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (Value.StructTuple
+                                                          "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                                                          []))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -3533,7 +3544,7 @@ Module annotated_visitor.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_visit_value :
@@ -3795,7 +3806,7 @@ Module annotated_visitor.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_visit_struct :
@@ -3818,7 +3829,7 @@ Module annotated_visitor.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ buf := M.alloc (| repeat (| Value.Integer 0, N |) |) in
+              let~ buf := M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, N |) |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (|
@@ -3867,17 +3878,18 @@ Module annotated_visitor.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "move_core_types::annotated_visitor::Error::UnexpectedEof"
-                                              []))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                                                []))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -3941,7 +3953,7 @@ Module annotated_visitor.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| buf |) ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read_exact :

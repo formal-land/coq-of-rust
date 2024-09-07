@@ -91,7 +91,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -159,7 +159,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -248,7 +248,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -285,7 +285,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -341,7 +341,7 @@ Module abi.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -443,7 +443,7 @@ Module abi.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -490,7 +490,7 @@ Module abi.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "ScriptABI" |);
-                            Value.Integer 0;
+                            Value.Integer IntegerKind.U32 0;
                             M.read (| Value.String "TransactionScript" |);
                             M.read (| __field0 |)
                           ]
@@ -517,7 +517,7 @@ Module abi.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "ScriptABI" |);
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.U32 1;
                             M.read (| Value.String "ScriptFunction" |);
                             M.read (| __field0 |)
                           ]
@@ -526,7 +526,7 @@ Module abi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -567,7 +567,7 @@ Module abi.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -605,22 +605,22 @@ Module abi.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ScriptFunctionABI" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (BinOp.Wrap.add
-                                      Integer.Usize
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.rust_cast (Value.Bool false))
-                                        (Value.Integer 1))
-                                      (Value.Integer 1))
-                                    (Value.Integer 1))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  BinOp.Wrap.add (|
+                                    BinOp.Wrap.add (|
+                                      BinOp.Wrap.add (|
+                                        M.rust_cast (Value.Bool false),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -963,7 +963,7 @@ Module abi.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1002,7 +1002,7 @@ Module abi.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1040,22 +1040,22 @@ Module abi.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "TransactionScriptABI" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (BinOp.Wrap.add
-                                      Integer.Usize
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.rust_cast (Value.Bool false))
-                                        (Value.Integer 1))
-                                      (Value.Integer 1))
-                                    (Value.Integer 1))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  BinOp.Wrap.add (|
+                                    BinOp.Wrap.add (|
+                                      BinOp.Wrap.add (|
+                                        M.rust_cast (Value.Bool false),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1409,7 +1409,7 @@ Module abi.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1448,7 +1448,7 @@ Module abi.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1486,13 +1486,13 @@ Module abi.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ArgumentABI" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1654,7 +1654,7 @@ Module abi.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1693,7 +1693,7 @@ Module abi.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1731,10 +1731,10 @@ Module abi.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "TypeArgumentABI" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (M.rust_cast (Value.Bool false))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                M.rust_cast (Value.Bool false),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1841,7 +1841,7 @@ Module abi.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1880,7 +1880,7 @@ Module abi.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2024,7 +2024,7 @@ Module abi.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2088,7 +2088,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2219,7 +2219,7 @@ Module abi.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2270,7 +2270,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2443,7 +2443,7 @@ Module abi.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2594,7 +2594,7 @@ Module abi.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2658,7 +2658,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2792,7 +2792,7 @@ Module abi.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2843,7 +2843,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3024,7 +3024,7 @@ Module abi.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3096,7 +3096,7 @@ Module abi.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3142,7 +3142,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3204,7 +3204,7 @@ Module abi.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3241,7 +3241,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3319,7 +3319,7 @@ Module abi.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3370,7 +3370,7 @@ Module abi.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3410,7 +3410,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3448,7 +3448,7 @@ Module abi.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3478,7 +3478,7 @@ Module abi.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3532,7 +3532,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3583,7 +3583,7 @@ Module abi.
               ("ty_args", M.read (| ty_args |));
               ("args", M.read (| args |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3614,7 +3614,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -3645,7 +3645,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
@@ -3679,7 +3679,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
@@ -3713,7 +3713,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
@@ -3747,7 +3747,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
@@ -3791,7 +3791,7 @@ Module abi.
               ("ty_args", M.read (| ty_args |));
               ("args", M.read (| args |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3822,7 +3822,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -3842,7 +3842,7 @@ Module abi.
             "move_core_types::abi::ScriptFunctionABI",
             "module_name"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_module_name : M.IsAssociatedFunction Self "module_name" module_name.
@@ -3873,7 +3873,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
@@ -3907,7 +3907,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
@@ -3941,7 +3941,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
@@ -3978,7 +3978,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_script_fun_abi :
@@ -4016,7 +4016,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_transaction_script_abi :
@@ -4082,7 +4082,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -4147,7 +4147,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
@@ -4212,7 +4212,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
@@ -4277,7 +4277,7 @@ Module abi.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
@@ -4300,7 +4300,7 @@ Module abi.
           Value.StructRecord
             "move_core_types::abi::ArgumentABI"
             [ ("name", M.read (| name |)); ("type_tag", M.read (| type_tag |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4331,7 +4331,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -4351,7 +4351,7 @@ Module abi.
             "move_core_types::abi::ArgumentABI",
             "type_tag"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_type_tag : M.IsAssociatedFunction Self "type_tag" type_tag.
@@ -4373,7 +4373,7 @@ Module abi.
           Value.StructRecord
             "move_core_types::abi::TypeArgumentABI"
             [ ("name", M.read (| name |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4404,7 +4404,7 @@ Module abi.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.

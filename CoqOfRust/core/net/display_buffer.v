@@ -51,9 +51,9 @@ Module net.
                     |),
                     SIZE
                   |));
-                ("len", Value.Integer 0)
+                ("len", Value.Integer IntegerKind.Usize 0)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -137,7 +137,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_str :
@@ -222,23 +222,23 @@ Module net.
                                       |)
                                     |));
                                   ("end_",
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (|
+                                    BinOp.Wrap.add (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::net::display_buffer::DisplayBuffer",
                                           "len"
                                         |)
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| bytes |) ]
-                                      |)))
+                                      |)
+                                    |))
                                 ]
                             ]
                           |)
@@ -273,17 +273,17 @@ Module net.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| β |))
-                            (M.call_closure (|
+                          BinOp.Wrap.add (|
+                            M.read (| β |),
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
                               [ M.read (| bytes |) ]
-                            |))
+                            |)
+                          |)
                         |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
@@ -298,7 +298,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

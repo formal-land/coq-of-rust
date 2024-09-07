@@ -36,7 +36,7 @@ Module boxed.
               [ x ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -59,7 +59,7 @@ Module boxed.
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_uninit :
@@ -84,7 +84,7 @@ Module boxed.
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_zeroed :
@@ -127,7 +127,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pin : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pin" (pin T).
@@ -151,7 +151,7 @@ Module boxed.
             |),
             [ M.read (| x |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new :
@@ -181,7 +181,7 @@ Module boxed.
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_uninit :
@@ -211,7 +211,7 @@ Module boxed.
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_zeroed :
@@ -236,7 +236,7 @@ Module boxed.
             |),
             [ M.read (| raw |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_raw :
@@ -309,7 +309,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_in :
@@ -473,7 +473,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_in :
@@ -550,7 +550,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_uninit_in :
@@ -789,7 +789,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_uninit_in :
@@ -866,7 +866,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_zeroed_in :
@@ -1105,7 +1105,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_zeroed_in :
@@ -1144,7 +1144,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pin_in :
@@ -1203,7 +1203,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_boxed_slice :
@@ -1222,7 +1222,7 @@ Module boxed.
         ltac:(M.monadic
           (let boxed := M.alloc (| boxed |) in
           M.read (| M.read (| boxed |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -1253,7 +1253,7 @@ Module boxed.
               |);
               M.read (| alloc |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_raw_in :
@@ -1287,7 +1287,7 @@ Module boxed.
               0
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_raw :
@@ -1378,7 +1378,7 @@ Module boxed.
               |) in
             M.alloc (| Value.Tuple [ M.read (| ptr |); M.read (| alloc |) ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_raw_with_allocator :
@@ -1435,7 +1435,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_unique :
@@ -1456,7 +1456,7 @@ Module boxed.
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (| M.read (| b |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_ptr :
@@ -1477,7 +1477,7 @@ Module boxed.
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (| M.read (| b |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ptr :
@@ -1496,7 +1496,7 @@ Module boxed.
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.SubPointer.get_struct_tuple_field (| M.read (| b |), "alloc::boxed::Box", 1 |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_allocator :
@@ -1525,7 +1525,7 @@ Module boxed.
             |),
             [ M.read (| b |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_leak :
@@ -1560,7 +1560,7 @@ Module boxed.
             |),
             [ M.read (| boxed |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_pin :
@@ -1612,7 +1612,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_uninit_slice :
@@ -1656,7 +1656,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_zeroed_slice :
@@ -1706,7 +1706,10 @@ Module boxed.
                                       M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
+                                      (BinOp.eq (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -1944,7 +1947,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_uninit_slice :
@@ -1994,7 +1997,10 @@ Module boxed.
                                       M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
+                                      (BinOp.eq (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -2232,7 +2238,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_zeroed_slice :
@@ -2279,7 +2285,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_uninit_slice_in :
@@ -2321,7 +2327,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_zeroed_slice_in :
@@ -2375,7 +2381,10 @@ Module boxed.
                                       M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
+                                      (BinOp.eq (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -2602,7 +2611,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_uninit_slice_in :
@@ -2656,7 +2665,10 @@ Module boxed.
                                       M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
+                                      (BinOp.eq (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -2883,7 +2895,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_new_zeroed_slice_in :
@@ -2945,7 +2957,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_assume_init :
@@ -2993,7 +3005,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_write :
@@ -3070,7 +3082,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_assume_init :
@@ -3138,16 +3150,17 @@ Module boxed.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ne
-                            (M.call_closure (|
+                          BinOp.ne (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
                                 []
                               |),
                               [ layout ]
-                            |))
-                            (Value.Integer 0)
+                            |),
+                            Value.Integer IntegerKind.Usize 0
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
@@ -3198,7 +3211,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3237,7 +3250,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3275,7 +3288,7 @@ Module boxed.
                     Ty.apply
                       (Ty.path "core::ptr::unique::Unique")
                       []
-                      [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ] ],
+                      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
                     "dangling",
                     []
                   |),
@@ -3288,7 +3301,7 @@ Module boxed.
                 [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3328,7 +3341,12 @@ Module boxed.
                         Ty.apply
                           (Ty.path "core::ptr::unique::Unique")
                           []
-                          [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ Ty.path "u8" ] ],
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 0 ]
+                              [ Ty.path "u8" ]
+                          ],
                         "dangling",
                         []
                       |),
@@ -3365,7 +3383,7 @@ Module boxed.
                 [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3455,7 +3473,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3480,7 +3498,7 @@ Module boxed.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3546,7 +3564,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3576,7 +3594,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3595,7 +3613,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3627,7 +3645,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3646,7 +3664,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3665,7 +3683,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3684,7 +3702,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3703,7 +3721,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3741,7 +3759,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3790,7 +3808,7 @@ Module boxed.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3820,7 +3838,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "finish", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3839,7 +3857,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write", [] |),
             [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3858,7 +3876,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3877,7 +3895,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3896,7 +3914,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3915,7 +3933,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3934,7 +3952,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3953,7 +3971,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_usize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3972,7 +3990,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3991,7 +4009,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4010,7 +4028,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4029,7 +4047,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4048,7 +4066,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4067,7 +4085,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_isize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4091,7 +4109,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_length_prefix", [] |),
             [ M.read (| M.read (| self |) |); M.read (| len |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4110,7 +4128,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_str", [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4163,7 +4181,7 @@ Module boxed.
             |),
             [ M.read (| t |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4198,7 +4216,7 @@ Module boxed.
             |),
             [ M.read (| boxed |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4244,7 +4262,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4371,7 +4389,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4414,7 +4432,7 @@ Module boxed.
             |),
             [ M.read (| slice |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4504,7 +4522,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4556,7 +4574,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4635,7 +4653,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4701,7 +4719,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4749,7 +4767,7 @@ Module boxed.
             |),
             [ M.read (| array |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4824,10 +4842,12 @@ Module boxed.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (BinOp.Pure.eq
-                                                (M.read (| M.read (| left_val |) |))
-                                                (M.read (| M.read (| right_val |) |)))
+                                            UnOp.not (|
+                                              BinOp.eq (|
+                                                M.read (| M.read (| left_val |) |),
+                                                M.read (| M.read (| right_val |) |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -4906,7 +4926,7 @@ Module boxed.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_boxed_slice_as_array_unchecked :
@@ -4956,16 +4976,17 @@ Module boxed.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| boxed_slice |) ]
-                            |))
-                            (M.read (| M.get_constant (| "alloc::boxed::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "alloc::boxed::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4989,7 +5010,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5054,8 +5075,8 @@ Module boxed.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -5065,8 +5086,9 @@ Module boxed.
                                 []
                               |),
                               [ vec ]
-                            |))
-                            (M.read (| M.get_constant (| "alloc::boxed::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "alloc::boxed::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ boxed_slice :=
@@ -5104,7 +5126,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5180,7 +5202,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast :
@@ -5225,15 +5247,16 @@ Module boxed.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -5290,7 +5313,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_unchecked :
@@ -5371,7 +5394,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast :
@@ -5416,8 +5439,8 @@ Module boxed.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.dyn
                                               [
@@ -5428,7 +5451,8 @@ Module boxed.
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -5489,7 +5513,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_unchecked :
@@ -5580,7 +5604,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast :
@@ -5626,8 +5650,8 @@ Module boxed.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.dyn
                                               [
@@ -5639,7 +5663,8 @@ Module boxed.
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -5704,7 +5729,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_unchecked :
@@ -5731,7 +5756,7 @@ Module boxed.
             M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5762,7 +5787,7 @@ Module boxed.
             M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5807,7 +5832,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5837,7 +5862,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5865,7 +5890,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5922,7 +5947,7 @@ Module boxed.
             M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "next", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5946,7 +5971,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5965,7 +5990,7 @@ Module boxed.
             M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
             [ M.read (| M.read (| self |) |); M.read (| n |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5989,7 +6014,7 @@ Module boxed.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6052,7 +6077,7 @@ Module boxed.
               M.get_associated_function (| Self, "some.last", [] |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6083,7 +6108,7 @@ Module boxed.
             M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "last", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6119,7 +6144,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -6144,7 +6169,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |); M.read (| n |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6184,7 +6209,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -6208,7 +6233,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6261,7 +6286,7 @@ Module boxed.
             M.get_trait_method (| "core::ops::function::FnOnce", F, [ Args ], "call_once", [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6301,7 +6326,7 @@ Module boxed.
             M.get_trait_method (| "core::ops::function::FnMut", F, [ Args ], "call_mut", [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6332,7 +6357,7 @@ Module boxed.
             M.get_trait_method (| "core::ops::function::Fn", F, [ Args ], "call", [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6380,7 +6405,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6430,7 +6455,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6476,7 +6501,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6562,7 +6587,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6660,7 +6685,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6706,7 +6731,7 @@ Module boxed.
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6752,7 +6777,7 @@ Module boxed.
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter_mut", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6798,7 +6823,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6838,7 +6863,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6878,7 +6903,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6918,7 +6943,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6959,7 +6984,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7001,7 +7026,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7069,7 +7094,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7097,23 +7122,24 @@ Module boxed.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| M.read (| self |) |) ]
-                            |))
-                            (M.call_closure (|
+                            |),
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| M.read (| source |) |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
@@ -7151,7 +7177,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7182,7 +7208,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7209,7 +7235,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7236,7 +7262,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7263,7 +7289,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7343,7 +7369,7 @@ Module boxed.
               M.read (| arg |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7423,7 +7449,7 @@ Module boxed.
               M.read (| arg |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7493,7 +7519,7 @@ Module boxed.
               M.read (| cx |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7571,7 +7597,7 @@ Module boxed.
               M.read (| cx |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7595,7 +7621,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7693,7 +7719,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -7789,47 +7815,48 @@ Module boxed.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let s := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "core::intrinsics::transmute",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ];
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.dyn
-                                              [
-                                                ("core::error::Error::Trait", []);
-                                                ("core::marker::Send::AutoTrait", [])
-                                              ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                    |),
-                                    [ M.read (| s |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let s := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::intrinsics::transmute",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.dyn
+                                                [
+                                                  ("core::error::Error::Trait", []);
+                                                  ("core::marker::Send::AutoTrait", [])
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ]
+                                      |),
+                                      [ M.read (| s |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -7934,48 +7961,49 @@ Module boxed.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let s := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "core::intrinsics::transmute",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ];
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.dyn
-                                              [
-                                                ("core::error::Error::Trait", []);
-                                                ("core::marker::Send::AutoTrait", []);
-                                                ("core::marker::Sync::AutoTrait", [])
-                                              ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                    |),
-                                    [ M.read (| s |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let s := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::intrinsics::transmute",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.dyn
+                                                [
+                                                  ("core::error::Error::Trait", []);
+                                                  ("core::marker::Send::AutoTrait", []);
+                                                  ("core::marker::Sync::AutoTrait", [])
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ]
+                                      |),
+                                      [ M.read (| s |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -8007,7 +8035,7 @@ Module boxed.
             |),
             [ M.read (| err |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8053,7 +8081,7 @@ Module boxed.
             |),
             [ M.read (| err |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8123,7 +8151,7 @@ Module boxed.
             |),
             [ Value.StructTuple "alloc::boxed::from::StringError" [ M.read (| err |) ] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8181,7 +8209,7 @@ Module boxed.
             let~ err2 := M.alloc (| M.read (| err1 |) |) in
             M.alloc (| M.read (| err2 |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8249,7 +8277,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8301,7 +8329,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8369,7 +8397,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8422,7 +8450,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8453,7 +8481,7 @@ Module boxed.
             M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8471,7 +8499,7 @@ Module boxed.
             M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8489,7 +8517,7 @@ Module boxed.
             M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8514,7 +8542,7 @@ Module boxed.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

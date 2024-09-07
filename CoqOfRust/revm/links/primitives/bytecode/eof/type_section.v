@@ -26,8 +26,14 @@ Module TypesSection.
     max_stack_size : Z;
   }.
 
-  Global Instance IsToTy : ToTy t := {
-    Φ := Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
+  Global Instance IsLink : Link t := {
+    to_ty := Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
+    to_value x :=
+      Value.StructRecord "revm_primitives::bytecode::eof::types_section::TypesSection" [
+        ("inputs", to_value x.(inputs));
+        ("outputs", to_value x.(outputs));
+        ("max_stack_size", to_value x.(max_stack_size))
+      ];
   }.
 
   Global Instance IsToValue : ToValue t := {

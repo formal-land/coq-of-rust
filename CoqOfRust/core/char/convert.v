@@ -42,7 +42,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_u32 : M.IsFunction "core::char::convert::from_u32" from_u32.
@@ -105,7 +105,7 @@ Module char.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_u32_unchecked :
@@ -125,7 +125,7 @@ Module char.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -152,7 +152,7 @@ Module char.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -179,7 +179,7 @@ Module char.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -247,21 +247,22 @@ Module char.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ Value.Tuple [] ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -330,21 +331,22 @@ Module char.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ Value.Tuple [] ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -370,7 +372,7 @@ Module char.
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.rust_cast (M.read (| i |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -419,7 +421,7 @@ Module char.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -459,7 +461,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -512,7 +514,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -542,7 +544,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -596,7 +598,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -648,7 +650,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -701,9 +703,9 @@ Module char.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -728,7 +730,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -785,7 +787,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -827,7 +829,7 @@ Module char.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -947,7 +949,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -996,18 +998,21 @@ Module char.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ge
-                            (M.call_closure (|
+                          BinOp.ge (|
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
                               [
-                                BinOp.Pure.bit_xor (M.read (| i |)) (Value.Integer 55296);
-                                Value.Integer 2048
+                                BinOp.bit_xor
+                                  (M.read (| i |))
+                                  (Value.Integer IntegerKind.U32 55296);
+                                Value.Integer IntegerKind.U32 2048
                               ]
-                            |))
-                            (BinOp.Wrap.sub
-                              Integer.U32
-                              (Value.Integer 1114112)
-                              (Value.Integer 2048))
+                            |),
+                            BinOp.Wrap.sub (|
+                              Value.Integer IntegerKind.U32 1114112,
+                              Value.Integer IntegerKind.U32 2048
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1037,7 +1042,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_char_try_from_u32 :
@@ -1063,7 +1068,7 @@ Module char.
               M.get_function (| "core::char::convert::char_try_from_u32", [] |),
               [ M.read (| i |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1109,7 +1114,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1148,7 +1153,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1201,7 +1206,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1231,7 +1236,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1264,7 +1269,7 @@ Module char.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1303,7 +1308,9 @@ Module char.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| radix |)) (Value.Integer 36) |)) in
+                          (M.alloc (|
+                            BinOp.gt (| M.read (| radix |), Value.Integer IntegerKind.U32 36 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -1340,7 +1347,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use (M.alloc (| BinOp.Pure.lt (M.read (| num |)) (M.read (| radix |)) |)) in
+                      M.use (M.alloc (| BinOp.lt (| M.read (| num |), M.read (| radix |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
                     M.match_operator (|
@@ -1351,7 +1358,7 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| num |)) (Value.Integer 10)
+                                  BinOp.lt (| M.read (| num |), Value.Integer IntegerKind.U8 10 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1360,10 +1367,10 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Wrap.add
-                                      Integer.U8
-                                      (M.read (| UnsupportedLiteral |))
-                                      (M.read (| num |)))
+                                    (BinOp.Wrap.add (|
+                                      M.read (| UnsupportedLiteral |),
+                                      M.read (| num |)
+                                    |))
                                 ]
                             |)));
                         fun γ =>
@@ -1373,13 +1380,13 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Wrap.sub
-                                      Integer.U8
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.read (| UnsupportedLiteral |))
-                                        (M.read (| num |)))
-                                      (Value.Integer 10))
+                                    (BinOp.Wrap.sub (|
+                                      BinOp.Wrap.add (|
+                                        M.read (| UnsupportedLiteral |),
+                                        M.read (| num |)
+                                      |),
+                                      Value.Integer IntegerKind.U8 10
+                                    |))
                                 ]
                             |)))
                       ]
@@ -1389,7 +1396,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_digit : M.IsFunction "core::char::convert::from_digit" from_digit.

@@ -29,7 +29,7 @@ Module str.
             |),
             [ M.read (| slice |); M.read (| Value.String "" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -82,7 +82,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -271,140 +271,146 @@ Module str.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let n := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              Ty.apply
-                                                (Ty.path "core::iter::adapters::map::Map")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::slice::iter::Iter")
-                                                    []
-                                                    [ S ];
-                                                  Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
-                                                    (Ty.path "usize")
-                                                ],
-                                              [],
-                                              "try_fold",
-                                              [
-                                                Ty.path "usize";
-                                                Ty.function
-                                                  [ Ty.path "usize"; Ty.path "usize" ]
-                                                  (Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "usize" ]);
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let n := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "core::option::Option")
+                                                  (Ty.path "core::iter::adapters::map::Map")
                                                   []
-                                                  [ Ty.path "usize" ]
-                                              ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::iterator::Iterator",
+                                                  [
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
                                                       []
-                                                      [ S ],
-                                                    [],
-                                                    "map",
-                                                    [
-                                                      Ty.path "usize";
-                                                      Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
-                                                        (Ty.path "usize")
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [] [ S ],
-                                                        "iter",
+                                                      [ S ];
+                                                    Ty.function
+                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ]
+                                                      ]
+                                                      (Ty.path "usize")
+                                                  ],
+                                                [],
+                                                "try_fold",
+                                                [
+                                                  Ty.path "usize";
+                                                  Ty.function
+                                                    [ Ty.path "usize"; Ty.path "usize" ]
+                                                    (Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "usize" ]);
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                ]
+                                              |),
+                                              [
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::iterator::Iterator",
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
                                                         []
-                                                      |),
-                                                      [ M.read (| slice |) ]
-                                                    |);
-                                                    M.closure
-                                                      (fun γ =>
-                                                        ltac:(M.monadic
-                                                          match γ with
-                                                          | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let s := M.copy (| γ |) in
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path "slice")
-                                                                          []
-                                                                          [ T ],
-                                                                        "len",
-                                                                        []
-                                                                      |),
-                                                                      [
+                                                        [ S ],
+                                                      [],
+                                                      "map",
+                                                      [
+                                                        Ty.path "usize";
+                                                        Ty.function
+                                                          [
+                                                            Ty.tuple
+                                                              [ Ty.apply (Ty.path "&") [] [ S ] ]
+                                                          ]
+                                                          (Ty.path "usize")
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "slice") [] [ S ],
+                                                          "iter",
+                                                          []
+                                                        |),
+                                                        [ M.read (| slice |) ]
+                                                      |);
+                                                      M.closure
+                                                        (fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ α0 ] =>
+                                                              ltac:(M.monadic
+                                                                (M.match_operator (|
+                                                                  M.alloc (| α0 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let s := M.copy (| γ |) in
                                                                         M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::convert::AsRef",
-                                                                            B,
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                []
-                                                                                [ T ]
-                                                                            ],
-                                                                            "as_ref",
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [ T ],
+                                                                            "len",
                                                                             []
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
                                                                               M.get_trait_method (|
-                                                                                "core::borrow::Borrow",
-                                                                                S,
-                                                                                [ B ],
-                                                                                "borrow",
+                                                                                "core::convert::AsRef",
+                                                                                B,
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ T ]
+                                                                                ],
+                                                                                "as_ref",
                                                                                 []
                                                                               |),
-                                                                              [ M.read (| s |) ]
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::borrow::Borrow",
+                                                                                    S,
+                                                                                    [ B ],
+                                                                                    "borrow",
+                                                                                    []
+                                                                                  |),
+                                                                                  [ M.read (| s |) ]
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           ]
-                                                                        |)
-                                                                      ]
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
-                                                          end))
-                                                  ]
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end))
+                                                    ]
+                                                  |)
+                                                |);
+                                                M.read (| n |);
+                                                M.get_associated_function (|
+                                                  Ty.path "usize",
+                                                  "checked_add",
+                                                  []
                                                 |)
-                                              |);
-                                              M.read (| n |);
-                                              M.get_associated_function (|
-                                                Ty.path "usize",
-                                                "checked_add",
-                                                []
-                                              |)
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |);
@@ -443,9 +449,9 @@ Module str.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.ge
-                                            (M.call_closure (|
+                                        UnOp.not (|
+                                          BinOp.ge (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -455,8 +461,10 @@ Module str.
                                                 []
                                               |),
                                               [ result ]
-                                            |))
-                                            (M.read (| reserved_len |)))
+                                            |),
+                                            M.read (| reserved_len |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -553,10 +561,7 @@ Module str.
                           "core::ops::range::RangeTo"
                           [
                             ("end_",
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| reserved_len |))
-                                (M.read (| pos |)))
+                              BinOp.Wrap.sub (| M.read (| reserved_len |), M.read (| pos |) |))
                           ]
                       ]
                     |)
@@ -641,87 +646,89 @@ Module str.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let it := M.copy (| γ |) in
-                                        M.read (|
-                                          let~ it :=
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let it := M.copy (| γ |) in
+                                          M.read (|
+                                            let~ it :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::convert::AsRef",
+                                                    B,
+                                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                    "as_ref",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::borrow::Borrow",
+                                                        S,
+                                                        [ B ],
+                                                        "borrow",
+                                                        []
+                                                      |),
+                                                      [ M.read (| it |) ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
                                             M.alloc (|
                                               M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::convert::AsRef",
-                                                  B,
-                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                                  "as_ref",
-                                                  []
+                                                M.get_function (|
+                                                  "core::slice::raw::from_raw_parts",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
+                                                      [ T ]
+                                                  ]
                                                 |),
                                                 [
                                                   M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::borrow::Borrow",
-                                                      S,
-                                                      [ B ],
-                                                      "borrow",
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*const") [] [ T ],
+                                                      "cast",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                                          "as_ptr",
+                                                          []
+                                                        |),
+                                                        [ M.read (| it |) ]
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                                      "len",
                                                       []
                                                     |),
                                                     [ M.read (| it |) ]
                                                   |)
                                                 ]
                                               |)
-                                            |) in
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (|
-                                                "core::slice::raw::from_raw_parts",
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                    []
-                                                    [ T ]
-                                                ]
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [] [ T ],
-                                                    "cast",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                        []
-                                                        [ T ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                                        "as_ptr",
-                                                        []
-                                                      |),
-                                                      [ M.read (| it |) ]
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                                    "len",
-                                                    []
-                                                  |),
-                                                  [ M.read (| it |) ]
-                                                |)
-                                              ]
                                             |)
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -758,7 +765,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer 0
+                                    Value.Integer IntegerKind.Usize 0
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -1125,7 +1132,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer 1
+                                    Value.Integer IntegerKind.Usize 1
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -1492,7 +1499,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer 2
+                                    Value.Integer IntegerKind.Usize 2
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -1859,7 +1866,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer 3
+                                    Value.Integer IntegerKind.Usize 3
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -2226,7 +2233,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer 4
+                                    Value.Integer IntegerKind.Usize 4
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -2957,10 +2964,9 @@ Module str.
                   |) in
                 let~ result_len :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (| reserved_len |))
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.read (| reserved_len |),
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
@@ -2970,7 +2976,8 @@ Module str.
                           []
                         |),
                         [ M.read (| remain |) ]
-                      |))
+                      |)
+                    |)
                   |) in
                 let~ _ :=
                   M.alloc (|
@@ -2990,7 +2997,7 @@ Module str.
               result
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_join_generic_copy : M.IsFunction "alloc::str::join_generic_copy" join_generic_copy.
@@ -3018,7 +3025,7 @@ Module str.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3052,7 +3059,7 @@ Module str.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3103,7 +3110,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3135,7 +3142,7 @@ Module str.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3182,7 +3189,7 @@ Module str.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_boxed_bytes :
@@ -3216,7 +3223,7 @@ Module str.
                   []
                 |)
               |) in
-            let~ last_end := M.alloc (| Value.Integer 0 |) in
+            let~ last_end := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ _ :=
               M.use
                 (M.match_operator (|
@@ -3325,17 +3332,17 @@ Module str.
                                       let~ _ :=
                                         M.write (|
                                           last_end,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| start |))
-                                            (M.call_closure (|
+                                          BinOp.Wrap.add (|
+                                            M.read (| start |),
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| part |) ]
-                                            |))
+                                            |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -3375,7 +3382,7 @@ Module str.
               |) in
             result
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replace : M.IsAssociatedFunction Self "replace" replace.
@@ -3411,10 +3418,10 @@ Module str.
                     "with_capacity",
                     []
                   |),
-                  [ Value.Integer 32 ]
+                  [ Value.Integer IntegerKind.Usize 32 ]
                 |)
               |) in
-            let~ last_end := M.alloc (| Value.Integer 0 |) in
+            let~ last_end := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ _ :=
               M.use
                 (M.match_operator (|
@@ -3546,17 +3553,17 @@ Module str.
                                       let~ _ :=
                                         M.write (|
                                           last_end,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| start |))
-                                            (M.call_closure (|
+                                          BinOp.Wrap.add (|
+                                            M.read (| start |),
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| part |) ]
-                                            |))
+                                            |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -3596,7 +3603,7 @@ Module str.
               |) in
             result
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replacen : M.IsAssociatedFunction Self "replacen" replacen.
@@ -3795,9 +3802,10 @@ Module str.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.Pure.eq
-                                                            (M.read (| c |))
-                                                            (Value.UnicodeChar 931)
+                                                          BinOp.eq (|
+                                                            M.read (| c |),
+                                                            Value.UnicodeChar 931
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -3806,24 +3814,24 @@ Module str.
                                                       |) in
                                                     let~ out_len :=
                                                       M.alloc (|
-                                                        BinOp.Wrap.sub
-                                                          Integer.Usize
-                                                          (M.call_closure (|
+                                                        BinOp.Wrap.sub (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path "str",
                                                               "len",
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
-                                                          |))
-                                                          (M.call_closure (|
+                                                          |),
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path "str",
                                                               "len",
                                                               []
                                                             |),
                                                             [ M.read (| rest |) ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |) in
                                                     let~ sigma_lowercase :=
                                                       M.alloc (|
@@ -3835,10 +3843,10 @@ Module str.
                                                           |),
                                                           [
                                                             M.read (| self |);
-                                                            BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| i |))
-                                                              (M.read (| out_len |))
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| i |),
+                                                              M.read (| out_len |)
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -4015,7 +4023,7 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_lowercase : M.IsAssociatedFunction Self "to_lowercase" to_lowercase.
@@ -4288,7 +4296,7 @@ Module str.
                 |)) in
             s
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_uppercase : M.IsAssociatedFunction Self "to_uppercase" to_uppercase.
@@ -4349,7 +4357,7 @@ Module str.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
@@ -4388,7 +4396,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
@@ -4439,7 +4447,7 @@ Module str.
               |) in
             s
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_ascii_uppercase :
@@ -4491,7 +4499,7 @@ Module str.
               |) in
             s
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_ascii_lowercase :
@@ -4533,7 +4541,7 @@ Module str.
               |))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_boxed_utf8_unchecked :
@@ -4612,7 +4620,7 @@ Module str.
                 ]
               |)
             |) in
-          let~ i := M.alloc (| Value.Integer 0 |) in
+          let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
           let~ _ :=
             let~ _ :=
               M.loop (|
@@ -4625,21 +4633,22 @@ Module str.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| i |))
-                                    (M.read (|
+                                BinOp.le (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| i |),
+                                    M.read (|
                                       M.get_constant (| "alloc::str::convert_while_ascii::N" |)
-                                    |)))
-                                  (M.call_closure (|
+                                    |)
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| b |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4663,14 +4672,14 @@ Module str.
                                     [
                                       ("start", M.read (| i |));
                                       ("end_",
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (| i |))
-                                          (M.read (|
+                                        BinOp.Wrap.add (|
+                                          M.read (| i |),
+                                          M.read (|
                                             M.get_constant (|
                                               "alloc::str::convert_while_ascii::N"
                                             |)
-                                          |)))
+                                          |)
+                                        |))
                                     ]
                                 ]
                               |)
@@ -4713,19 +4722,19 @@ Module str.
                                     [
                                       ("start", M.read (| i |));
                                       ("end_",
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (| i |))
-                                          (M.read (|
+                                        BinOp.Wrap.add (|
+                                          M.read (| i |),
+                                          M.read (|
                                             M.get_constant (|
                                               "alloc::str::convert_while_ascii::N"
                                             |)
-                                          |)))
+                                          |)
+                                        |))
                                     ]
                                 ]
                               |)
                             |) in
-                          let~ bits := M.alloc (| Value.Integer 0 |) in
+                          let~ bits := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                           let~ _ :=
                             M.use
                               (M.match_operator (|
@@ -4745,7 +4754,7 @@ Module str.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer 0);
+                                          ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_",
                                             M.read (|
                                               M.get_constant (|
@@ -4803,7 +4812,7 @@ Module str.
                                                       let β := bits in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Pure.bit_or
+                                                        BinOp.bit_or
                                                           (M.read (| β |))
                                                           (M.call_closure (|
                                                             M.get_associated_function (|
@@ -4870,15 +4879,16 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.ne
-                                            (BinOp.Pure.bit_and
+                                          BinOp.ne (|
+                                            BinOp.bit_and
                                               (M.read (| bits |))
                                               (M.read (|
                                                 M.get_constant (|
                                                   "alloc::str::convert_while_ascii::NONASCII_MASK"
                                                 |)
-                                              |)))
-                                            (Value.Integer 0)
+                                              |)),
+                                            Value.Integer IntegerKind.Usize 0
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4908,7 +4918,7 @@ Module str.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer 0);
+                                          ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_",
                                             M.read (|
                                               M.get_constant (|
@@ -5029,12 +5039,12 @@ Module str.
                             let β := i in
                             M.write (|
                               β,
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (M.read (| β |))
-                                (M.read (|
+                              BinOp.Wrap.add (|
+                                M.read (| β |),
+                                M.read (|
                                   M.get_constant (| "alloc::str::convert_while_ascii::N" |)
-                                |))
+                                |)
+                              |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -5068,7 +5078,7 @@ Module str.
             M.alloc (| Value.Tuple [] |) in
           out
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_convert_while_ascii :
@@ -5083,16 +5093,16 @@ Module str.
           |))).
     
     Definition value_MAGIC_UNROLL : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 2 |))).
     
     Definition value_N : Value.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.mul
-              Integer.Usize
-              (M.read (| M.get_constant (| "alloc::str::convert_while_ascii::USIZE_SIZE" |) |))
-              (M.read (| M.get_constant (| "alloc::str::convert_while_ascii::MAGIC_UNROLL" |) |))
+            BinOp.Wrap.mul (|
+              M.read (| M.get_constant (| "alloc::str::convert_while_ascii::USIZE_SIZE" |) |),
+              M.read (| M.get_constant (| "alloc::str::convert_while_ascii::MAGIC_UNROLL" |) |)
+            |)
           |))).
     
     Definition value_NONASCII_MASK : Value.t :=
@@ -5101,7 +5111,7 @@ Module str.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
-              [ repeat (| Value.Integer 128, Value.Integer 8 |) ]
+              [ repeat (| Value.Integer IntegerKind.U8 128, Value.Integer IntegerKind.Usize 8 |) ]
             |)
           |))).
   End convert_while_ascii.

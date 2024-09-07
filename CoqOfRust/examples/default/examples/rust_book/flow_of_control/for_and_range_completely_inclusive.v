@@ -40,7 +40,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer 1; Value.Integer 100 ]
+                    [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 100 ]
                   |)
                 ]
               |)
@@ -90,12 +90,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.eq
-                                                (BinOp.Wrap.rem
-                                                  Integer.I32
-                                                  (M.read (| n |))
-                                                  (Value.Integer 15))
-                                                (Value.Integer 0)
+                                              BinOp.eq (|
+                                                BinOp.Wrap.rem (|
+                                                  M.read (| n |),
+                                                  Value.Integer IntegerKind.I32 15
+                                                |),
+                                                Value.Integer IntegerKind.I32 0
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -137,12 +138,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.eq
-                                                        (BinOp.Wrap.rem
-                                                          Integer.I32
-                                                          (M.read (| n |))
-                                                          (Value.Integer 3))
-                                                        (Value.Integer 0)
+                                                      BinOp.eq (|
+                                                        BinOp.Wrap.rem (|
+                                                          M.read (| n |),
+                                                          Value.Integer IntegerKind.I32 3
+                                                        |),
+                                                        Value.Integer IntegerKind.I32 0
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -191,12 +193,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.eq
-                                                                (BinOp.Wrap.rem
-                                                                  Integer.I32
-                                                                  (M.read (| n |))
-                                                                  (Value.Integer 5))
-                                                                (Value.Integer 0)
+                                                              BinOp.eq (|
+                                                                BinOp.Wrap.rem (|
+                                                                  M.read (| n |),
+                                                                  Value.Integer IntegerKind.I32 5
+                                                                |),
+                                                                Value.Integer IntegerKind.I32 0
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -301,7 +304,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "for_and_range_completely_inclusive::main" main.

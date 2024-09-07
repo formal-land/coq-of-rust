@@ -62,19 +62,20 @@ Module script_signature.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| module |),
                                     "move_binary_format::file_format::CompiledModule",
                                     "version"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.get_constant (|
                                     "move_binary_format::file_format_common::VERSION_5"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -225,26 +226,29 @@ Module script_signature.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
-                                              let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                              let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                              let _idx := M.alloc (| γ1_0 |) in
-                                              let fdef := M.alloc (| γ1_1 |) in
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| M.read (| fdef |) |),
-                                                  "move_binary_format::file_format::FunctionDefinition",
-                                                  "is_entry"
-                                                |)
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ := M.read (| γ |) in
+                                                let γ1_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ1_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                let _idx := M.alloc (| γ1_0 |) in
+                                                let fdef := M.alloc (| γ1_1 |) in
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| M.read (| fdef |) |),
+                                                    "move_binary_format::file_format::FunctionDefinition",
+                                                    "is_entry"
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -429,7 +433,7 @@ Module script_signature.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module :
@@ -554,75 +558,76 @@ Module script_signature.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
-                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                      let fdef := M.alloc (| γ1_1 |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_core_types::identifier::IdentStr" ],
-                                          [
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                        let fdef := M.alloc (| γ1_1 |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
                                               []
-                                              [ Ty.path "move_core_types::identifier::IdentStr" ]
-                                          ],
-                                          "eq",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::CompiledModule",
-                                                "identifier_at",
+                                              [ Ty.path "move_core_types::identifier::IdentStr" ],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
                                                 []
-                                              |),
-                                              [
-                                                M.read (| module |);
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::file_format::CompiledModule",
-                                                        "function_handle_at",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| module |);
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| M.read (| fdef |) |),
-                                                            "move_binary_format::file_format::FunctionDefinition",
-                                                            "function"
+                                                [ Ty.path "move_core_types::identifier::IdentStr" ]
+                                            ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "identifier_at",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (| module |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::file_format::CompiledModule",
+                                                          "function_handle_at",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| module |);
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| M.read (| fdef |) |),
+                                                              "move_binary_format::file_format::FunctionDefinition",
+                                                              "function"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |),
-                                                    "move_binary_format::file_format::FunctionHandle",
-                                                    "name"
+                                                        ]
+                                                      |),
+                                                      "move_binary_format::file_format::FunctionHandle",
+                                                      "name"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]
-                                            |)
-                                          |);
-                                          name
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                ]
+                                              |)
+                                            |);
+                                            name
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -685,75 +690,76 @@ Module script_signature.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError",
-                                                "finish",
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::errors::PartialVMError",
-                                                    "with_message",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError",
-                                                        "new",
-                                                        []
-                                                      |),
-                                                      [
-                                                        Value.StructTuple
-                                                          "move_core_types::vm_status::StatusCode::VERIFICATION_ERROR"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
+                                                  "finish",
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
+                                                      "with_message",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
+                                                          "new",
                                                           []
-                                                      ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "alloc::string::ToString",
-                                                        Ty.path "str",
-                                                        [],
-                                                        "to_string",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "function not found in verify_module_script_function"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |);
-                                                Value.StructTuple
-                                                  "move_binary_format::errors::Location::Module"
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::file_format::CompiledModule",
-                                                        "self_id",
-                                                        []
-                                                      |),
-                                                      [ M.read (| module |) ]
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                        |),
+                                                        [
+                                                          Value.StructTuple
+                                                            "move_core_types::vm_status::StatusCode::VERIFICATION_ERROR"
+                                                            []
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "alloc::string::ToString",
+                                                          Ty.path "str",
+                                                          [],
+                                                          "to_string",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "function not found in verify_module_script_function"
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  Value.StructTuple
+                                                    "move_binary_format::errors::Location::Module"
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::file_format::CompiledModule",
+                                                          "self_id",
+                                                          []
+                                                        |),
+                                                        [ M.read (| module |) ]
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -838,7 +844,7 @@ Module script_signature.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_function_signature_by_name :
@@ -969,63 +975,64 @@ Module script_signature.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::errors::PartialVMError",
-                                    "finish",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::errors::PartialVMError",
-                                        "at_index",
-                                        []
-                                      |),
-                                      [
-                                        M.read (| e |);
-                                        Value.StructTuple
-                                          "move_binary_format::IndexKind::FunctionDefinition"
-                                          [];
-                                        M.read (|
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            idx,
-                                            "move_binary_format::file_format::FunctionDefinitionIndex",
-                                            0
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let e := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
+                                      "finish",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
+                                          "at_index",
+                                          []
+                                        |),
+                                        [
+                                          M.read (| e |);
+                                          Value.StructTuple
+                                            "move_binary_format::IndexKind::FunctionDefinition"
+                                            [];
+                                          M.read (|
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              idx,
+                                              "move_binary_format::file_format::FunctionDefinitionIndex",
+                                              0
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |);
-                                    Value.StructTuple
-                                      "move_binary_format::errors::Location::Module"
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "self_id",
-                                            []
-                                          |),
-                                          [ M.read (| module |) ]
-                                        |)
-                                      ]
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                        ]
+                                      |);
+                                      Value.StructTuple
+                                        "move_binary_format::errors::Location::Module"
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_binary_format::file_format::CompiledModule",
+                                              "self_id",
+                                              []
+                                            |),
+                                            [ M.read (| module |) ]
+                                          |)
+                                        ]
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_function_signature :
@@ -1064,18 +1071,19 @@ Module script_signature.
               let~ deprecated_logic :=
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.lt
-                      (M.call_closure (|
+                    BinOp.lt (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "move_binary_format::file_format::CompiledModule",
                           "version",
                           []
                         |),
                         [ M.read (| module |) ]
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.get_constant (| "move_binary_format::file_format_common::VERSION_5" |)
-                      |)),
+                      |)
+                    |),
                     ltac:(M.monadic (M.read (| is_entry |)))
                   |)
                 |) in
@@ -1194,7 +1202,7 @@ Module script_signature.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_main_signature_impl :
@@ -1225,7 +1233,7 @@ Module script_signature.
         let _parameters := M.alloc (| _parameters |) in
         let _return_type := M.alloc (| _return_type |) in
         Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_no_additional_script_signature_checks :
@@ -1385,28 +1393,29 @@ Module script_signature.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let idx := M.copy (| γ |) in
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "signature_at",
-                                            []
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let idx := M.copy (| γ |) in
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_binary_format::file_format::CompiledModule",
+                                              "signature_at",
+                                              []
+                                            |),
+                                            [ M.read (| module |); M.read (| idx |) ]
                                           |),
-                                          [ M.read (| module |); M.read (| idx |) ]
-                                        |),
-                                        "move_binary_format::file_format::Signature",
-                                        0
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                          "move_binary_format::file_format::Signature",
+                                          0
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |);
@@ -1424,20 +1433,21 @@ Module script_signature.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "version",
                                   []
                                 |),
                                 [ M.read (| module |) ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.get_constant (|
                                   "move_binary_format::file_format_common::VERSION_1"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1558,66 +1568,67 @@ Module script_signature.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let typ := M.copy (| γ |) in
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      typ,
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
-                                                            let γ := M.read (| γ |) in
-                                                            let γ2_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "move_binary_format::file_format::SignatureToken::Reference",
-                                                                0
-                                                              |) in
-                                                            let inner := M.alloc (| γ2_0 |) in
-                                                            let γ :=
-                                                              M.match_operator (|
-                                                                M.alloc (|
-                                                                  M.read (| M.read (| inner |) |)
-                                                                |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ := M.read (| γ |) in
-                                                                      let _ :=
-                                                                        M.is_struct_tuple (|
-                                                                          γ,
-                                                                          "move_binary_format::file_format::SignatureToken::Signer"
-                                                                        |) in
-                                                                      M.alloc (|
-                                                                        Value.Bool true
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        Value.Bool false
-                                                                      |)))
-                                                                ]
-                                                              |) in
-                                                            let _ :=
-                                                              M.is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (| Value.Bool true |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Bool false |)))
-                                                      ]
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let typ := M.copy (| γ |) in
+                                                    M.read (|
+                                                      M.match_operator (|
+                                                        typ,
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ := M.read (| γ |) in
+                                                              let γ := M.read (| γ |) in
+                                                              let γ2_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "move_binary_format::file_format::SignatureToken::Reference",
+                                                                  0
+                                                                |) in
+                                                              let inner := M.alloc (| γ2_0 |) in
+                                                              let γ :=
+                                                                M.match_operator (|
+                                                                  M.alloc (|
+                                                                    M.read (| M.read (| inner |) |)
+                                                                  |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ := M.read (| γ |) in
+                                                                        let _ :=
+                                                                          M.is_struct_tuple (|
+                                                                            γ,
+                                                                            "move_binary_format::file_format::SignatureToken::Signer"
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          Value.Bool true
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          Value.Bool false
+                                                                        |)))
+                                                                  ]
+                                                                |) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              M.alloc (| Value.Bool true |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Bool false |)))
+                                                        ]
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -1627,24 +1638,25 @@ Module script_signature.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let typ := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_valid_for_constant",
-                                                []
-                                              |),
-                                              [ M.read (| typ |) ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let typ := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_valid_for_constant",
+                                                  []
+                                                |),
+                                                [ M.read (| typ |) ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -1769,35 +1781,36 @@ Module script_signature.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let typ := M.copy (| γ |) in
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      typ,
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
-                                                            let γ := M.read (| γ |) in
-                                                            let _ :=
-                                                              M.is_struct_tuple (|
-                                                                γ,
-                                                                "move_binary_format::file_format::SignatureToken::Signer"
-                                                              |) in
-                                                            M.alloc (| Value.Bool true |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Bool false |)))
-                                                      ]
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let typ := M.copy (| γ |) in
+                                                    M.read (|
+                                                      M.match_operator (|
+                                                        typ,
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ := M.read (| γ |) in
+                                                              let γ := M.read (| γ |) in
+                                                              let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ,
+                                                                  "move_binary_format::file_format::SignatureToken::Signer"
+                                                                |) in
+                                                              M.alloc (| Value.Bool true |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Bool false |)))
+                                                        ]
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -1807,24 +1820,25 @@ Module script_signature.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let typ := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_valid_for_constant",
-                                                []
-                                              |),
-                                              [ M.read (| typ |) ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let typ := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_valid_for_constant",
+                                                  []
+                                                |),
+                                                [ M.read (| typ |) ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -1858,8 +1872,8 @@ Module script_signature.
                     M.use
                       (M.alloc (|
                         LogicalOp.or (|
-                          UnOp.Pure.not (M.read (| all_args_have_valid_type |)),
-                          ltac:(M.monadic (UnOp.Pure.not (M.read (| has_valid_return_type |))))
+                          UnOp.not (| M.read (| all_args_have_valid_type |) |),
+                          ltac:(M.monadic (UnOp.not (| M.read (| has_valid_return_type |) |)))
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1887,7 +1901,7 @@ Module script_signature.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_legacy_script_signature_checks :

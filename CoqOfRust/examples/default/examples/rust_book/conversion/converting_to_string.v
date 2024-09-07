@@ -54,7 +54,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -78,7 +78,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ circle :=
           M.alloc (|
-            Value.StructRecord "converting_to_string::Circle" [ ("radius", Value.Integer 6) ]
+            Value.StructRecord
+              "converting_to_string::Circle"
+              [ ("radius", Value.Integer IntegerKind.I32 6) ]
           |) in
         let~ _ :=
           M.alloc (|
@@ -95,7 +97,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "converting_to_string::main" main.

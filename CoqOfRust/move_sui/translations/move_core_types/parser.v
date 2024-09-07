@@ -167,7 +167,7 @@ Module parser.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -223,7 +223,7 @@ Module parser.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -556,7 +556,7 @@ Module parser.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1029,7 +1029,7 @@ Module parser.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1071,7 +1071,7 @@ Module parser.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_whitespace :
@@ -1459,86 +1459,87 @@ Module parser.
                                 ltac:(M.monadic
                                   match γ with
                                   | [] =>
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "core::result::Result::Err"
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "anyhow::Error",
-                                                    "msg",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::hint::must_use",
-                                                        [ Ty.path "alloc::string::String" ]
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          let~ res :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "alloc::fmt::format",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::Arguments",
-                                                                      "new_v1",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "Invalid token. Expected a name but got "
-                                                                            |)
-                                                                          ]
-                                                                      |);
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument",
-                                                                                "new_debug",
-                                                                                [
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              Value.StructTuple
+                                                "core::result::Result::Err"
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "anyhow::Error",
+                                                      "msg",
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::hint::must_use",
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            let~ res :=
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "alloc::fmt::format",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_v1",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "Invalid token. Expected a name but got "
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
                                                                                   Ty.path
-                                                                                    "move_core_types::parser::Token"
-                                                                                ]
-                                                                              |),
-                                                                              [ tok ]
-                                                                            |)
-                                                                          ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          res
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::parser::Token"
+                                                                                  ]
+                                                                                |),
+                                                                                [ tok ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |) in
+                                                            res
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  | _ => M.impossible (||)
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           |)))
                     ]
@@ -1546,7 +1547,7 @@ Module parser.
                 |)
               ]))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_token_as_name :
@@ -1651,7 +1652,7 @@ Module parser.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_name_token : M.IsFunction "move_core_types::parser::name_token" name_token.
@@ -1756,7 +1757,7 @@ Module parser.
                                         [ c ]
                                       |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.eq (M.read (| c |)) (Value.UnicodeChar 95)))
+                                        (BinOp.eq (| M.read (| c |), Value.UnicodeChar 95 |)))
                                     |)
                                   |) in
                                 let _ :=
@@ -1882,24 +1883,24 @@ Module parser.
                                                       M.read (|
                                                         let~ len :=
                                                           M.alloc (|
-                                                            BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            BinOp.Wrap.add (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.path "alloc::string::String",
                                                                   "len",
                                                                   []
                                                                 |),
                                                                 [ num ]
-                                                              |))
-                                                              (M.call_closure (|
+                                                              |),
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.path "alloc::string::String",
                                                                   "len",
                                                                   []
                                                                 |),
                                                                 [ suffix ]
-                                                              |))
+                                                              |)
+                                                            |)
                                                           |) in
                                                         let~ tok :=
                                                           M.copy (|
@@ -2095,7 +2096,7 @@ Module parser.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_next_number : M.IsFunction "move_core_types::parser::next_number" next_number.
@@ -2276,7 +2277,7 @@ Module parser.
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Lt"
                                                   [];
-                                                Value.Integer 1
+                                                Value.Integer IntegerKind.Usize 1
                                               ]
                                           |)));
                                       fun γ =>
@@ -2292,7 +2293,7 @@ Module parser.
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Gt"
                                                   [];
-                                                Value.Integer 1
+                                                Value.Integer IntegerKind.Usize 1
                                               ]
                                           |)));
                                       fun γ =>
@@ -2308,7 +2309,7 @@ Module parser.
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Comma"
                                                   [];
-                                                Value.Integer 1
+                                                Value.Integer IntegerKind.Usize 1
                                               ]
                                           |)));
                                       fun γ =>
@@ -2355,7 +2356,7 @@ Module parser.
                                                         Value.StructTuple
                                                           "move_core_types::parser::Token::ColonColon"
                                                           [];
-                                                        Value.Integer 2
+                                                        Value.Integer IntegerKind.Usize 2
                                                       ]
                                                   |)));
                                               fun γ =>
@@ -3181,17 +3182,17 @@ Module parser.
                                             |) in
                                           let~ len :=
                                             M.alloc (|
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                              BinOp.Wrap.add (|
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "alloc::string::String",
                                                     "len",
                                                     []
                                                   |),
                                                   [ r ]
-                                                |))
-                                                (Value.Integer 3)
+                                                |),
+                                                Value.Integer IntegerKind.Usize 3
+                                              |)
                                             |) in
                                           M.alloc (|
                                             Value.Tuple
@@ -3431,17 +3432,17 @@ Module parser.
                                             |) in
                                           let~ len :=
                                             M.alloc (|
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                              BinOp.Wrap.add (|
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "alloc::string::String",
                                                     "len",
                                                     []
                                                   |),
                                                   [ r ]
-                                                |))
-                                                (Value.Integer 3)
+                                                |),
+                                                Value.Integer IntegerKind.Usize 3
+                                              |)
                                             |) in
                                           M.alloc (|
                                             Value.Tuple
@@ -3885,7 +3886,7 @@ Module parser.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_next_token : M.IsFunction "move_core_types::parser::next_token" next_token.
@@ -4097,7 +4098,7 @@ Module parser.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_tokenize : M.IsFunction "move_core_types::parser::tokenize" tokenize.
@@ -4153,7 +4154,7 @@ Module parser.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (I : Ty.t), M.IsAssociatedFunction (Self I) "new" (new I).
@@ -4258,7 +4259,7 @@ Module parser.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next :
@@ -4290,7 +4291,7 @@ Module parser.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_peek :
@@ -4510,7 +4511,7 @@ Module parser.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_consume :
@@ -4584,8 +4585,8 @@ Module parser.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -4629,7 +4630,8 @@ Module parser.
                                         Value.StructTuple "core::option::Option::Some" [ end_token ]
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4998,7 +5000,7 @@ Module parser.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parse_comma_list :
@@ -5207,7 +5209,7 @@ Module parser.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parse_string :
@@ -6393,28 +6395,31 @@ Module parser.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let parser :=
-                                                                          M.copy (| γ |) in
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "move_core_types::parser::Parser")
+                                                                ltac:(M.monadic
+                                                                  (M.match_operator (|
+                                                                    M.alloc (| α0 |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let parser :=
+                                                                            M.copy (| γ |) in
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "move_core_types::parser::Parser")
+                                                                                []
+                                                                                [ I ],
+                                                                              "parse_type_tag",
                                                                               []
-                                                                              [ I ],
-                                                                            "parse_type_tag",
-                                                                            []
-                                                                          |),
-                                                                          [ M.read (| parser |) ]
-                                                                        |)))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                            |),
+                                                                            [ M.read (| parser |) ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end));
                                                         Value.StructTuple
                                                           "move_core_types::parser::Token::Gt"
@@ -6994,7 +6999,7 @@ Module parser.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parse_type_tag :
@@ -8261,7 +8266,7 @@ Module parser.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parse_transaction_argument :
@@ -8468,24 +8473,26 @@ Module parser.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let tok := M.copy (| γ |) in
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "move_core_types::parser::Token",
-                                                "is_whitespace",
-                                                []
-                                              |),
-                                              [ M.read (| tok |) ]
-                                            |))))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let tok := M.copy (| γ |) in
+                                            UnOp.not (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "move_core_types::parser::Token",
+                                                  "is_whitespace",
+                                                  []
+                                                |),
+                                                [ M.read (| tok |) ]
+                                              |)
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -8728,7 +8735,7 @@ Module parser.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_parse : M.IsFunction "move_core_types::parser::parse" parse.
@@ -8795,107 +8802,111 @@ Module parser.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let parser := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "move_core_types::parser::Parser")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                      []
-                                      [
-                                        Ty.path "move_core_types::parser::Token";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                "parse_comma_list",
-                                [
-                                  Ty.function
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let parser := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "move_core_types::parser::Parser")
+                                    []
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "move_core_types::parser::Parser")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                    []
-                                                    [
-                                                      Ty.path "move_core_types::parser::Token";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ]
-                                            ]
+                                          Ty.path "move_core_types::parser::Token";
+                                          Ty.path "alloc::alloc::Global"
                                         ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error" ]);
-                                  Ty.path "alloc::string::String"
-                                ]
-                              |),
-                              [
-                                M.read (| parser |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
+                                    ],
+                                  "parse_comma_list",
+                                  [
+                                    Ty.function
+                                      [
+                                        Ty.tuple
                                           [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let parser := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::parser::Parser")
+                                                  []
+                                                  [
                                                     Ty.apply
-                                                      (Ty.path "move_core_types::parser::Parser")
+                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
                                                       []
                                                       [
+                                                        Ty.path "move_core_types::parser::Token";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error"
+                                        ]);
+                                    Ty.path "alloc::string::String"
+                                  ]
+                                |),
+                                [
+                                  M.read (| parser |);
+                                  M.closure
+                                    (fun γ =>
+                                      ltac:(M.monadic
+                                        match γ with
+                                        | [ α0 ] =>
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let parser := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
-                                                            "alloc::vec::into_iter::IntoIter")
+                                                            "move_core_types::parser::Parser")
                                                           []
                                                           [
-                                                            Ty.path
-                                                              "move_core_types::parser::Token";
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ]
-                                                      ],
-                                                    "parse_string",
-                                                    []
-                                                  |),
-                                                  [ M.read (| parser |) ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
-                                      end));
-                                Value.StructTuple "move_core_types::parser::Token::EOF" [];
-                                Value.Bool true
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::vec::into_iter::IntoIter")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::parser::Token";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ],
+                                                        "parse_string",
+                                                        []
+                                                      |),
+                                                      [ M.read (| parser |) ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
+                                        end));
+                                  Value.StructTuple "move_core_types::parser::Token::EOF" [];
+                                  Value.Bool true
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_parse_string_list :
@@ -8969,110 +8980,113 @@ Module parser.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let parser := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "move_core_types::parser::Parser")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                      []
-                                      [
-                                        Ty.path "move_core_types::parser::Token";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                "parse_comma_list",
-                                [
-                                  Ty.function
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let parser := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "move_core_types::parser::Parser")
+                                    []
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "move_core_types::parser::Parser")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                    []
-                                                    [
-                                                      Ty.path "move_core_types::parser::Token";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ]
-                                            ]
+                                          Ty.path "move_core_types::parser::Token";
+                                          Ty.path "alloc::alloc::Global"
                                         ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
+                                    ],
+                                  "parse_comma_list",
+                                  [
+                                    Ty.function
                                       [
-                                        Ty.path "move_core_types::language_storage::TypeTag";
-                                        Ty.path "anyhow::Error"
-                                      ]);
-                                  Ty.path "move_core_types::language_storage::TypeTag"
-                                ]
-                              |),
-                              [
-                                M.read (| parser |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
+                                        Ty.tuple
                                           [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let parser := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::parser::Parser")
+                                                  []
+                                                  [
                                                     Ty.apply
-                                                      (Ty.path "move_core_types::parser::Parser")
+                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
                                                       []
                                                       [
+                                                        Ty.path "move_core_types::parser::Token";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::TypeTag";
+                                          Ty.path "anyhow::Error"
+                                        ]);
+                                    Ty.path "move_core_types::language_storage::TypeTag"
+                                  ]
+                                |),
+                                [
+                                  M.read (| parser |);
+                                  M.closure
+                                    (fun γ =>
+                                      ltac:(M.monadic
+                                        match γ with
+                                        | [ α0 ] =>
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let parser := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
-                                                            "alloc::vec::into_iter::IntoIter")
+                                                            "move_core_types::parser::Parser")
                                                           []
                                                           [
-                                                            Ty.path
-                                                              "move_core_types::parser::Token";
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ]
-                                                      ],
-                                                    "parse_type_tag",
-                                                    []
-                                                  |),
-                                                  [ M.read (| parser |) ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
-                                      end));
-                                Value.StructTuple "move_core_types::parser::Token::EOF" [];
-                                Value.Bool true
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::vec::into_iter::IntoIter")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::parser::Token";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ],
+                                                        "parse_type_tag",
+                                                        []
+                                                      |),
+                                                      [ M.read (| parser |) ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
+                                        end));
+                                  Value.StructTuple "move_core_types::parser::Token::EOF" [];
+                                  Value.Bool true
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_parse_type_tags :
@@ -9130,38 +9144,39 @@ Module parser.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let parser := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "move_core_types::parser::Parser")
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let parser := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "move_core_types::parser::Parser")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::parser::Token";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  "parse_type_tag",
                                   []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                      []
-                                      [
-                                        Ty.path "move_core_types::parser::Token";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                "parse_type_tag",
-                                []
-                              |),
-                              [ M.read (| parser |) ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                |),
+                                [ M.read (| parser |) ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_parse_type_tag :
@@ -9243,112 +9258,115 @@ Module parser.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let parser := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "move_core_types::parser::Parser")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                      []
-                                      [
-                                        Ty.path "move_core_types::parser::Token";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                "parse_comma_list",
-                                [
-                                  Ty.function
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let parser := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "move_core_types::parser::Parser")
+                                    []
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "move_core_types::parser::Parser")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                    []
-                                                    [
-                                                      Ty.path "move_core_types::parser::Token";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ]
-                                            ]
+                                          Ty.path "move_core_types::parser::Token";
+                                          Ty.path "alloc::alloc::Global"
                                         ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
+                                    ],
+                                  "parse_comma_list",
+                                  [
+                                    Ty.function
                                       [
-                                        Ty.path
-                                          "move_core_types::transaction_argument::TransactionArgument";
-                                        Ty.path "anyhow::Error"
-                                      ]);
-                                  Ty.path
-                                    "move_core_types::transaction_argument::TransactionArgument"
-                                ]
-                              |),
-                              [
-                                M.read (| parser |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
+                                        Ty.tuple
                                           [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let parser := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::parser::Parser")
+                                                  []
+                                                  [
                                                     Ty.apply
-                                                      (Ty.path "move_core_types::parser::Parser")
+                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
                                                       []
                                                       [
+                                                        Ty.path "move_core_types::parser::Token";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::transaction_argument::TransactionArgument";
+                                          Ty.path "anyhow::Error"
+                                        ]);
+                                    Ty.path
+                                      "move_core_types::transaction_argument::TransactionArgument"
+                                  ]
+                                |),
+                                [
+                                  M.read (| parser |);
+                                  M.closure
+                                    (fun γ =>
+                                      ltac:(M.monadic
+                                        match γ with
+                                        | [ α0 ] =>
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let parser := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
-                                                            "alloc::vec::into_iter::IntoIter")
+                                                            "move_core_types::parser::Parser")
                                                           []
                                                           [
-                                                            Ty.path
-                                                              "move_core_types::parser::Token";
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ]
-                                                      ],
-                                                    "parse_transaction_argument",
-                                                    []
-                                                  |),
-                                                  [ M.read (| parser |) ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
-                                      end));
-                                Value.StructTuple "move_core_types::parser::Token::EOF" [];
-                                Value.Bool true
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::vec::into_iter::IntoIter")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::parser::Token";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ],
+                                                        "parse_transaction_argument",
+                                                        []
+                                                      |),
+                                                      [ M.read (| parser |) ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
+                                        end));
+                                  Value.StructTuple "move_core_types::parser::Token::EOF" [];
+                                  Value.Bool true
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_parse_transaction_arguments :
@@ -9408,38 +9426,39 @@ Module parser.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let parser := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "move_core_types::parser::Parser")
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let parser := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "move_core_types::parser::Parser")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::parser::Token";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  "parse_transaction_argument",
                                   []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                      []
-                                      [
-                                        Ty.path "move_core_types::parser::Token";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                "parse_transaction_argument",
-                                []
-                              |),
-                              [ M.read (| parser |) ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                |),
+                                [ M.read (| parser |) ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_parse_transaction_argument :
@@ -9545,36 +9564,38 @@ Module parser.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let parser := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "move_core_types::parser::Parser")
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let parser := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "move_core_types::parser::Parser")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::vec::into_iter::IntoIter")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::parser::Token";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ],
+                                                        "parse_type_tag",
                                                         []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::vec::into_iter::IntoIter")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_core_types::parser::Token";
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ]
-                                                        ],
-                                                      "parse_type_tag",
-                                                      []
-                                                    |),
-                                                    [ M.read (| parser |) ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                                      |),
+                                                      [ M.read (| parser |) ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |);
@@ -9583,98 +9604,101 @@ Module parser.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let e := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "anyhow::Error",
-                                                  "msg",
-                                                  [ Ty.path "alloc::string::String" ]
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_function (|
-                                                      "core::hint::must_use",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [
-                                                      M.read (|
-                                                        let~ res :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "alloc::fmt::format",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "core::fmt::Arguments",
-                                                                    "new_v1",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "invalid struct tag: "
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String ", "
-                                                                          |)
-                                                                        ]
-                                                                    |);
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [ Ty.path "str" ]
-                                                                              ]
-                                                                            |),
-                                                                            [ s ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let e := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "anyhow::Error",
+                                                    "msg",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "invalid struct tag: "
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String ", "
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
                                                                                 Ty.path
-                                                                                  "anyhow::Error"
-                                                                              ]
-                                                                            |),
-                                                                            [ e ]
-                                                                          |)
-                                                                        ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          |) in
-                                                        res
-                                                      |)
-                                                    ]
-                                                  |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [ Ty.path "str"
+                                                                                    ]
+                                                                                ]
+                                                                              |),
+                                                                              [ s ]
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "anyhow::Error"
+                                                                                ]
+                                                                              |),
+                                                                              [ e ]
+                                                                            |)
+                                                                          ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -9835,7 +9859,7 @@ Module parser.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_parse_struct_tag :

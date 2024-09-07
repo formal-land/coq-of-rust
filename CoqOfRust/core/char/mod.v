@@ -2,21 +2,26 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module char.
-  Definition value_TAG_CONT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
+  Definition value_TAG_CONT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
   
-  Definition value_TAG_TWO_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 192 |))).
+  Definition value_TAG_TWO_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 192 |))).
   
   Definition value_TAG_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 224 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
   
-  Definition value_TAG_FOUR_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 240 |))).
+  Definition value_TAG_FOUR_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
   
-  Definition value_MAX_ONE_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
+  Definition value_MAX_ONE_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
   
-  Definition value_MAX_TWO_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2048 |))).
+  Definition value_MAX_TWO_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2048 |))).
   
   Definition value_MAX_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 65536 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 65536 |))).
   
   Definition value_MAX : Value.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::char::methods::MAX" |))).
@@ -41,7 +46,7 @@ Module char.
           M.get_function (| "core::char::decode::decode_utf16", [ I ] |),
           [ M.read (| iter |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_decode_utf16 : M.IsFunction "core::char::decode_utf16" decode_utf16.
@@ -60,7 +65,7 @@ Module char.
           M.get_function (| "core::char::convert::from_u32", [] |),
           [ M.read (| i |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_u32 : M.IsFunction "core::char::from_u32" from_u32.
@@ -80,7 +85,7 @@ Module char.
           M.get_function (| "core::char::convert::from_u32_unchecked", [] |),
           [ M.read (| i |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_u32_unchecked :
@@ -101,7 +106,7 @@ Module char.
           M.get_function (| "core::char::convert::from_digit", [] |),
           [ M.read (| num |); M.read (| radix |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_digit : M.IsFunction "core::char::from_digit" from_digit.
@@ -111,7 +116,13 @@ Module char.
       name := "EscapeUnicode";
       const_params := [];
       ty_params := [];
-      fields := [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [] ];
+      fields :=
+        [
+          Ty.apply
+            (Ty.path "core::escape::EscapeIterInner")
+            [ Value.Integer IntegerKind.Usize 10 ]
+            []
+        ];
     } *)
   
   Module Impl_core_clone_Clone_for_core_char_EscapeUnicode.
@@ -129,7 +140,10 @@ Module char.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::clone::Clone",
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   [],
                   "clone",
                   []
@@ -143,7 +157,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -182,7 +196,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -211,14 +225,17 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "unicode",
                   []
                 |),
                 [ M.read (| c |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -249,7 +266,10 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "next",
                   []
                 |),
@@ -270,7 +290,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -289,7 +309,10 @@ Module char.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                    Ty.apply
+                      (Ty.path "core::escape::EscapeIterInner")
+                      [ Value.Integer IntegerKind.Usize 10 ]
+                      [],
                     "len",
                     []
                   |),
@@ -308,7 +331,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -323,13 +346,16 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+              Ty.apply
+                (Ty.path "core::escape::EscapeIterInner")
+                [ Value.Integer IntegerKind.Usize 10 ]
+                [],
               "len",
               []
             |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -351,7 +377,10 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "next_back",
                   []
                 |),
@@ -366,7 +395,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -382,7 +411,10 @@ Module char.
           let n := M.alloc (| n |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+              Ty.apply
+                (Ty.path "core::escape::EscapeIterInner")
+                [ Value.Integer IntegerKind.Usize 10 ]
+                [],
               "advance_by",
               []
             |),
@@ -395,7 +427,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -429,7 +461,10 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+              Ty.apply
+                (Ty.path "core::escape::EscapeIterInner")
+                [ Value.Integer IntegerKind.Usize 10 ]
+                [],
               "len",
               []
             |),
@@ -441,7 +476,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -483,7 +518,10 @@ Module char.
               M.read (| f |);
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "as_str",
                   []
                 |),
@@ -497,7 +535,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -513,7 +551,13 @@ Module char.
       name := "EscapeDefault";
       const_params := [];
       ty_params := [];
-      fields := [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [] ];
+      fields :=
+        [
+          Ty.apply
+            (Ty.path "core::escape::EscapeIterInner")
+            [ Value.Integer IntegerKind.Usize 10 ]
+            []
+        ];
     } *)
   
   Module Impl_core_clone_Clone_for_core_char_EscapeDefault.
@@ -531,7 +575,10 @@ Module char.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::clone::Clone",
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   [],
                   "clone",
                   []
@@ -545,7 +592,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -584,7 +631,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -613,7 +660,10 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "ascii",
                   []
                 |),
@@ -629,7 +679,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
@@ -649,14 +699,17 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "backslash",
                   []
                 |),
                 [ M.read (| c |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
@@ -676,14 +729,17 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "unicode",
                   []
                 |),
                 [ M.read (| c |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
@@ -714,7 +770,10 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "next",
                   []
                 |),
@@ -735,7 +794,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -754,7 +813,10 @@ Module char.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                    Ty.apply
+                      (Ty.path "core::escape::EscapeIterInner")
+                      [ Value.Integer IntegerKind.Usize 10 ]
+                      [],
                     "len",
                     []
                   |),
@@ -773,7 +835,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -788,13 +850,16 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+              Ty.apply
+                (Ty.path "core::escape::EscapeIterInner")
+                [ Value.Integer IntegerKind.Usize 10 ]
+                [],
               "len",
               []
             |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -816,7 +881,10 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "next_back",
                   []
                 |),
@@ -831,7 +899,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -847,7 +915,10 @@ Module char.
           let n := M.alloc (| n |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+              Ty.apply
+                (Ty.path "core::escape::EscapeIterInner")
+                [ Value.Integer IntegerKind.Usize 10 ]
+                [],
               "advance_by",
               []
             |),
@@ -860,7 +931,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -894,7 +965,10 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+              Ty.apply
+                (Ty.path "core::escape::EscapeIterInner")
+                [ Value.Integer IntegerKind.Usize 10 ]
+                [],
               "len",
               []
             |),
@@ -906,7 +980,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -948,7 +1022,10 @@ Module char.
               M.read (| f |);
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 10 ]
+                    [],
                   "as_str",
                   []
                 |),
@@ -962,7 +1039,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1010,7 +1087,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1049,7 +1126,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1071,7 +1148,12 @@ Module char.
           name := "Bytes";
           item :=
             StructTuple
-              [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [] ];
+              [
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 10 ]
+                  []
+              ];
           discriminant := None;
         };
         {
@@ -1115,7 +1197,7 @@ Module char.
                               "core::clone::Clone",
                               Ty.apply
                                 (Ty.path "core::escape::EscapeIterInner")
-                                [ Value.Integer 10 ]
+                                [ Value.Integer IntegerKind.Usize 10 ]
                                 [],
                               [],
                               "clone",
@@ -1154,7 +1236,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1222,7 +1304,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1249,7 +1331,7 @@ Module char.
           Value.StructTuple
             "core::char::EscapeDebug"
             [ Value.StructTuple "core::char::EscapeDebugInner::Char" [ M.read (| chr |) ] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
@@ -1272,7 +1354,10 @@ Module char.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                      Ty.apply
+                        (Ty.path "core::escape::EscapeIterInner")
+                        [ Value.Integer IntegerKind.Usize 10 ]
+                        [],
                       "backslash",
                       []
                     |),
@@ -1280,7 +1365,7 @@ Module char.
                   |)
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
@@ -1303,7 +1388,10 @@ Module char.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                      Ty.apply
+                        (Ty.path "core::escape::EscapeIterInner")
+                        [ Value.Integer IntegerKind.Usize 10 ]
+                        [],
                       "unicode",
                       []
                     |),
@@ -1311,7 +1399,7 @@ Module char.
                   |)
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
@@ -1339,7 +1427,10 @@ Module char.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                        Ty.apply
+                          (Ty.path "core::escape::EscapeIterInner")
+                          [ Value.Integer IntegerKind.Usize 10 ]
+                          [],
                         "empty",
                         []
                       |),
@@ -1349,7 +1440,7 @@ Module char.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -1406,7 +1497,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::escape::EscapeIterInner")
-                                [ Value.Integer 10 ]
+                                [ Value.Integer IntegerKind.Usize 10 ]
                                 [],
                               "next",
                               []
@@ -1449,7 +1540,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1483,7 +1574,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1506,7 +1597,7 @@ Module char.
             |),
             [ self ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1564,7 +1655,7 @@ Module char.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::escape::EscapeIterInner")
-                            [ Value.Integer 10 ]
+                            [ Value.Integer IntegerKind.Usize 10 ]
                             [],
                           "len",
                           []
@@ -1581,11 +1672,11 @@ Module char.
                         "core::char::EscapeDebugInner::Char",
                         0
                       |) in
-                    M.alloc (| Value.Integer 1 |)))
+                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1657,7 +1748,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::escape::EscapeIterInner")
-                                [ Value.Integer 10 ]
+                                [ Value.Integer IntegerKind.Usize 10 ]
                                 [],
                               "as_str",
                               []
@@ -1692,7 +1783,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1739,7 +1830,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1779,7 +1870,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1822,7 +1913,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1851,7 +1942,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1885,7 +1976,7 @@ Module char.
               M.read (| fold |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1912,7 +2003,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1939,7 +2030,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1970,7 +2061,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2002,7 +2093,7 @@ Module char.
               M.read (| idx |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2052,7 +2143,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2086,7 +2177,7 @@ Module char.
               M.read (| rfold |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2117,7 +2208,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2173,7 +2264,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2202,7 +2293,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2284,7 +2375,7 @@ Module char.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2331,7 +2422,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2371,7 +2462,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2414,7 +2505,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2443,7 +2534,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2477,7 +2568,7 @@ Module char.
               M.read (| fold |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2504,7 +2595,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2531,7 +2622,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2562,7 +2653,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2594,7 +2685,7 @@ Module char.
               M.read (| idx |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2644,7 +2735,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2678,7 +2769,7 @@ Module char.
               M.read (| rfold |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2709,7 +2800,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2765,7 +2856,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2794,7 +2885,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2876,7 +2967,7 @@ Module char.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2893,7 +2984,12 @@ Module char.
       const_params := [];
       ty_params := [];
       fields :=
-        [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ Value.Integer 3 ] [ Ty.path "char" ] ];
+        [
+          Ty.apply
+            (Ty.path "core::array::iter::IntoIter")
+            [ Value.Integer IntegerKind.Usize 3 ]
+            [ Ty.path "char" ]
+        ];
     } *)
   
   Module Impl_core_fmt_Debug_for_core_char_CaseMappingIter.
@@ -2924,7 +3020,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2952,7 +3048,7 @@ Module char.
                   "core::clone::Clone",
                   Ty.apply
                     (Ty.path "core::array::iter::IntoIter")
-                    [ Value.Integer 3 ]
+                    [ Value.Integer IntegerKind.Usize 3 ]
                     [ Ty.path "char" ],
                   [],
                   "clone",
@@ -2967,7 +3063,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3007,7 +3103,10 @@ Module char.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "char" ],
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 3 ]
+                      [ Ty.path "char" ],
                     [],
                     "into_iter",
                     []
@@ -3024,14 +3123,15 @@ Module char.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_array_field (|
                                   chars,
-                                  M.alloc (| Value.Integer 2 |)
+                                  M.alloc (| Value.Integer IntegerKind.Usize 2 |)
                                 |)
-                              |))
-                              (Value.UnicodeChar 0)
+                              |),
+                              Value.UnicodeChar 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
@@ -3041,7 +3141,7 @@ Module char.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply
                                 (Ty.path "core::array::iter::IntoIter")
-                                [ Value.Integer 3 ]
+                                [ Value.Integer IntegerKind.Usize 3 ]
                                 [ Ty.path "char" ],
                               [],
                               "next_back",
@@ -3058,14 +3158,15 @@ Module char.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (|
+                                    BinOp.eq (|
+                                      M.read (|
                                         M.SubPointer.get_array_field (|
                                           chars,
-                                          M.alloc (| Value.Integer 1 |)
+                                          M.alloc (| Value.Integer IntegerKind.Usize 1 |)
                                         |)
-                                      |))
-                                      (Value.UnicodeChar 0)
+                                      |),
+                                      Value.UnicodeChar 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3079,7 +3180,7 @@ Module char.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Ty.apply
                                         (Ty.path "core::array::iter::IntoIter")
-                                        [ Value.Integer 3 ]
+                                        [ Value.Integer IntegerKind.Usize 3 ]
                                         [ Ty.path "char" ],
                                       [],
                                       "next_back",
@@ -3097,7 +3198,7 @@ Module char.
               |) in
             M.alloc (| Value.StructTuple "core::char::CaseMappingIter" [ M.read (| iter |) ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3124,7 +3225,7 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "next",
@@ -3138,7 +3239,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3156,7 +3257,7 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "size_hint",
@@ -3170,7 +3271,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3193,7 +3294,7 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "fold",
@@ -3207,7 +3308,7 @@ Module char.
               M.read (| fold |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3225,7 +3326,7 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "count",
@@ -3237,7 +3338,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3255,7 +3356,7 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "last",
@@ -3267,7 +3368,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3286,7 +3387,7 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "advance_by",
@@ -3301,7 +3402,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3321,7 +3422,7 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "__iterator_get_unchecked",
@@ -3336,7 +3437,7 @@ Module char.
               M.read (| idx |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3375,7 +3476,7 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "next_back",
@@ -3389,7 +3490,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3412,7 +3513,7 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "rfold",
@@ -3426,7 +3527,7 @@ Module char.
               M.read (| rfold |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3445,7 +3546,7 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "advance_back_by",
@@ -3460,7 +3561,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3494,7 +3595,7 @@ Module char.
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "len",
@@ -3508,7 +3609,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3526,7 +3627,7 @@ Module char.
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.apply
                 (Ty.path "core::array::iter::IntoIter")
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
               "is_empty",
@@ -3540,7 +3641,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3631,7 +3732,7 @@ Module char.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::array::iter::IntoIter")
-                              [ Value.Integer 3 ]
+                              [ Value.Integer IntegerKind.Usize 3 ]
                               [ Ty.path "char" ],
                             [],
                             "into_iter",
@@ -3643,7 +3744,7 @@ Module char.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "core::array::iter::IntoIter")
-                                  [ Value.Integer 3 ]
+                                  [ Value.Integer IntegerKind.Usize 3 ]
                                   [ Ty.path "char" ],
                                 [],
                                 "clone",
@@ -3674,7 +3775,7 @@ Module char.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::array::iter::IntoIter")
-                                            [ Value.Integer 3 ]
+                                            [ Value.Integer IntegerKind.Usize 3 ]
                                             [ Ty.path "char" ],
                                           [],
                                           "next",
@@ -3796,7 +3897,7 @@ Module char.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3843,7 +3944,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3880,7 +3981,7 @@ Module char.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3927,7 +4028,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3957,7 +4058,7 @@ Module char.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3987,7 +4088,7 @@ Module char.
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
             [ M.read (| Value.String "unicode code point out of range" |); M.read (| fmt |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

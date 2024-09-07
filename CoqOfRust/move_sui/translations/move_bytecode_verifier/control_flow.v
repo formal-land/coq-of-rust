@@ -67,16 +67,17 @@ Module control_flow.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "version",
                                   []
                                 |),
                                 [ M.read (| module |) ]
-                              |))
-                              (Value.Integer 5)
+                              |),
+                              Value.Integer IntegerKind.U32 5
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
@@ -388,7 +389,7 @@ Module control_flow.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_function :
@@ -432,7 +433,7 @@ Module control_flow.
                   M.read (| current_function_opt |);
                   Value.StructTuple
                     "move_binary_format::file_format::FunctionDefinitionIndex"
-                    [ Value.Integer 0 ]
+                    [ Value.Integer IntegerKind.U16 0 ]
                 ]
               |)
             |) in
@@ -502,15 +503,16 @@ Module control_flow.
                   let last := M.copy (| γ0_0 |) in
                   let γ :=
                     M.alloc (|
-                      UnOp.Pure.not
-                        (M.call_closure (|
+                      UnOp.not (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Bytecode",
                             "is_unconditional_branch",
                             []
                           |),
                           [ M.read (| last |) ]
-                        |))
+                        |)
+                      |)
                     |) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -538,9 +540,8 @@ Module control_flow.
                             |);
                             M.read (| current_function |);
                             M.rust_cast
-                              (BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              (BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -559,8 +560,9 @@ Module control_flow.
                                       "code"
                                     |)
                                   ]
-                                |))
-                                (Value.Integer 1))
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |))
                           ]
                         |)
                       ]
@@ -573,7 +575,7 @@ Module control_flow.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_fallthrough :
@@ -680,7 +682,7 @@ Module control_flow.
                       |);
                       Value.StructTuple
                         "move_binary_format::file_format::FunctionDefinitionIndex"
-                        [ Value.Integer 0 ]
+                        [ Value.Integer IntegerKind.U16 0 ]
                     ]
                   |)
                 |) in
@@ -691,48 +693,49 @@ Module control_flow.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let code := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let offset := M.copy (| γ |) in
-                                          Value.StructTuple
-                                            "core::result::Result::Err"
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError",
-                                                  "at_code_offset",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::errors::PartialVMError",
-                                                      "new",
-                                                      []
-                                                    |),
-                                                    [ M.read (| code |) ]
-                                                  |);
-                                                  M.read (| current_function |);
-                                                  M.read (| offset |)
-                                                ]
-                                              |)
-                                            ]))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let code := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let offset := M.copy (| γ |) in
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
+                                                    "at_code_offset",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
+                                                        "new",
+                                                        []
+                                                      |),
+                                                      [ M.read (| code |) ]
+                                                    |);
+                                                    M.read (| current_function |);
+                                                    M.read (| offset |)
+                                                  ]
+                                                |)
+                                              ]))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |) in
               let~ summary :=
@@ -1295,8 +1298,8 @@ Module control_flow.
                                                                                         (let γ :=
                                                                                           M.use
                                                                                             (M.alloc (|
-                                                                                              UnOp.Pure.not
-                                                                                                (M.call_closure (|
+                                                                                              UnOp.not (|
+                                                                                                M.call_closure (|
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.path
                                                                                                       "move_bytecode_verifier::loop_summary::LoopSummary",
@@ -1312,7 +1315,8 @@ Module control_flow.
                                                                                                       pred
                                                                                                     |)
                                                                                                   ]
-                                                                                                |))
+                                                                                                |)
+                                                                                              |)
                                                                                             |)) in
                                                                                         let _ :=
                                                                                           M.is_constant_or_break_match (|
@@ -1556,9 +1560,10 @@ Module control_flow.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.gt
-                                                                (M.rust_cast (M.read (| depth |)))
-                                                                (M.read (| max_depth |))
+                                                              BinOp.gt (|
+                                                                M.rust_cast (M.read (| depth |)),
+                                                                M.read (| max_depth |)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -1644,7 +1649,7 @@ Module control_flow.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_reducibility :

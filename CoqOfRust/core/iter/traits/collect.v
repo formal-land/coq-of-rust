@@ -58,7 +58,7 @@ Module iter.
                   |) in
                 res
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -94,7 +94,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| self |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -143,7 +143,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_extend_one :
@@ -166,7 +166,7 @@ Module iter.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_extend_reserve :
@@ -202,7 +202,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_extend_one_unchecked :
@@ -249,7 +249,7 @@ Module iter.
                   M.get_function (| "core::mem::drop", [ Ty.tuple [] ] |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*     fn extend_one(&mut self, _item: ()) {} *)
@@ -260,7 +260,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let _item := M.alloc (| _item |) in
               Value.Tuple []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -338,7 +338,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -394,7 +394,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -450,7 +450,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -509,7 +509,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -592,7 +592,10 @@ Module iter.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.gt (M.read (| lower_bound |)) (Value.Integer 0)
+                                      BinOp.gt (|
+                                        M.read (| lower_bound |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -656,7 +659,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_default_extend_tuple :
@@ -685,56 +688,57 @@ Module iter.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                      let t := M.copy (| γ0_0 |) in
-                                      let u := M.copy (| γ0_1 |) in
-                                      M.read (|
-                                        let~ _ :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::collect::Extend",
-                                                impl_Extend_A_,
-                                                [ A ],
-                                                "extend_one",
-                                                []
-                                              |),
-                                              [ M.read (| a |); M.read (| t |) ]
-                                            |)
-                                          |) in
-                                        let~ _ :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::collect::Extend",
-                                                impl_Extend_B_,
-                                                [ B ],
-                                                "extend_one",
-                                                []
-                                              |),
-                                              [ M.read (| b |); M.read (| u |) ]
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                        let t := M.copy (| γ0_0 |) in
+                                        let u := M.copy (| γ0_1 |) in
+                                        M.read (|
+                                          let~ _ :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::collect::Extend",
+                                                  impl_Extend_A_,
+                                                  [ A ],
+                                                  "extend_one",
+                                                  []
+                                                |),
+                                                [ M.read (| a |); M.read (| t |) ]
+                                              |)
+                                            |) in
+                                          let~ _ :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::collect::Extend",
+                                                  impl_Extend_B_,
+                                                  [ B ],
+                                                  "extend_one",
+                                                  []
+                                                |),
+                                                [ M.read (| b |); M.read (| u |) ]
+                                              |)
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_extend :
@@ -782,7 +786,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -922,9 +926,10 @@ Module iter.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.gt
-                                              (M.read (| lower_bound |))
-                                              (Value.Integer 0)
+                                            BinOp.gt (|
+                                              M.read (| lower_bound |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -986,7 +991,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

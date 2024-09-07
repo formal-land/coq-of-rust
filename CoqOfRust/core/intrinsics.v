@@ -17,7 +17,7 @@ Module intrinsics.
           M.get_function (| "core::ptr::drop_in_place", [ T ] |),
           [ M.read (| to_drop |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_drop_in_place : M.IsFunction "core::intrinsics::drop_in_place" drop_in_place.
@@ -612,7 +612,7 @@ Module intrinsics.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.use (M.alloc (| UnOp.Pure.not (M.read (| b |)) |)) in
+                  (let γ := M.use (M.alloc (| UnOp.not (| M.read (| b |) |) |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
@@ -626,7 +626,7 @@ Module intrinsics.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_assume : M.IsFunction "core::intrinsics::assume" assume.
@@ -642,7 +642,7 @@ Module intrinsics.
       ltac:(M.monadic
         (let b := M.alloc (| b |) in
         M.read (| b |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_likely : M.IsFunction "core::intrinsics::likely" likely.
@@ -658,7 +658,7 @@ Module intrinsics.
       ltac:(M.monadic
         (let b := M.alloc (| b |) in
         M.read (| b |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_unlikely : M.IsFunction "core::intrinsics::unlikely" unlikely.
@@ -688,7 +688,7 @@ Module intrinsics.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_select_unpredictable :
@@ -1329,8 +1329,8 @@ Module intrinsics.
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         let other := M.alloc (| other |) in
-        M.rust_cast (BinOp.Pure.eq (M.read (| ptr |)) (M.read (| other |)))))
-    | _, _, _ => M.impossible
+        M.rust_cast (BinOp.eq (| M.read (| ptr |), M.read (| other |) |))))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ptr_guaranteed_cmp :
@@ -1374,7 +1374,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_const_eval_select :
@@ -1391,7 +1391,7 @@ Module intrinsics.
       ltac:(M.monadic
         (let _arg := M.alloc (| _arg |) in
         Value.Bool false))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_val_statically_known :
@@ -1415,12 +1415,12 @@ Module intrinsics.
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
-                [ M.read (| x |); M.read (| y |); Value.Integer 1 ]
+                [ M.read (| x |); M.read (| y |); Value.Integer IntegerKind.Usize 1 ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_typed_swap : M.IsFunction "core::intrinsics::typed_swap" typed_swap.
@@ -1433,7 +1433,7 @@ Module intrinsics.
   Definition ub_checks (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.Bool true))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ub_checks : M.IsFunction "core::intrinsics::ub_checks" ub_checks.
@@ -1452,7 +1452,7 @@ Module intrinsics.
         (let _size := M.alloc (| _size |) in
         let _align := M.alloc (| _align |) in
         M.call_closure (| M.get_function (| "core::ptr::null_mut", [ Ty.path "u8" ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_const_allocate : M.IsFunction "core::intrinsics::const_allocate" const_allocate.
@@ -1470,7 +1470,7 @@ Module intrinsics.
         let _size := M.alloc (| _size |) in
         let _align := M.alloc (| _align |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_const_deallocate :
@@ -1492,7 +1492,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_vtable_size : M.IsFunction "core::intrinsics::vtable_size" vtable_size.
@@ -1513,7 +1513,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_vtable_align : M.IsFunction "core::intrinsics::vtable_align" vtable_align.
@@ -1533,7 +1533,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_size_of : M.IsFunction "core::intrinsics::size_of" size_of.
@@ -1553,7 +1553,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_min_align_of : M.IsFunction "core::intrinsics::min_align_of" min_align_of.
@@ -1573,7 +1573,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_pref_align_of : M.IsFunction "core::intrinsics::pref_align_of" pref_align_of.
@@ -1593,7 +1593,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_variant_count : M.IsFunction "core::intrinsics::variant_count" variant_count.
@@ -1614,7 +1614,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_size_of_val : M.IsFunction "core::intrinsics::size_of_val" size_of_val.
@@ -1635,7 +1635,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_min_align_of_val :
@@ -1656,7 +1656,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_type_name : M.IsFunction "core::intrinsics::type_name" type_name.
@@ -1676,7 +1676,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_type_id : M.IsFunction "core::intrinsics::type_id" type_id.
@@ -1700,7 +1700,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_aggregate_raw_ptr :
@@ -1757,7 +1757,7 @@ Module intrinsics.
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ptr_metadata : M.IsFunction "core::intrinsics::ptr_metadata" ptr_metadata.
@@ -1850,7 +1850,7 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_copy_nonoverlapping :
@@ -1936,7 +1936,7 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_copy : M.IsFunction "core::intrinsics::copy" copy.
@@ -2019,7 +2019,7 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write_bytes : M.IsFunction "core::intrinsics::write_bytes" write_bytes.

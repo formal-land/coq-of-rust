@@ -21,7 +21,7 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_call_me : M.IsFunction "functions_closures_input_functions::call_me" call_me.
@@ -53,7 +53,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_function : M.IsFunction "functions_closures_input_functions::function" function.
@@ -79,39 +79,40 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ _ :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (| "std::io::stdio::_print", [] |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "I'm a closure!
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (| "std::io::stdio::_print", [] |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_const",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "I'm a closure!
 " |) ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -136,7 +137,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_input_functions::main" main.

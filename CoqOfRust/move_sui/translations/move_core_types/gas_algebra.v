@@ -117,13 +117,13 @@ Module gas_algebra.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "GasQuantity" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -285,7 +285,7 @@ Module gas_algebra.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -334,7 +334,7 @@ Module gas_algebra.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -434,7 +434,7 @@ Module gas_algebra.
               "new",
               []
             |),
-            [ Value.Integer 16 ]
+            [ Value.Integer IntegerKind.U64 16 ]
           |)
         |))).
   
@@ -451,7 +451,7 @@ Module gas_algebra.
               "new",
               []
             |),
-            [ Value.Integer 8 ]
+            [ Value.Integer IntegerKind.U64 8 ]
           |)
         |))).
   
@@ -479,7 +479,7 @@ Module gas_algebra.
               ("val", M.read (| val |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (U : Ty.t), M.IsAssociatedFunction (Self U) "new" (new U).
@@ -500,9 +500,9 @@ Module gas_algebra.
               "new",
               []
             |),
-            [ Value.Integer 0 ]
+            [ Value.Integer IntegerKind.U64 0 ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_zero :
@@ -525,9 +525,9 @@ Module gas_algebra.
               "new",
               []
             |),
-            [ Value.Integer 1 ]
+            [ Value.Integer IntegerKind.U64 1 ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_one : forall (U : Ty.t), M.IsAssociatedFunction (Self U) "one" (one U).
@@ -543,16 +543,17 @@ Module gas_algebra.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.read (|
+          BinOp.eq (|
+            M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "move_core_types::gas_algebra::GasQuantity",
                 "val"
               |)
-            |))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+            |),
+            Value.Integer IntegerKind.U64 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_zero :
@@ -585,7 +586,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_cmp_impl :
@@ -641,7 +642,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_sub :
@@ -695,7 +696,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_saturating_sub :
@@ -724,7 +725,7 @@ Module gas_algebra.
                   Value.Tuple
                     [
                       M.get_constant (| "move_core_types::gas_algebra::ToUnit::MULTIPLIER" |);
-                      M.alloc (| Value.Integer 0 |)
+                      M.alloc (| Value.Integer IntegerKind.U64 0 |)
                     ]
                 |),
                 [
@@ -742,9 +743,10 @@ Module gas_algebra.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -807,7 +809,7 @@ Module gas_algebra.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_unit :
@@ -866,7 +868,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_unit_round_down :
@@ -921,7 +923,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_unit_round_up :
@@ -968,7 +970,9 @@ Module gas_algebra.
               |) in
             let~ _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [ multiplier; M.alloc (| Value.Integer 0 |) ] |),
+                M.alloc (|
+                  Value.Tuple [ multiplier; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -984,9 +988,10 @@ Module gas_algebra.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1047,7 +1052,7 @@ Module gas_algebra.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_unit_with_params :
@@ -1130,7 +1135,7 @@ Module gas_algebra.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_unit_round_down_with_params :
@@ -1216,7 +1221,7 @@ Module gas_algebra.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_unit_round_up_with_params :
@@ -1250,7 +1255,7 @@ Module gas_algebra.
             |),
             [ M.read (| val |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1283,7 +1288,7 @@ Module gas_algebra.
               "val"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1327,7 +1332,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1399,7 +1404,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1480,7 +1485,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1530,7 +1535,7 @@ Module gas_algebra.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1581,7 +1586,7 @@ Module gas_algebra.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1617,7 +1622,7 @@ Module gas_algebra.
             |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1677,7 +1682,7 @@ Module gas_algebra.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1722,7 +1727,7 @@ Module gas_algebra.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1775,7 +1780,7 @@ Module gas_algebra.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_mul_impl : M.IsFunction "move_core_types::gas_algebra::mul_impl" mul_impl.
@@ -1804,7 +1809,7 @@ Module gas_algebra.
             M.get_function (| "move_core_types::gas_algebra::mul_impl", [ U1; U2 ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1851,7 +1856,7 @@ Module gas_algebra.
             M.get_function (| "move_core_types::gas_algebra::mul_impl", [ U1; U2 ] |),
             [ M.read (| rhs |); M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1888,7 +1893,9 @@ Module gas_algebra.
         M.read (|
           let~ _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [ nominator; M.alloc (| Value.Integer 0 |) ] |),
+              M.alloc (|
+                Value.Tuple [ nominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1904,9 +1911,10 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |))
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1941,7 +1949,9 @@ Module gas_algebra.
             |) in
           let~ _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [ denominator; M.alloc (| Value.Integer 0 |) ] |),
+              M.alloc (|
+                Value.Tuple [ denominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1957,9 +1967,10 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |))
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1994,13 +2005,13 @@ Module gas_algebra.
             |) in
           let~ res :=
             M.alloc (|
-              BinOp.Wrap.div
-                Integer.U128
-                (BinOp.Wrap.mul
-                  Integer.U128
-                  (M.rust_cast (M.read (| val |)))
-                  (M.rust_cast (M.read (| nominator |))))
-                (M.rust_cast (M.read (| denominator |)))
+              BinOp.Wrap.div (|
+                BinOp.Wrap.mul (|
+                  M.rust_cast (M.read (| val |)),
+                  M.rust_cast (M.read (| nominator |))
+                |),
+                M.rust_cast (M.read (| denominator |))
+              |)
             |) in
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -2010,9 +2021,10 @@ Module gas_algebra.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.gt
-                          (M.read (| res |))
-                          (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                        BinOp.gt (|
+                          M.read (| res |),
+                          M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.get_constant (| "core::num::MAX" |)));
@@ -2020,7 +2032,7 @@ Module gas_algebra.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_apply_ratio_round_down :
@@ -2052,7 +2064,9 @@ Module gas_algebra.
         M.read (|
           let~ _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [ nominator; M.alloc (| Value.Integer 0 |) ] |),
+              M.alloc (|
+                Value.Tuple [ nominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2068,9 +2082,10 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |))
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2105,7 +2120,9 @@ Module gas_algebra.
             |) in
           let~ _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [ denominator; M.alloc (| Value.Integer 0 |) ] |),
+              M.alloc (|
+                Value.Tuple [ denominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2121,9 +2138,10 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |))
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2158,18 +2176,17 @@ Module gas_algebra.
             |) in
           let~ n :=
             M.alloc (|
-              BinOp.Wrap.mul
-                Integer.U128
-                (M.rust_cast (M.read (| val |)))
-                (M.rust_cast (M.read (| nominator |)))
+              BinOp.Wrap.mul (|
+                M.rust_cast (M.read (| val |)),
+                M.rust_cast (M.read (| nominator |))
+              |)
             |) in
           let~ d := M.alloc (| M.rust_cast (M.read (| denominator |)) |) in
           let~ res :=
             M.alloc (|
-              BinOp.Wrap.add
-                Integer.U128
-                (BinOp.Wrap.div Integer.U128 (M.read (| n |)) (M.read (| d |)))
-                (M.read (|
+              BinOp.Wrap.add (|
+                BinOp.Wrap.div (| M.read (| n |), M.read (| d |) |),
+                M.read (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2178,17 +2195,19 @@ Module gas_algebra.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (BinOp.Wrap.rem Integer.U128 (M.read (| n |)) (M.read (| d |)))
-                                  (Value.Integer 0)
+                                BinOp.eq (|
+                                  BinOp.Wrap.rem (| M.read (| n |), M.read (| d |) |),
+                                  Value.Integer IntegerKind.U128 0
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer 0 |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 1 |)))
+                          M.alloc (| Value.Integer IntegerKind.U128 0 |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 1 |)))
                     ]
                   |)
-                |))
+                |)
+              |)
             |) in
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -2198,9 +2217,10 @@ Module gas_algebra.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.gt
-                          (M.read (| res |))
-                          (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                        BinOp.gt (|
+                          M.read (| res |),
+                          M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.get_constant (| "core::num::MAX" |)));
@@ -2208,7 +2228,7 @@ Module gas_algebra.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_apply_ratio_round_up :
@@ -2227,7 +2247,7 @@ Module gas_algebra.
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_MULTIPLIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1024 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2245,7 +2265,12 @@ Module gas_algebra.
     Definition value_MULTIPLIER : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| BinOp.Wrap.mul Integer.U64 (Value.Integer 1024) (Value.Integer 1024) |))).
+          (M.alloc (|
+            BinOp.Wrap.mul (|
+              Value.Integer IntegerKind.U64 1024,
+              Value.Integer IntegerKind.U64 1024
+            |)
+          |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2264,10 +2289,13 @@ Module gas_algebra.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.mul
-              Integer.U64
-              (BinOp.Wrap.mul Integer.U64 (Value.Integer 1024) (Value.Integer 1024))
-              (Value.Integer 1024)
+            BinOp.Wrap.mul (|
+              BinOp.Wrap.mul (|
+                Value.Integer IntegerKind.U64 1024,
+                Value.Integer IntegerKind.U64 1024
+              |),
+              Value.Integer IntegerKind.U64 1024
+            |)
           |))).
     
     Axiom Implements :
@@ -2284,7 +2312,7 @@ Module gas_algebra.
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_MULTIPLIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1024 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2302,7 +2330,12 @@ Module gas_algebra.
     Definition value_MULTIPLIER : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| BinOp.Wrap.mul Integer.U64 (Value.Integer 1024) (Value.Integer 1024) |))).
+          (M.alloc (|
+            BinOp.Wrap.mul (|
+              Value.Integer IntegerKind.U64 1024,
+              Value.Integer IntegerKind.U64 1024
+            |)
+          |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2318,7 +2351,7 @@ Module gas_algebra.
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_MULTIPLIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1024 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2333,12 +2366,13 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_NOMINATOR : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1024 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2357,12 +2391,13 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_NOMINATOR : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1024 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2381,14 +2416,20 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_NOMINATOR : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| BinOp.Wrap.mul Integer.U64 (Value.Integer 1024) (Value.Integer 1024) |))).
+          (M.alloc (|
+            BinOp.Wrap.mul (|
+              Value.Integer IntegerKind.U64 1024,
+              Value.Integer IntegerKind.U64 1024
+            |)
+          |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2407,12 +2448,13 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_NOMINATOR : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1024 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2431,14 +2473,20 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_NOMINATOR : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| BinOp.Wrap.mul Integer.U64 (Value.Integer 1024) (Value.Integer 1024) |))).
+          (M.alloc (|
+            BinOp.Wrap.mul (|
+              Value.Integer IntegerKind.U64 1024,
+              Value.Integer IntegerKind.U64 1024
+            |)
+          |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2457,7 +2505,8 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_NOMINATOR : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024 * 1024; *)
     (* Ty.path "u64" *)
@@ -2465,10 +2514,13 @@ Module gas_algebra.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.mul
-              Integer.U64
-              (BinOp.Wrap.mul Integer.U64 (Value.Integer 1024) (Value.Integer 1024))
-              (Value.Integer 1024)
+            BinOp.Wrap.mul (|
+              BinOp.Wrap.mul (|
+                Value.Integer IntegerKind.U64 1024,
+                Value.Integer IntegerKind.U64 1024
+              |),
+              Value.Integer IntegerKind.U64 1024
+            |)
           |))).
     
     Axiom Implements :

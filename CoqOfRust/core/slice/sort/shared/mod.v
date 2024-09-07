@@ -78,7 +78,7 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| len |)) (Value.Integer 2)
+                                  BinOp.lt (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -92,7 +92,7 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ run_len := M.alloc (| Value.Integer 2 |) in
+                  let~ run_len := M.alloc (| Value.Integer IntegerKind.Usize 2 |) in
                   let~ strictly_descending :=
                     M.alloc (|
                       M.call_closure (|
@@ -116,7 +116,7 @@ Module slice.
                                   "get_unchecked",
                                   [ Ty.path "usize" ]
                                 |),
-                                [ M.read (| v |); Value.Integer 1 ]
+                                [ M.read (| v |); Value.Integer IntegerKind.Usize 1 ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -124,7 +124,7 @@ Module slice.
                                   "get_unchecked",
                                   [ Ty.path "usize" ]
                                 |),
-                                [ M.read (| v |); Value.Integer 0 ]
+                                [ M.read (| v |); Value.Integer IntegerKind.Usize 0 ]
                               |)
                             ]
                         ]
@@ -150,9 +150,10 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.Pure.lt
-                                                  (M.read (| run_len |))
-                                                  (M.read (| len |)),
+                                                BinOp.lt (|
+                                                  M.read (| run_len |),
+                                                  M.read (| len |)
+                                                |),
                                                 ltac:(M.monadic
                                                   (M.call_closure (|
                                                     M.get_trait_method (|
@@ -188,10 +189,10 @@ Module slice.
                                                             |),
                                                             [
                                                               M.read (| v |);
-                                                              BinOp.Wrap.sub
-                                                                Integer.Usize
-                                                                (M.read (| run_len |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.sub (|
+                                                                M.read (| run_len |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -208,10 +209,10 @@ Module slice.
                                           let β := run_len in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ =>
@@ -243,12 +244,13 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.Pure.lt
-                                                  (M.read (| run_len |))
-                                                  (M.read (| len |)),
+                                                BinOp.lt (|
+                                                  M.read (| run_len |),
+                                                  M.read (| len |)
+                                                |),
                                                 ltac:(M.monadic
-                                                  (UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  (UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::function::FnMut",
                                                         F,
@@ -283,15 +285,16 @@ Module slice.
                                                               |),
                                                               [
                                                                 M.read (| v |);
-                                                                BinOp.Wrap.sub
-                                                                  Integer.Usize
-                                                                  (M.read (| run_len |))
-                                                                  (Value.Integer 1)
+                                                                BinOp.Wrap.sub (|
+                                                                  M.read (| run_len |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
                                                       ]
-                                                    |))))
+                                                    |)
+                                                  |)))
                                               |)
                                             |)) in
                                         let _ :=
@@ -303,10 +306,10 @@ Module slice.
                                           let β := run_len in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ =>
@@ -332,7 +335,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_find_existing_run :

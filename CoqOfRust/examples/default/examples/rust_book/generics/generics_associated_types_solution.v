@@ -74,7 +74,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -94,7 +94,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             0
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -114,7 +114,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             1
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -134,7 +134,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             0
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -163,9 +163,8 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [ C ], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
-      BinOp.Wrap.sub
-        Integer.I32
-        (M.call_closure (|
+      BinOp.Wrap.sub (|
+        M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_solution::Contains",
             C,
@@ -174,8 +173,8 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             []
           |),
           [ M.read (| container |) ]
-        |))
-        (M.call_closure (|
+        |),
+        M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_solution::Contains",
             C,
@@ -184,8 +183,9 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             []
           |),
           [ M.read (| container |) ]
-        |))))
-  | _, _, _ => M.impossible
+        |)
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_difference :
@@ -205,7 +205,7 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_trait_method (| "generics_associated_types_solution::Contains", C, [], "a", [] |),
         [ M.read (| container |) ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
@@ -234,8 +234,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ number_1 := M.alloc (| Value.Integer 3 |) in
-        let~ number_2 := M.alloc (| Value.Integer 10 |) in
+        let~ number_1 := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
+        let~ number_2 := M.alloc (| Value.Integer IntegerKind.I32 10 |) in
         let~ container :=
           M.alloc (|
             Value.StructTuple
@@ -453,7 +453,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.

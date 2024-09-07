@@ -91,7 +91,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "new_display",
                                 [ Ty.path "i32" ]
                               |),
-                              [ M.alloc (| M.rust_cast (Value.Integer 0) |) ]
+                              [ M.alloc (| M.rust_cast (Value.Integer IntegerKind.Isize 0) |) ]
                             |)
                           ]
                       |)
@@ -124,7 +124,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "new_display",
                                 [ Ty.path "i32" ]
                               |),
-                              [ M.alloc (| M.rust_cast (Value.Integer 1) |) ]
+                              [ M.alloc (| M.rust_cast (Value.Integer IntegerKind.Isize 1) |) ]
                             |)
                           ]
                       |)
@@ -164,10 +164,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 M.alloc (|
                                   M.rust_cast
-                                    (BinOp.Wrap.add
-                                      Integer.Isize
-                                      (M.get_constant (| "enums_c_like::Color::Red_discriminant" |))
-                                      (Value.Integer 0))
+                                    (BinOp.Wrap.add (|
+                                      M.get_constant (| "enums_c_like::Color::Red_discriminant" |),
+                                      Value.Integer IntegerKind.Isize 0
+                                    |))
                                 |)
                               ]
                             |)
@@ -183,12 +183,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                Value.Integer 0;
+                                Value.Integer IntegerKind.Usize 0;
                                 Value.UnicodeChar 32;
                                 Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer 8;
+                                Value.Integer IntegerKind.U32 8;
                                 Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
+                                Value.StructTuple
+                                  "core::fmt::rt::Count::Is"
+                                  [ Value.Integer IntegerKind.Usize 6 ]
                               ]
                             |)
                           ]
@@ -238,12 +240,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 M.alloc (|
                                   M.rust_cast
-                                    (BinOp.Wrap.add
-                                      Integer.Isize
-                                      (M.get_constant (|
-                                        "enums_c_like::Color::Blue_discriminant"
-                                      |))
-                                      (Value.Integer 0))
+                                    (BinOp.Wrap.add (|
+                                      M.get_constant (| "enums_c_like::Color::Blue_discriminant" |),
+                                      Value.Integer IntegerKind.Isize 0
+                                    |))
                                 |)
                               ]
                             |)
@@ -259,12 +259,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                Value.Integer 0;
+                                Value.Integer IntegerKind.Usize 0;
                                 Value.UnicodeChar 32;
                                 Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer 8;
+                                Value.Integer IntegerKind.U32 8;
                                 Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
+                                Value.StructTuple
+                                  "core::fmt::rt::Count::Is"
+                                  [ Value.Integer IntegerKind.Usize 6 ]
                               ]
                             |)
                           ]
@@ -285,7 +287,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "enums_c_like::main" main.

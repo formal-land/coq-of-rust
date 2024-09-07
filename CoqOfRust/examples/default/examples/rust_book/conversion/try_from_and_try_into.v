@@ -37,7 +37,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -69,22 +69,23 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.read (| self |),
               "try_from_and_try_into::EvenNumber",
               0
             |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.read (| other |),
               "try_from_and_try_into::EvenNumber",
               0
             |)
-          |))))
-    | _, _, _ => M.impossible
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -124,9 +125,10 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.eq
-                          (BinOp.Wrap.rem Integer.I32 (M.read (| value |)) (Value.Integer 2))
-                          (Value.Integer 0)
+                        BinOp.eq (|
+                          BinOp.Wrap.rem (| M.read (| value |), Value.Integer IntegerKind.I32 2 |),
+                          Value.Integer IntegerKind.I32 0
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -141,7 +143,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -187,13 +189,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "try_from",
                         []
                       |),
-                      [ Value.Integer 8 ]
+                      [ Value.Integer IntegerKind.I32 8 ]
                     |)
                   |);
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ Value.Integer 8 ] ]
+                      [
+                        Value.StructTuple
+                          "try_from_and_try_into::EvenNumber"
+                          [ Value.Integer IntegerKind.I32 8 ]
+                      ]
                   |)
                 ]
             |),
@@ -212,8 +218,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -232,7 +238,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -290,7 +297,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "try_from",
                         []
                       |),
-                      [ Value.Integer 5 ]
+                      [ Value.Integer IntegerKind.I32 5 ]
                     |)
                   |);
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
@@ -311,8 +318,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -331,7 +338,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -385,7 +393,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "try_into",
                 []
               |),
-              [ Value.Integer 8 ]
+              [ Value.Integer IntegerKind.I32 8 ]
             |)
           |) in
         let~ _ :=
@@ -397,7 +405,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ Value.Integer 8 ] ]
+                      [
+                        Value.StructTuple
+                          "try_from_and_try_into::EvenNumber"
+                          [ Value.Integer IntegerKind.I32 8 ]
+                      ]
                   |)
                 ]
             |),
@@ -416,8 +428,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -436,7 +448,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -490,7 +503,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "try_into",
                 []
               |),
-              [ Value.Integer 5 ]
+              [ Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
         let~ _ :=
@@ -517,8 +530,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -537,7 +550,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -583,7 +597,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "try_from_and_try_into::main" main.

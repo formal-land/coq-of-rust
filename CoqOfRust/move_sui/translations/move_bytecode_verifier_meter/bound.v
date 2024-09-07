@@ -82,11 +82,11 @@ Module bound.
                   "move_bytecode_verifier_meter::bound::Bounds",
                   "units"
                 |),
-                Value.Integer 0
+                Value.Integer IntegerKind.U128 0
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -107,9 +107,8 @@ Module bound.
             let~ units :=
               M.alloc (|
                 M.rust_cast
-                  (BinOp.Wrap.mul
-                    Integer.Usize
-                    (M.rust_cast
+                  (BinOp.Wrap.mul (|
+                    M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.call_closure (|
@@ -123,8 +122,9 @@ Module bound.
                           "move_bytecode_verifier_meter::bound::Bounds",
                           "units"
                         |)
-                      |)))
-                    (M.read (| factor |)))
+                      |)),
+                    M.read (| factor |)
+                  |))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -139,7 +139,7 @@ Module bound.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -172,7 +172,7 @@ Module bound.
               M.read (| units |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -266,7 +266,7 @@ Module bound.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt (M.read (| new_units |)) (M.read (| max |))
+                                          BinOp.gt (| M.read (| new_units |), M.read (| max |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -438,7 +438,7 @@ Module bound.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
@@ -491,7 +491,7 @@ Module bound.
                         |),
                         [ M.read (| Value.String "<unknown>" |) ]
                       |));
-                    ("units", Value.Integer 0);
+                    ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -516,7 +516,7 @@ Module bound.
                         |),
                         [ M.read (| Value.String "<unknown>" |) ]
                       |));
-                    ("units", Value.Integer 0);
+                    ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -541,7 +541,7 @@ Module bound.
                         |),
                         [ M.read (| Value.String "<unknown>" |) ]
                       |));
-                    ("units", Value.Integer 0);
+                    ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -552,7 +552,7 @@ Module bound.
                       |))
                   ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -642,7 +642,7 @@ Module bound.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_bounds_mut :
@@ -733,7 +733,7 @@ Module bound.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_bounds : M.IsAssociatedFunction Self "get_bounds" get_bounds.
@@ -763,7 +763,7 @@ Module bound.
               "units"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_usage : M.IsAssociatedFunction Self "get_usage" get_usage.
@@ -793,7 +793,7 @@ Module bound.
               "max"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_limit : M.IsAssociatedFunction Self "get_limit" get_limit.

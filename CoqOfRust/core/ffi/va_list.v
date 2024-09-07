@@ -80,7 +80,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,7 +142,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -172,7 +172,7 @@ Module ffi.
                 ("inner", M.read (| self |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_va_list : M.IsAssociatedFunction Self "as_va_list" as_va_list.
@@ -191,7 +191,7 @@ Module ffi.
               M.get_function (| "core::ffi::va_list::va_arg", [ T ] |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_arg : M.IsAssociatedFunction Self "arg" arg.
@@ -267,7 +267,7 @@ Module ffi.
                 M.alloc (| Value.Tuple [] |) in
               ret
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_copy : M.IsAssociatedFunction Self "with_copy" with_copy.
@@ -296,7 +296,7 @@ Module ffi.
                 "inner"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -328,7 +328,7 @@ Module ffi.
                 "inner"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -557,7 +557,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -591,7 +591,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

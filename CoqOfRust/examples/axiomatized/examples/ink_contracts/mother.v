@@ -127,7 +127,8 @@ Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
 Axiom BlockNumber : (Ty.path "mother::BlockNumber") = (Ty.path "u32").
 
 Axiom Hash :
-  (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+  (Ty.path "mother::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {
@@ -399,9 +400,11 @@ End Impl_core_clone_Clone_for_mother_Status.
     fields :=
       [
         ("name", Ty.path "alloc::string::String");
-        ("subject", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("subject",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]);
         ("bids", Ty.path "mother::Bids");
-        ("terms", Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u32" ]);
+        ("terms",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "u32" ]);
         ("status", Ty.path "mother::Status");
         ("finalized", Ty.path "bool");
         ("vector",

@@ -48,7 +48,7 @@ Module iter.
               ("buffer",
                 Ty.apply
                   (Ty.path "array")
-                  [ Value.Integer 2 ]
+                  [ Value.Integer IntegerKind.Usize 2 ]
                   [
                     Ty.apply
                       (Ty.path "array")
@@ -101,12 +101,14 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.ne
-                                    (M.read (|
+                                UnOp.not (|
+                                  BinOp.ne (|
+                                    M.read (|
                                       M.get_constant (| "core::iter::adapters::map_windows::N" |)
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -149,12 +151,13 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.call_closure (|
+                                BinOp.eq (|
+                                  M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
                                     []
-                                  |))
-                                  (Value.Integer 0)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -167,8 +170,8 @@ Module iter.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -191,12 +194,13 @@ Module iter.
                                                           "core::iter::adapters::map_windows::N"
                                                         |)
                                                       |);
-                                                      Value.Integer 2
+                                                      Value.Integer IntegerKind.Usize 2
                                                     ]
                                                   |)
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -257,7 +261,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -292,7 +296,7 @@ Module iter.
                   ("iter", Value.StructTuple "core::option::Option::Some" [ M.read (| iter |) ]);
                   ("buffer", Value.StructTuple "core::option::Option::None" [])
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -631,7 +635,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_next_window :
@@ -756,14 +760,14 @@ Module iter.
                                                 |),
                                                 [
                                                   M.read (| lo |);
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (|
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (|
                                                       M.get_constant (|
                                                         "core::iter::adapters::map_windows::N"
                                                       |)
-                                                    |))
-                                                    (Value.Integer 1)
+                                                    |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
                                                 ]
                                               |);
                                               M.call_closure (|
@@ -787,33 +791,37 @@ Module iter.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [ α0 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let hi := M.copy (| γ |) in
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path "usize",
-                                                                      "saturating_sub",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (| hi |);
-                                                                      BinOp.Wrap.sub
-                                                                        Integer.Usize
-                                                                        (M.read (|
-                                                                          M.get_constant (|
-                                                                            "core::iter::adapters::map_windows::N"
-                                                                          |)
-                                                                        |))
-                                                                        (Value.Integer 1)
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let hi := M.copy (| γ |) in
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path "usize",
+                                                                        "saturating_sub",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (| hi |);
+                                                                        BinOp.Wrap.sub (|
+                                                                          M.read (|
+                                                                            M.get_constant (|
+                                                                              "core::iter::adapters::map_windows::N"
+                                                                            |)
+                                                                          |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |)
+                                                                      ]
+                                                                    |)))
+                                                              ]
+                                                            |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 ]
                                               |)
@@ -826,7 +834,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_size_hint :
@@ -1000,12 +1008,15 @@ Module iter.
                         [
                           Value.StructRecord
                             "core::iter::adapters::map_windows::Buffer"
-                            [ ("buffer", M.read (| buffer |)); ("start", Value.Integer 0) ]
+                            [
+                              ("buffer", M.read (| buffer |));
+                              ("start", Value.Integer IntegerKind.Usize 0)
+                            ]
                         ]
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_try_from_iter :
@@ -1068,7 +1079,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_buffer_ptr :
@@ -1131,7 +1142,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_buffer_mut_ptr :
@@ -1177,30 +1188,32 @@ Module iter.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (|
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              BinOp.Wrap.add (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |))
-                                                (M.read (|
+                                                |),
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)))
-                                              (BinOp.Wrap.mul
-                                                Integer.Usize
-                                                (Value.Integer 2)
-                                                (M.read (|
+                                                |)
+                                              |),
+                                              BinOp.Wrap.mul (|
+                                                Value.Integer IntegerKind.Usize 2,
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |))))
+                                                |)
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1272,7 +1285,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_as_array_ref :
@@ -1318,30 +1331,32 @@ Module iter.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (|
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              BinOp.Wrap.add (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |))
-                                                (M.read (|
+                                                |),
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)))
-                                              (BinOp.Wrap.mul
-                                                Integer.Usize
-                                                (Value.Integer 2)
-                                                (M.read (|
+                                                |)
+                                              |),
+                                              BinOp.Wrap.mul (|
+                                                Value.Integer IntegerKind.Usize 2,
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |))))
+                                                |)
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1418,7 +1433,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_as_uninit_array_mut :
@@ -1525,30 +1540,32 @@ Module iter.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (|
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              BinOp.Wrap.add (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |))
-                                                (M.read (|
+                                                |),
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)))
-                                              (BinOp.Wrap.mul
-                                                Integer.Usize
-                                                (Value.Integer 2)
-                                                (M.read (|
+                                                |)
+                                              |),
+                                              BinOp.Wrap.mul (|
+                                                Value.Integer IntegerKind.Usize 2,
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |))))
+                                                |)
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1585,17 +1602,18 @@ Module iter.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (|
+                                  BinOp.eq (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::iter::adapters::map_windows::Buffer",
                                         "start"
                                       |)
-                                    |))
-                                    (M.read (|
+                                    |),
+                                    M.read (|
                                       M.get_constant (| "core::iter::adapters::map_windows::N" |)
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1632,27 +1650,27 @@ Module iter.
                                             |),
                                             [
                                               M.read (| buffer_mut_ptr |);
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (|
+                                              BinOp.Wrap.add (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |))
-                                                (Value.Integer 1)
+                                                |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
                                             ]
                                           |));
                                         M.read (| buffer_mut_ptr |);
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (|
+                                        BinOp.Wrap.sub (|
+                                          M.read (|
                                             M.get_constant (|
                                               "core::iter::adapters::map_windows::N"
                                             |)
-                                          |))
-                                          (Value.Integer 1)
+                                          |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -1684,14 +1702,14 @@ Module iter.
                                           |),
                                           [
                                             M.read (| buffer_mut_ptr |);
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.read (|
+                                            BinOp.Wrap.sub (|
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::iter::adapters::map_windows::N"
                                                 |)
-                                              |))
-                                              (Value.Integer 1)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           ]
                                         |);
                                         M.read (| next |)
@@ -1733,7 +1751,7 @@ Module iter.
                                   "core::iter::adapters::map_windows::Buffer",
                                   "start"
                                 |),
-                                Value.Integer 0
+                                Value.Integer IntegerKind.Usize 0
                               |) in
                             to_drop));
                         fun γ =>
@@ -1768,20 +1786,20 @@ Module iter.
                                           |),
                                           [
                                             M.read (| buffer_mut_ptr |);
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (|
+                                            BinOp.Wrap.add (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::iter::adapters::map_windows::Buffer",
                                                   "start"
                                                 |)
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::iter::adapters::map_windows::N"
                                                 |)
-                                              |))
+                                              |)
+                                            |)
                                           ]
                                         |);
                                         M.read (| next |)
@@ -1825,7 +1843,10 @@ Module iter.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
                               |) in
                             to_drop))
                       ]
@@ -1853,7 +1874,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_push :
@@ -1973,7 +1994,7 @@ Module iter.
                   |) in
                 buffer
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2052,7 +2073,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2163,7 +2184,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2324,7 +2345,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2361,7 +2382,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2464,7 +2485,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2532,7 +2553,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

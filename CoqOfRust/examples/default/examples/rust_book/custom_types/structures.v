@@ -44,7 +44,7 @@ Module Impl_core_fmt_Debug_for_structures_Person.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -160,7 +160,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| Value.String "Peter" |) ]
             |)
           |) in
-        let~ age := M.alloc (| Value.Integer 27 |) in
+        let~ age := M.alloc (| Value.Integer IntegerKind.U8 27 |) in
         let~ peter :=
           M.alloc (|
             Value.StructRecord
@@ -351,7 +351,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructTuple
                       "structures::Pair"
-                      [ Value.Integer 1; M.read (| UnsupportedLiteral |) ]
+                      [ Value.Integer IntegerKind.I32 1; M.read (| UnsupportedLiteral |) ]
                   |) in
                 let~ _ :=
                   let~ _ :=
@@ -480,7 +480,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "structures::main" main.

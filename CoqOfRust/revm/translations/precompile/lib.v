@@ -13,20 +13,20 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
       (let len := M.alloc (| len |) in
       let base := M.alloc (| base |) in
       let word := M.alloc (| word |) in
-      BinOp.Wrap.add
-        Integer.U64
-        (BinOp.Wrap.mul
-          Integer.U64
-          (BinOp.Wrap.div
-            Integer.U64
-            (BinOp.Wrap.sub
-              Integer.U64
-              (BinOp.Wrap.add Integer.U64 (M.rust_cast (M.read (| len |))) (Value.Integer 32))
-              (Value.Integer 1))
-            (Value.Integer 32))
-          (M.read (| word |)))
-        (M.read (| base |))))
-  | _, _, _ => M.impossible
+      BinOp.Wrap.add (|
+        BinOp.Wrap.mul (|
+          BinOp.Wrap.div (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.add (| M.rust_cast (M.read (| len |)), Value.Integer IntegerKind.U64 32 |),
+              Value.Integer IntegerKind.U64 1
+            |),
+            Value.Integer IntegerKind.U64 32
+          |),
+          M.read (| word |)
+        |),
+        M.read (| base |)
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_calc_linear_cost_u32 :
@@ -126,7 +126,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileOutput.
                 ]
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -178,7 +178,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileOutput.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -240,7 +240,7 @@ Module Impl_core_default_Default_for_revm_precompile_PrecompileOutput.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -274,21 +274,22 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           LogicalOp.and (|
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_precompile::PrecompileOutput",
                   "cost"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "revm_precompile::PrecompileOutput",
                   "cost"
                 |)
-              |)),
+              |)
+            |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (|
@@ -363,7 +364,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -407,7 +408,7 @@ Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileOutput.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -496,7 +497,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileOutput.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -549,7 +550,7 @@ Module Impl_revm_precompile_PrecompileOutput.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_without_logs : M.IsAssociatedFunction Self "without_logs" without_logs.
@@ -611,7 +612,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
                 ]
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -652,7 +653,7 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -692,7 +693,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -814,7 +815,7 @@ Module Impl_revm_precompile_Precompiles.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -861,84 +862,87 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::default::Default",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "default",
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::default::Default",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "default",
+                                        []
+                                      |),
                                       []
-                                    |),
-                                    []
-                                  |)
-                                |) in
-                              let~ _ :=
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::secp256k1::ECRECOVER"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::hash::SHA256" |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::hash::RIPEMD160"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::identity::FUN" |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 4 ]
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::secp256k1::ECRECOVER"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::hash::SHA256" |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::hash::RIPEMD160" |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::identity::FUN" |)
-                                          |)
-                                        ]
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
                                       []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
+                                    |),
+                                    [ M.read (| precompiles |) ]
+                                  |)
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_homestead : M.IsAssociatedFunction Self "homestead" homestead.
@@ -988,99 +992,100 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "homestead",
-                                          []
-                                        |),
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
                                         []
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "homestead",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::add::BYZANTIUM"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::mul::BYZANTIUM"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::pair::BYZANTIUM"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::modexp::BYZANTIUM"
+                                              |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 4 ]
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::add::BYZANTIUM"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::mul::BYZANTIUM"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::pair::BYZANTIUM"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::modexp::BYZANTIUM"
-                                            |)
-                                          |)
-                                        ]
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
                                       []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
+                                    |),
+                                    [ M.read (| precompiles |) ]
+                                  |)
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_byzantium : M.IsAssociatedFunction Self "byzantium" byzantium.
@@ -1129,97 +1134,98 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "byzantium",
-                                          []
-                                        |),
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
                                         []
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "byzantium",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::blake2::FUN" |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::add::ISTANBUL"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::mul::ISTANBUL"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::pair::ISTANBUL"
+                                              |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 4 ]
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::blake2::FUN" |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::add::ISTANBUL"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::mul::ISTANBUL"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::pair::ISTANBUL"
-                                            |)
-                                          |)
-                                        ]
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
                                       []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
+                                    |),
+                                    [ M.read (| precompiles |) ]
+                                  |)
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_istanbul : M.IsAssociatedFunction Self "istanbul" istanbul.
@@ -1264,82 +1270,83 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "istanbul",
-                                          []
-                                        |),
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
                                         []
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "istanbul",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::modexp::BERLIN" |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 1 ]
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::modexp::BERLIN" |)
-                                          |)
-                                        ]
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
                                       []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
+                                    |),
+                                    [ M.read (| precompiles |) ]
+                                  |)
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_berlin : M.IsAssociatedFunction Self "berlin" berlin.
@@ -1392,89 +1399,90 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "berlin",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ precompiles :=
+                                  M.copy (|
+                                    let~ precompiles := M.copy (| precompiles |) in
+                                    let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "extend",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 1 ]
+                                                [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                            ]
+                                          |),
+                                          [
+                                            precompiles;
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
+                                                  |)
+                                                |)
+                                              ]
+                                          ]
+                                        |)
+                                      |) in
+                                    precompiles
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
                                       []
                                     |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "berlin",
-                                          []
-                                        |),
-                                        []
-                                      |)
-                                    ]
+                                    [ M.read (| precompiles |) ]
                                   |)
-                                |) in
-                              let~ precompiles :=
-                                M.copy (|
-                                  let~ precompiles := M.copy (| precompiles |) in
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "extend",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer 1 ]
-                                              [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                          ]
-                                        |),
-                                        [
-                                          precompiles;
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                M.get_constant (|
-                                                  "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
-                                                |)
-                                              |)
-                                            ]
-                                        ]
-                                      |)
-                                    |) in
-                                  precompiles
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_cancun : M.IsAssociatedFunction Self "cancun" cancun.
@@ -1492,7 +1500,7 @@ Module Impl_revm_precompile_Precompiles.
           M.get_associated_function (| Ty.path "revm_precompile::Precompiles", "cancun", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_latest : M.IsAssociatedFunction Self "latest" latest.
@@ -1528,7 +1536,7 @@ Module Impl_revm_precompile_Precompiles.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_addresses : M.IsAssociatedFunction Self "addresses" addresses.
@@ -1566,7 +1574,7 @@ Module Impl_revm_precompile_Precompiles.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_into_addresses :
@@ -1605,7 +1613,7 @@ Module Impl_revm_precompile_Precompiles.
             M.read (| address |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
@@ -1643,7 +1651,7 @@ Module Impl_revm_precompile_Precompiles.
             M.read (| address |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -1681,7 +1689,7 @@ Module Impl_revm_precompile_Precompiles.
             M.read (| address |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -1696,8 +1704,8 @@ Module Impl_revm_precompile_Precompiles.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Pure.eq
-          (M.call_closure (|
+        BinOp.eq (|
+          M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
@@ -1717,9 +1725,10 @@ Module Impl_revm_precompile_Precompiles.
                 "inner"
               |)
             ]
-          |))
-          (Value.Integer 0)))
-    | _, _, _ => M.impossible
+          |),
+          Value.Integer IntegerKind.Usize 0
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -1755,7 +1764,7 @@ Module Impl_revm_precompile_Precompiles.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -1867,7 +1876,7 @@ Module Impl_revm_precompile_Precompiles.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -1930,7 +1939,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
               ]
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1974,7 +1983,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2004,7 +2013,7 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_revm_p
             M.read (| M.SubPointer.get_tuple_field (| value, 0 |) |);
             M.read (| M.SubPointer.get_tuple_field (| value, 1 |) |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2058,7 +2067,7 @@ Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_al
               |)
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2127,7 +2136,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileSpecId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2197,7 +2206,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2250,9 +2259,9 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2277,7 +2286,7 @@ Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileSpecId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2317,7 +2326,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2366,7 +2375,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2421,7 +2430,7 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2522,10 +2531,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::HOMESTEAD" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::HOMESTEAD" []
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -2563,10 +2573,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::BYZANTIUM" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::BYZANTIUM" []
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -2596,10 +2607,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::ISTANBUL" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::ISTANBUL" []
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -2661,10 +2673,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" []
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -2694,10 +2707,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" []
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -2708,7 +2722,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_from_spec_id : M.IsAssociatedFunction Self "from_spec_id" from_spec_id.
@@ -2745,32 +2759,72 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
             [
               Value.Array
                 [
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 0 |) |) |);
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 1 |) |) |);
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 2 |) |) |);
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 3 |) |) |);
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 4 |) |) |);
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 5 |) |) |);
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 6 |) |) |);
-                  M.read (| M.SubPointer.get_array_field (| x, M.alloc (| Value.Integer 7 |) |) |)
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 4 |)
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 5 |)
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 6 |)
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      x,
+                      M.alloc (| Value.Integer IntegerKind.Usize 7 |)
+                    |)
+                  |)
                 ]
             ]
           |)
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_u64_to_address : M.IsFunction "revm_precompile::u64_to_address" u64_to_address.

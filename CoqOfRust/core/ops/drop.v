@@ -20,7 +20,7 @@ Module ops.
             M.get_trait_method (| "core::ops::drop::Drop", T, [], "drop", [] |),
             [ M.read (| x |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_fallback_surface_drop :

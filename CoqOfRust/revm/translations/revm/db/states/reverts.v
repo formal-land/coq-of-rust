@@ -76,7 +76,7 @@ Module db.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -115,7 +115,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -164,7 +164,7 @@ Module db.
                     []
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -251,7 +251,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -281,7 +281,7 @@ Module db.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -331,7 +331,7 @@ Module db.
                 "revm::db::states::reverts::Reverts",
                 0
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -361,7 +361,7 @@ Module db.
                 "revm::db::states::reverts::Reverts",
                 0
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -386,7 +386,7 @@ Module db.
             ltac:(M.monadic
               (let reverts := M.alloc (| reverts |) in
               Value.StructTuple "revm::db::states::reverts::Reverts" [ M.read (| reverts |) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -569,27 +569,32 @@ Module db.
                                                     ltac:(M.monadic
                                                       match γ with
                                                       | [ α0 ] =>
-                                                        M.match_operator (|
-                                                          M.alloc (| α0 |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let γ := M.read (| γ |) in
-                                                                let γ1_0 :=
-                                                                  M.SubPointer.get_tuple_field (|
-                                                                    γ,
-                                                                    0
-                                                                  |) in
-                                                                let γ1_1 :=
-                                                                  M.SubPointer.get_tuple_field (|
-                                                                    γ,
-                                                                    1
-                                                                  |) in
-                                                                let address := M.alloc (| γ1_0 |) in
-                                                                M.read (| M.read (| address |) |)))
-                                                          ]
-                                                        |)
-                                                      | _ => M.impossible (||)
+                                                        ltac:(M.monadic
+                                                          (M.match_operator (|
+                                                            M.alloc (| α0 |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ := M.read (| γ |) in
+                                                                  let γ1_0 :=
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      0
+                                                                    |) in
+                                                                  let γ1_1 :=
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      1
+                                                                    |) in
+                                                                  let address :=
+                                                                    M.alloc (| γ1_0 |) in
+                                                                  M.read (|
+                                                                    M.read (| address |)
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               ]
                                             |)
@@ -602,7 +607,7 @@ Module db.
                     ]
                   |))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_sort : M.IsAssociatedFunction Self "sort" sort.
@@ -693,7 +698,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -1245,8 +1250,8 @@ Module db.
                                                                                       |)
                                                                                     |),
                                                                                     ltac:(M.monadic
-                                                                                      (UnOp.Pure.not
-                                                                                        (M.call_closure (|
+                                                                                      (UnOp.not (|
+                                                                                        M.call_closure (|
                                                                                           M.get_associated_function (|
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -1258,8 +1263,10 @@ Module db.
                                                                                                     "ruint::Uint")
                                                                                                   [
                                                                                                     Value.Integer
+                                                                                                      IntegerKind.Usize
                                                                                                       256;
                                                                                                     Value.Integer
+                                                                                                      IntegerKind.Usize
                                                                                                       4
                                                                                                   ]
                                                                                                   [];
@@ -1278,7 +1285,8 @@ Module db.
                                                                                               "storage"
                                                                                             |)
                                                                                           ]
-                                                                                        |))))
+                                                                                        |)
+                                                                                      |)))
                                                                                   |)
                                                                                 |)) in
                                                                             let _ :=
@@ -1334,8 +1342,10 @@ Module db.
                                                                                                       "ruint::Uint")
                                                                                                     [
                                                                                                       Value.Integer
+                                                                                                        IntegerKind.Usize
                                                                                                         256;
                                                                                                       Value.Integer
+                                                                                                        IntegerKind.Usize
                                                                                                         4
                                                                                                     ]
                                                                                                     [];
@@ -1357,8 +1367,10 @@ Module db.
                                                                                                             "ruint::Uint")
                                                                                                           [
                                                                                                             Value.Integer
+                                                                                                              IntegerKind.Usize
                                                                                                               256;
                                                                                                             Value.Integer
+                                                                                                              IntegerKind.Usize
                                                                                                               4
                                                                                                           ]
                                                                                                           [];
@@ -1384,8 +1396,10 @@ Module db.
                                                                                                           "ruint::Uint")
                                                                                                         [
                                                                                                           Value.Integer
+                                                                                                            IntegerKind.Usize
                                                                                                             256;
                                                                                                           Value.Integer
+                                                                                                            IntegerKind.Usize
                                                                                                             4
                                                                                                         ]
                                                                                                         [];
@@ -1511,7 +1525,7 @@ Module db.
                     |)) in
                 state_reverts
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_plain_state_reverts :
@@ -1531,7 +1545,10 @@ Module db.
                   (Ty.path "std::collections::hash::map::HashMap")
                   []
                   [
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [];
                     Ty.path "revm::db::states::reverts::RevertToSlot";
                     Ty.path "std::hash::random::RandomState"
                   ]);
@@ -1579,7 +1596,10 @@ Module db.
                           [
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [];
                             Ty.path "revm::db::states::reverts::RevertToSlot";
                             Ty.path "std::hash::random::RandomState"
@@ -1631,7 +1651,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1674,7 +1694,10 @@ Module db.
                           [
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [];
                             Ty.path "revm::db::states::reverts::RevertToSlot";
                             Ty.path "std::hash::random::RandomState"
@@ -1708,7 +1731,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1766,7 +1789,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1832,7 +1855,10 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.path "revm::db::states::reverts::RevertToSlot";
                               Ty.path "std::hash::random::RandomState"
@@ -1844,7 +1870,10 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "revm::db::states::reverts::RevertToSlot";
                                 Ty.path "std::hash::random::RandomState"
@@ -1891,23 +1920,24 @@ Module db.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm::db::states::reverts::AccountRevert",
                         "wipe_storage"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm::db::states::reverts::AccountRevert",
                         "wipe_storage"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1959,7 +1989,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1984,16 +2014,18 @@ Module db.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add
-                Integer.Usize
-                (Value.Integer 1)
-                (M.call_closure (|
+              BinOp.Wrap.add (|
+                Value.Integer IntegerKind.Usize 1,
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
                       []
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "revm::db::states::reverts::RevertToSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -2007,8 +2039,9 @@ Module db.
                       "storage"
                     |)
                   ]
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_size_hint : M.IsAssociatedFunction Self "size_hint" size_hint.
@@ -2067,7 +2100,10 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "revm_primitives::state::StorageSlot"
                               ];
@@ -2079,7 +2115,10 @@ Module db.
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           [];
                                         Ty.path "revm_primitives::state::StorageSlot"
                                       ]
@@ -2089,7 +2128,10 @@ Module db.
                                 [
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.path "revm::db::states::reverts::RevertToSlot"
                                 ])
@@ -2103,7 +2145,10 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.path "revm::db::states::reverts::RevertToSlot";
                               Ty.path "std::hash::random::RandomState"
@@ -2120,7 +2165,10 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "revm_primitives::state::StorageSlot"
                               ],
@@ -2131,7 +2179,10 @@ Module db.
                                 [
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.path "revm::db::states::reverts::RevertToSlot"
                                 ];
@@ -2143,7 +2194,10 @@ Module db.
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             [];
                                           Ty.path "revm_primitives::state::StorageSlot"
                                         ]
@@ -2153,7 +2207,10 @@ Module db.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [];
                                     Ty.path "revm::db::states::reverts::RevertToSlot"
                                   ])
@@ -2168,7 +2225,10 @@ Module db.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [];
                                     Ty.path "revm_primitives::state::StorageSlot";
                                     Ty.path "std::hash::random::RandomState"
@@ -2183,33 +2243,35 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                            let key := M.copy (| γ0_0 |) in
-                                            let value := M.copy (| γ0_1 |) in
-                                            Value.Tuple
-                                              [
-                                                M.read (| key |);
-                                                Value.StructTuple
-                                                  "revm::db::states::reverts::RevertToSlot::Some"
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        value,
-                                                        "revm_primitives::state::StorageSlot",
-                                                        "present_value"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let key := M.copy (| γ0_0 |) in
+                                              let value := M.copy (| γ0_1 |) in
+                                              Value.Tuple
+                                                [
+                                                  M.read (| key |);
+                                                  Value.StructTuple
+                                                    "revm::db::states::reverts::RevertToSlot::Some"
+                                                    [
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          value,
+                                                          "revm_primitives::state::StorageSlot",
+                                                          "present_value"
+                                                        |)
                                                       |)
-                                                    |)
-                                                  ]
-                                              ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                    ]
+                                                ]))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -2229,7 +2291,10 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "revm_primitives::state::StorageSlot";
                                 Ty.path "std::hash::random::RandomState"
@@ -2259,7 +2324,10 @@ Module db.
                                             [
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [];
                                               Ty.path "revm_primitives::state::StorageSlot"
                                             ],
@@ -2302,7 +2370,10 @@ Module db.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [];
                                                       Ty.path
                                                         "revm::db::states::reverts::RevertToSlot"
@@ -2320,7 +2391,10 @@ Module db.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             [];
                                                           Ty.path
                                                             "revm::db::states::reverts::RevertToSlot";
@@ -2355,7 +2429,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_selfdestructed_again :
@@ -2447,117 +2521,132 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  let~ ret :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm::db::states::reverts::AccountRevert",
-                                          "new_selfdestructed_again",
-                                          []
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| bundle_account |),
-                                              "revm::db::states::bundle_account::BundleAccount",
-                                              "status"
-                                            |)
-                                          |);
-                                          M.read (| account_info_revert |);
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              Ty.apply
-                                                (Ty.path "std::collections::hash::map::Drain")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
-                                                    [];
-                                                  Ty.path "revm_primitives::state::StorageSlot"
-                                                ],
-                                              [],
-                                              "collect",
-                                              [
+                                  ltac:(M.monadic
+                                    (let~ ret :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm::db::states::reverts::AccountRevert",
+                                            "new_selfdestructed_again",
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| bundle_account |),
+                                                "revm::db::states::bundle_account::BundleAccount",
+                                                "status"
+                                              |)
+                                            |);
+                                            M.read (| account_info_revert |);
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "std::collections::hash::map::HashMap")
+                                                  (Ty.path "std::collections::hash::map::Drain")
                                                   []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "ruint::Uint")
-                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
                                                       [];
-                                                    Ty.path "revm_primitives::state::StorageSlot";
-                                                    Ty.path "std::hash::random::RandomState"
-                                                  ]
-                                              ]
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
+                                                    Ty.path "revm_primitives::state::StorageSlot"
+                                                  ],
+                                                [],
+                                                "collect",
+                                                [
                                                   Ty.apply
                                                     (Ty.path "std::collections::hash::map::HashMap")
                                                     []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [];
                                                       Ty.path "revm_primitives::state::StorageSlot";
                                                       Ty.path "std::hash::random::RandomState"
-                                                    ],
-                                                  "drain",
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| bundle_account |),
-                                                    "revm::db::states::bundle_account::BundleAccount",
-                                                    "storage"
-                                                  |)
+                                                    ]
                                                 ]
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              Ty.apply
-                                                (Ty.path "std::collections::hash::map::HashMap")
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "std::collections::hash::map::HashMap")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          [];
+                                                        Ty.path
+                                                          "revm_primitives::state::StorageSlot";
+                                                        Ty.path "std::hash::random::RandomState"
+                                                      ],
+                                                    "drain",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| bundle_account |),
+                                                      "revm::db::states::bundle_account::BundleAccount",
+                                                      "storage"
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::clone::Clone",
+                                                Ty.apply
+                                                  (Ty.path "std::collections::hash::map::HashMap")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
+                                                      [];
+                                                    Ty.path "revm_primitives::state::StorageSlot";
+                                                    Ty.path "std::hash::random::RandomState"
+                                                  ],
+                                                [],
+                                                "clone",
                                                 []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
-                                                    [];
-                                                  Ty.path "revm_primitives::state::StorageSlot";
-                                                  Ty.path "std::hash::random::RandomState"
-                                                ],
-                                              [],
-                                              "clone",
-                                              []
-                                            |),
-                                            [ M.read (| updated_storage |) ]
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        ret,
-                                        "revm::db::states::reverts::AccountRevert",
-                                        "wipe_storage"
-                                      |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [ M.read (| ret |) ]
-                                  |)
-                                | _ => M.impossible (||)
+                                              |),
+                                              [ M.read (| updated_storage |) ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          ret,
+                                          "revm::db::states::reverts::AccountRevert",
+                                          "wipe_storage"
+                                        |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ M.read (| ret |) ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2566,7 +2655,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_selfdestructed_from_bundle :
@@ -2621,7 +2710,10 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "revm_primitives::state::StorageSlot"
                               ];
@@ -2637,7 +2729,10 @@ Module db.
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
-                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
                                               []
                                           ];
                                         Ty.apply
@@ -2651,7 +2746,10 @@ Module db.
                                 [
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.path "revm::db::states::reverts::RevertToSlot"
                                 ])
@@ -2665,7 +2763,10 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [];
                               Ty.path "revm::db::states::reverts::RevertToSlot";
                               Ty.path "std::hash::random::RandomState"
@@ -2682,7 +2783,10 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "revm_primitives::state::StorageSlot"
                               ],
@@ -2693,7 +2797,10 @@ Module db.
                                 [
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [];
                                   Ty.path "revm::db::states::reverts::RevertToSlot"
                                 ];
@@ -2709,7 +2816,10 @@ Module db.
                                             [
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 []
                                             ];
                                           Ty.apply
@@ -2723,7 +2833,10 @@ Module db.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [];
                                     Ty.path "revm::db::states::reverts::RevertToSlot"
                                   ])
@@ -2738,7 +2851,10 @@ Module db.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [];
                                     Ty.path "revm_primitives::state::StorageSlot";
                                     Ty.path "std::hash::random::RandomState"
@@ -2753,33 +2869,35 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                            let key := M.copy (| γ0_0 |) in
-                                            let value := M.copy (| γ0_1 |) in
-                                            Value.Tuple
-                                              [
-                                                M.read (| M.read (| key |) |);
-                                                Value.StructTuple
-                                                  "revm::db::states::reverts::RevertToSlot::Some"
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| value |),
-                                                        "revm_primitives::state::StorageSlot",
-                                                        "present_value"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let key := M.copy (| γ0_0 |) in
+                                              let value := M.copy (| γ0_1 |) in
+                                              Value.Tuple
+                                                [
+                                                  M.read (| M.read (| key |) |);
+                                                  Value.StructTuple
+                                                    "revm::db::states::reverts::RevertToSlot::Some"
+                                                    [
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| value |),
+                                                          "revm_primitives::state::StorageSlot",
+                                                          "present_value"
+                                                        |)
                                                       |)
-                                                    |)
-                                                  ]
-                                              ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                    ]
+                                                ]))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -2797,7 +2915,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_selfdestructed :
@@ -2847,7 +2965,10 @@ Module db.
                           [
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [];
                             Ty.path "revm::db::states::reverts::RevertToSlot";
                             Ty.path "std::hash::random::RandomState"
@@ -2865,16 +2986,17 @@ Module db.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (UnOp.Pure.not
-                    (M.read (|
+                  (UnOp.not (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm::db::states::reverts::AccountRevert",
                         "wipe_storage"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -2974,7 +3096,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2994,7 +3116,7 @@ Module db.
           | [], [], [] =>
             ltac:(M.monadic
               (Value.StructTuple "revm::db::states::reverts::AccountInfoRevert::DoNothing" []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3078,7 +3200,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3133,7 +3255,7 @@ Module db.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                    BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
@@ -3186,7 +3308,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3216,7 +3338,7 @@ Module db.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3291,7 +3413,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3313,7 +3435,12 @@ Module db.
               name := "Some";
               item :=
                 StructTuple
-                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ];
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ];
               discriminant := None;
             };
             {
@@ -3340,7 +3467,7 @@ Module db.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3406,7 +3533,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3472,7 +3599,7 @@ Module db.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                    BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
@@ -3508,7 +3635,10 @@ Module db.
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             []
                                         ],
                                       [
@@ -3518,7 +3648,10 @@ Module db.
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
-                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
                                               []
                                           ]
                                       ],
@@ -3535,7 +3668,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3565,7 +3698,7 @@ Module db.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3630,7 +3763,10 @@ Module db.
                               "core::hash::Hash",
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [],
                               [],
                               "hash",
@@ -3643,7 +3779,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3695,7 +3831,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_to_previous_value :

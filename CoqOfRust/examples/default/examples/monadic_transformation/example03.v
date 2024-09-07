@@ -14,7 +14,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :=
           M.alloc (|
-            Value.Tuple [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4 ]
+            Value.Tuple
+              [
+                Value.Integer IntegerKind.I32 1;
+                Value.Integer IntegerKind.I32 2;
+                Value.Integer IntegerKind.I32 3;
+                Value.Integer IntegerKind.I32 4
+              ]
           |) in
         let~ _ :=
           M.alloc (|
@@ -32,7 +38,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "alloc::boxed::Box")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "i32" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
@@ -41,7 +50,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       M.alloc (|
                         Value.Array
-                          [ Value.Integer 5; Value.Integer 6; Value.Integer 7; Value.Integer 8 ]
+                          [
+                            Value.Integer IntegerKind.I32 5;
+                            Value.Integer IntegerKind.I32 6;
+                            Value.Integer IntegerKind.I32 7;
+                            Value.Integer IntegerKind.I32 8
+                          ]
                       |)
                     ]
                   |)
@@ -51,7 +65,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "example03::main" main.

@@ -35,7 +35,10 @@ Module iter.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [ ("start", Value.Integer 0); ("end_", M.read (| n |)) ]
+                                  [
+                                    ("start", Value.Integer IntegerKind.Usize 0);
+                                    ("end_", M.read (| n |))
+                                  ]
                               ]
                             |)
                           |),
@@ -138,10 +141,10 @@ Module iter.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      BinOp.Wrap.sub
-                                                                        Integer.Usize
-                                                                        (M.read (| n |))
-                                                                        (M.read (| i |))
+                                                                      BinOp.Wrap.sub (|
+                                                                        M.read (| n |),
+                                                                        M.read (| i |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -162,7 +165,7 @@ Module iter.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_advance_back_by :
@@ -255,7 +258,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_nth_back :
@@ -412,7 +415,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_try_rfold :
@@ -490,7 +493,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_rfold :
@@ -537,7 +540,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_rfind :
@@ -568,7 +571,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -598,7 +601,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -623,7 +626,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -652,7 +655,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -682,7 +685,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -795,7 +798,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -961,7 +964,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1036,7 +1039,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1071,7 +1074,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

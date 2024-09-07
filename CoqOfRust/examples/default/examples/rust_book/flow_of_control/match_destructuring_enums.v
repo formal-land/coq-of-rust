@@ -84,7 +84,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "match_destructuring_enums::Color::RGB"
-              [ Value.Integer 122; Value.Integer 17; Value.Integer 40 ]
+              [
+                Value.Integer IntegerKind.U32 122;
+                Value.Integer IntegerKind.U32 17;
+                Value.Integer IntegerKind.U32 40
+              ]
           |) in
         let~ _ :=
           let~ _ :=
@@ -598,7 +602,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_enums::main" main.

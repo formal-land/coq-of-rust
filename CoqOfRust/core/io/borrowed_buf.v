@@ -113,7 +113,7 @@ Module io.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -199,12 +199,12 @@ Module io.
                           |)
                         ]
                       |));
-                    ("filled", Value.Integer 0);
+                    ("filled", Value.Integer IntegerKind.Usize 0);
                     ("init", M.read (| len |))
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -232,9 +232,12 @@ Module io.
             (let buf := M.alloc (| buf |) in
             Value.StructRecord
               "core::io::borrowed_buf::BorrowedBuf"
-              [ ("buf", M.read (| buf |)); ("filled", Value.Integer 0); ("init", Value.Integer 0)
+              [
+                ("buf", M.read (| buf |));
+                ("filled", Value.Integer IntegerKind.Usize 0);
+                ("init", Value.Integer IntegerKind.Usize 0)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -289,7 +292,7 @@ Module io.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
@@ -311,7 +314,7 @@ Module io.
                 "filled"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -333,7 +336,7 @@ Module io.
                 "init"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_init_len : M.IsAssociatedFunction Self "init_len" init_len.
@@ -403,7 +406,7 @@ Module io.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_filled : M.IsAssociatedFunction Self "filled" filled.
@@ -473,7 +476,7 @@ Module io.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_filled_mut : M.IsAssociatedFunction Self "filled_mut" filled_mut.
@@ -524,7 +527,7 @@ Module io.
                     [ M.read (| self |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unfilled : M.IsAssociatedFunction Self "unfilled" unfilled.
@@ -548,11 +551,11 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |),
-                  Value.Integer 0
+                  Value.Integer IntegerKind.Usize 0
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -593,7 +596,7 @@ Module io.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_init : M.IsAssociatedFunction Self "set_init" set_init.
@@ -646,7 +649,7 @@ Module io.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -716,7 +719,7 @@ Module io.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reborrow : M.IsAssociatedFunction Self "reborrow" reborrow.
@@ -731,9 +734,8 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.Usize
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::io::borrowed_buf::BorrowedBuf",
                   "capacity",
@@ -748,8 +750,8 @@ Module io.
                     |)
                   |)
                 ]
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -761,8 +763,9 @@ Module io.
                   "core::io::borrowed_buf::BorrowedBuf",
                   "filled"
                 |)
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
@@ -777,9 +780,8 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.Usize
-              (M.read (|
+            BinOp.Wrap.sub (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -791,15 +793,16 @@ Module io.
                   "core::io::borrowed_buf::BorrowedBuf",
                   "filled"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::io::borrowed_buf::BorrowedCursor",
                   "start"
                 |)
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_written : M.IsAssociatedFunction Self "written" written.
@@ -895,7 +898,7 @@ Module io.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_init_ref : M.IsAssociatedFunction Self "init_ref" init_ref.
@@ -991,7 +994,7 @@ Module io.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_init_mut : M.IsAssociatedFunction Self "init_mut" init_mut.
@@ -1050,7 +1053,7 @@ Module io.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_uninit_mut : M.IsAssociatedFunction Self "uninit_mut" uninit_mut.
@@ -1109,7 +1112,7 @@ Module io.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut : M.IsAssociatedFunction Self "as_mut" as_mut.
@@ -1161,10 +1164,10 @@ Module io.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.le
-                                  (M.read (| filled |))
-                                  (M.read (|
+                              UnOp.not (|
+                                BinOp.le (|
+                                  M.read (| filled |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -1176,7 +1179,9 @@ Module io.
                                       "core::io::borrowed_buf::BorrowedBuf",
                                       "init"
                                     |)
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1212,7 +1217,7 @@ Module io.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_advance : M.IsAssociatedFunction Self "advance" advance.
@@ -1244,7 +1249,7 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| n |)) |) in
+                M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| n |) |) |) in
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1292,7 +1297,7 @@ Module io.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_advance_unchecked :
@@ -1358,7 +1363,7 @@ Module io.
                           |),
                           [ M.read (| uninit |) ]
                         |);
-                        Value.Integer 0;
+                        Value.Integer IntegerKind.U8 0;
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -1411,7 +1416,7 @@ Module io.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ensure_init : M.IsAssociatedFunction Self "ensure_init" ensure_init.
@@ -1458,9 +1463,8 @@ Module io.
                           "init"
                         |)
                       |);
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -1472,14 +1476,15 @@ Module io.
                             "core::io::borrowed_buf::BorrowedBuf",
                             "filled"
                           |)
-                        |))
-                        (M.read (| n |))
+                        |),
+                        M.read (| n |)
+                      |)
                     ]
                   |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_init : M.IsAssociatedFunction Self "set_init" set_init.
@@ -1516,24 +1521,26 @@ Module io.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.ge
-                                  (M.call_closure (|
+                              UnOp.not (|
+                                BinOp.ge (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::io::borrowed_buf::BorrowedCursor",
                                       "capacity",
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| buf |) ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1649,21 +1656,21 @@ Module io.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.read (| β |))
-                    (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    M.read (| β |),
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
                       [ M.read (| buf |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_append : M.IsAssociatedFunction Self "append" append.

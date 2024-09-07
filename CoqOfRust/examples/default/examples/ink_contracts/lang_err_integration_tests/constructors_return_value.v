@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -69,7 +69,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   (*
@@ -84,9 +84,9 @@ Module Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountI
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
@@ -144,7 +144,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "ConstructorError" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -192,7 +192,7 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         M.get_function (| "core::panicking::panic", [] |),
         [ M.read (| Value.String "not implemented" |) ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
@@ -213,7 +213,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         Value.StructRecord
           "constructors_return_value::ConstructorsReturnValue"
           [ ("value", M.read (| init_value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -264,7 +264,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -313,18 +313,28 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "constructors_return_value::AccountId",
-                        [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ]
+                        ],
                         "from",
                         []
                       |),
-                      [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
+                      [
+                        repeat (|
+                          Value.Integer IntegerKind.U8 0,
+                          Value.Integer IntegerKind.Usize 32
+                        |)
+                      ]
                     |)
                   ]
               |)
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_revert_new : M.IsAssociatedFunction Self "revert_new" revert_new.
@@ -372,13 +382,18 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 32 ]
+                                        [ Value.Integer IntegerKind.Usize 32 ]
                                         [ Ty.path "u8" ]
                                     ],
                                     "from",
                                     []
                                   |),
-                                  [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
+                                  [
+                                    repeat (|
+                                      Value.Integer IntegerKind.U8 0,
+                                      Value.Integer IntegerKind.Usize 32
+                                    |)
+                                  ]
                                 |)
                               ]
                           ]
@@ -433,7 +448,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_try_revert_new :
@@ -456,7 +471,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             "value"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_value : M.IsAssociatedFunction Self "get_value" get_value.

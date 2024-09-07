@@ -6,7 +6,7 @@ Module slice.
     Module shared.
       Module pivot.
         Definition value_PSEUDO_MEDIAN_REC_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 64 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
         
         (*
         pub fn choose_pivot<T, F: FnMut(&T, &T) -> bool>(v: &[T], is_less: &mut F) -> usize {
@@ -64,7 +64,9 @@ Module slice.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.lt (M.read (| len |)) (Value.Integer 8) |)) in
+                              (M.alloc (|
+                                BinOp.lt (| M.read (| len |), Value.Integer IntegerKind.Usize 8 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -90,7 +92,9 @@ Module slice.
                     |)
                   |) in
                 let~ len_div_8 :=
-                  M.alloc (| BinOp.Wrap.div Integer.Usize (M.read (| len |)) (Value.Integer 8) |) in
+                  M.alloc (|
+                    BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 8 |)
+                  |) in
                 let~ a := M.copy (| v_base |) in
                 let~ b :=
                   M.alloc (|
@@ -102,7 +106,10 @@ Module slice.
                       |),
                       [
                         M.read (| v_base |);
-                        BinOp.Wrap.mul Integer.Usize (M.read (| len_div_8 |)) (Value.Integer 4)
+                        BinOp.Wrap.mul (|
+                          M.read (| len_div_8 |),
+                          Value.Integer IntegerKind.Usize 4
+                        |)
                       ]
                     |)
                   |) in
@@ -116,7 +123,10 @@ Module slice.
                       |),
                       [
                         M.read (| v_base |);
-                        BinOp.Wrap.mul Integer.Usize (M.read (| len_div_8 |)) (Value.Integer 7)
+                        BinOp.Wrap.mul (|
+                          M.read (| len_div_8 |),
+                          Value.Integer IntegerKind.Usize 7
+                        |)
                       ]
                     |)
                   |) in
@@ -128,13 +138,14 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| len |))
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (| len |),
+                                M.read (|
                                   M.get_constant (|
                                     "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -192,7 +203,7 @@ Module slice.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_choose_pivot :
@@ -238,19 +249,23 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (BinOp.Wrap.mul Integer.Usize (M.read (| n |)) (Value.Integer 8))
-                                  (M.read (|
+                                BinOp.ge (|
+                                  BinOp.Wrap.mul (|
+                                    M.read (| n |),
+                                    Value.Integer IntegerKind.Usize 8
+                                  |),
+                                  M.read (|
                                     M.get_constant (|
                                       "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ n8 :=
                             M.alloc (|
-                              BinOp.Wrap.div Integer.Usize (M.read (| n |)) (Value.Integer 8)
+                              BinOp.Wrap.div (| M.read (| n |), Value.Integer IntegerKind.Usize 8 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -270,10 +285,10 @@ Module slice.
                                     |),
                                     [
                                       M.read (| a |);
-                                      BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.read (| n8 |))
-                                        (Value.Integer 4)
+                                      BinOp.Wrap.mul (|
+                                        M.read (| n8 |),
+                                        Value.Integer IntegerKind.Usize 4
+                                      |)
                                     ]
                                   |);
                                   M.call_closure (|
@@ -284,10 +299,10 @@ Module slice.
                                     |),
                                     [
                                       M.read (| a |);
-                                      BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.read (| n8 |))
-                                        (Value.Integer 7)
+                                      BinOp.Wrap.mul (|
+                                        M.read (| n8 |),
+                                        Value.Integer IntegerKind.Usize 7
+                                      |)
                                     ]
                                   |);
                                   M.read (| n8 |);
@@ -313,10 +328,10 @@ Module slice.
                                     |),
                                     [
                                       M.read (| b |);
-                                      BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.read (| n8 |))
-                                        (Value.Integer 4)
+                                      BinOp.Wrap.mul (|
+                                        M.read (| n8 |),
+                                        Value.Integer IntegerKind.Usize 4
+                                      |)
                                     ]
                                   |);
                                   M.call_closure (|
@@ -327,10 +342,10 @@ Module slice.
                                     |),
                                     [
                                       M.read (| b |);
-                                      BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.read (| n8 |))
-                                        (Value.Integer 7)
+                                      BinOp.Wrap.mul (|
+                                        M.read (| n8 |),
+                                        Value.Integer IntegerKind.Usize 7
+                                      |)
                                     ]
                                   |);
                                   M.read (| n8 |);
@@ -356,10 +371,10 @@ Module slice.
                                     |),
                                     [
                                       M.read (| c |);
-                                      BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.read (| n8 |))
-                                        (Value.Integer 4)
+                                      BinOp.Wrap.mul (|
+                                        M.read (| n8 |),
+                                        Value.Integer IntegerKind.Usize 4
+                                      |)
                                     ]
                                   |);
                                   M.call_closure (|
@@ -370,10 +385,10 @@ Module slice.
                                     |),
                                     [
                                       M.read (| c |);
-                                      BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.read (| n8 |))
-                                        (Value.Integer 7)
+                                      BinOp.Wrap.mul (|
+                                        M.read (| n8 |),
+                                        Value.Integer IntegerKind.Usize 7
+                                      |)
                                     ]
                                   |);
                                   M.read (| n8 |);
@@ -392,7 +407,7 @@ Module slice.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_median3_rec :
@@ -463,7 +478,7 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.eq (M.read (| x |)) (M.read (| y |)) |)) in
+                          M.use (M.alloc (| BinOp.eq (| M.read (| x |), M.read (| y |) |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ z :=
@@ -494,7 +509,7 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.bit_xor (M.read (| z |)) (M.read (| x |))
+                                      BinOp.bit_xor (M.read (| z |)) (M.read (| x |))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -509,7 +524,7 @@ Module slice.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_median3 : M.IsFunction "core::slice::sort::shared::pivot::median3" median3.

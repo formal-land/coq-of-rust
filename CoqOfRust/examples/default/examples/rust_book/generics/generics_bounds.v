@@ -47,7 +47,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -79,23 +79,23 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Wrap.mul
-          Integer.Usize
-          (M.read (|
+        BinOp.Wrap.mul (|
+          M.read (|
             M.SubPointer.get_struct_record_field (|
               M.read (| self |),
               "generics_bounds::Rectangle",
               "length"
             |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_record_field (|
               M.read (| self |),
               "generics_bounds::Rectangle",
               "height"
             |)
-          |))))
-    | _, _, _ => M.impossible
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -151,7 +151,7 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print_debug : M.IsFunction "generics_bounds::print_debug" print_debug.
@@ -170,7 +170,7 @@ Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_trait_method (| "generics_bounds::HasArea", T, [], "area", [] |),
         [ M.read (| t |) ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_area : M.IsFunction "generics_bounds::area" area.
@@ -276,7 +276,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_bounds::main" main.

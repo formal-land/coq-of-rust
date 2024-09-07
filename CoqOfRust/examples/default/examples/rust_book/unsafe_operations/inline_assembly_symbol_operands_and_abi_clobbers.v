@@ -33,7 +33,7 @@ fn main() {
 Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
@@ -84,9 +84,9 @@ Module main.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          M.alloc (| BinOp.Wrap.mul Integer.I32 (M.read (| arg |)) (Value.Integer 2) |)
+          M.alloc (| BinOp.Wrap.mul (| M.read (| arg |), Value.Integer IntegerKind.I32 2 |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_foo :
@@ -122,7 +122,7 @@ Module main.
           let~ _ := InlineAssembly in
           result
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_call_foo :

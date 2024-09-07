@@ -81,7 +81,12 @@ Module slice.
                                 (M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "core::intrinsics::likely", [] |),
-                                    [ BinOp.Pure.lt (M.read (| len |)) (Value.Integer 2) ]
+                                    [
+                                      BinOp.lt (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 2
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -104,13 +109,14 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (| "core::intrinsics::likely", [] |),
                                     [
-                                      BinOp.Pure.le
-                                        (M.read (| len |))
-                                        (M.read (|
+                                      BinOp.le (|
+                                        M.read (| len |),
+                                        M.read (|
                                           M.get_constant (|
                                             "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
                                           |)
-                                        |))
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -126,7 +132,11 @@ Module slice.
                                           "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
                                           [ T; F ]
                                         |),
-                                        [ M.read (| v |); Value.Integer 1; M.read (| is_less |) ]
+                                        [
+                                          M.read (| v |);
+                                          Value.Integer IntegerKind.Usize 1;
+                                          M.read (| is_less |)
+                                        ]
                                       |)
                                     |) in
                                   M.return_ (| Value.Tuple [] |)
@@ -146,14 +156,14 @@ Module slice.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_sort : M.IsFunction "core::slice::sort::unstable::sort" sort.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 20 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
       End sort.
       
       (*
@@ -224,7 +234,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "core::intrinsics::assume", [] |),
-                                [ BinOp.Pure.le (M.read (| run_len |)) (M.read (| len |)) ]
+                                [ BinOp.le (| M.read (| run_len |), M.read (| len |) |) ]
                               |)
                             |) in
                           let~ _ :=
@@ -236,7 +246,7 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| run_len |)) (M.read (| len |))
+                                          BinOp.eq (| M.read (| run_len |), M.read (| len |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -283,13 +293,17 @@ Module slice.
                             |) in
                           let~ limit :=
                             M.alloc (|
-                              BinOp.Wrap.mul
-                                Integer.U32
-                                (Value.Integer 2)
-                                (M.call_closure (|
+                              BinOp.Wrap.mul (|
+                                Value.Integer IntegerKind.U32 2,
+                                M.call_closure (|
                                   M.get_associated_function (| Ty.path "usize", "ilog2", [] |),
-                                  [ BinOp.Pure.bit_or (M.read (| len |)) (Value.Integer 1) ]
-                                |))
+                                  [
+                                    BinOp.bit_or
+                                      (M.read (| len |))
+                                      (Value.Integer IntegerKind.Usize 1)
+                                  ]
+                                |)
+                              |)
                             |) in
                           let~ _ :=
                             M.alloc (|
@@ -311,7 +325,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_ipnsort : M.IsFunction "core::slice::sort::unstable::ipnsort" ipnsort.

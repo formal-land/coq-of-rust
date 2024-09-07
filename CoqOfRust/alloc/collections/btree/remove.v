@@ -151,7 +151,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_remove_kv_tracking :
@@ -356,13 +356,14 @@ Module collections.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.lt
-                                          (M.read (| len |))
-                                          (M.read (|
+                                        BinOp.lt (|
+                                          M.read (| len |),
+                                          M.read (|
                                             M.get_constant (|
                                               "alloc::collections::btree::map::MIN_LEN"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -506,9 +507,9 @@ Module collections.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        UnOp.Pure.not
-                                                                          (BinOp.Pure.eq
-                                                                            (M.call_closure (|
+                                                                        UnOp.not (|
+                                                                          BinOp.eq (|
+                                                                            M.call_closure (|
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -519,15 +520,19 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [ left_parent_kv ]
-                                                                            |))
-                                                                            (BinOp.Wrap.sub
-                                                                              Integer.Usize
-                                                                              (M.read (|
+                                                                            |),
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
-                                                                              |))
-                                                                              (Value.Integer 1)))
+                                                                              |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -643,9 +648,9 @@ Module collections.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                UnOp.Pure.not
-                                                                                  (BinOp.Pure.gt
-                                                                                    (M.call_closure (|
+                                                                                UnOp.not (|
+                                                                                  BinOp.gt (|
+                                                                                    M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -658,12 +663,14 @@ Module collections.
                                                                                       [
                                                                                         left_parent_kv
                                                                                       ]
-                                                                                    |))
-                                                                                    (M.read (|
+                                                                                    |),
+                                                                                    M.read (|
                                                                                       M.get_constant (|
                                                                                         "alloc::collections::btree::map::MIN_LEN"
                                                                                       |)
-                                                                                    |)))
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -755,9 +762,9 @@ Module collections.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        UnOp.Pure.not
-                                                                          (BinOp.Pure.eq
-                                                                            (M.call_closure (|
+                                                                        UnOp.not (|
+                                                                          BinOp.eq (|
+                                                                            M.call_closure (|
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -768,15 +775,19 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [ right_parent_kv ]
-                                                                            |))
-                                                                            (BinOp.Wrap.sub
-                                                                              Integer.Usize
-                                                                              (M.read (|
+                                                                            |),
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
-                                                                              |))
-                                                                              (Value.Integer 1)))
+                                                                              |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -892,9 +903,9 @@ Module collections.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                UnOp.Pure.not
-                                                                                  (BinOp.Pure.gt
-                                                                                    (M.call_closure (|
+                                                                                UnOp.not (|
+                                                                                  BinOp.gt (|
+                                                                                    M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -907,12 +918,14 @@ Module collections.
                                                                                       [
                                                                                         right_parent_kv
                                                                                       ]
-                                                                                    |))
-                                                                                    (M.read (|
+                                                                                    |),
+                                                                                    M.read (|
                                                                                       M.get_constant (|
                                                                                         "alloc::collections::btree::map::MIN_LEN"
                                                                                       |)
-                                                                                    |)))
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -1135,8 +1148,8 @@ Module collections.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.call_closure (|
+                                                        UnOp.not (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -1203,7 +1216,8 @@ Module collections.
                                                               |);
                                                               M.read (| alloc |)
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1241,7 +1255,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_remove_leaf_kv :
@@ -1656,7 +1670,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_remove_internal_kv :

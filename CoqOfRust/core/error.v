@@ -10,7 +10,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::option::Option::None" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_source : M.IsProvidedMethod "core::error::Error" "source" source.
@@ -31,7 +31,7 @@ Module error.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_type_id : M.IsProvidedMethod "core::error::Error" "type_id" type_id.
@@ -46,7 +46,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "description() is deprecated; use Display" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_description :
@@ -60,7 +60,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", Self, [], "source", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_cause : M.IsProvidedMethod "core::error::Error" "cause" cause.
@@ -71,7 +71,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_provide : M.IsProvidedMethod "core::error::Error" "provide" provide.
@@ -100,7 +100,7 @@ Module error.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "Internal" |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -177,7 +177,7 @@ Module error.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -226,7 +226,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -275,7 +275,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -303,7 +303,7 @@ Module error.
           Value.StructRecord
             "core::error::Source"
             [ ("current", Value.StructTuple "core::option::Option::Some" [ M.read (| self |) ]) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sources : M.IsAssociatedFunction Self "sources" sources.
@@ -331,7 +331,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -354,7 +354,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -377,7 +377,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -410,7 +410,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -433,7 +433,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -456,7 +456,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -483,7 +483,7 @@ Module error.
           |),
           [ M.read (| err |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_request_value : M.IsFunction "core::error::request_value" request_value.
@@ -514,7 +514,7 @@ Module error.
           |),
           [ M.read (| err |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_request_ref : M.IsFunction "core::error::request_ref" request_ref.
@@ -583,7 +583,7 @@ Module error.
             0
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_request_by_type_tag :
@@ -628,7 +628,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_value :
@@ -656,7 +656,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| fulfil |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_value_with :
@@ -686,7 +686,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_ref : M.IsAssociatedFunction Self "provide_ref" provide_ref.
@@ -719,7 +719,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| fulfil |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_ref_with :
@@ -799,7 +799,7 @@ Module error.
               |) in
             M.alloc (| M.read (| self |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide : M.IsAssociatedFunction Self "provide" provide.
@@ -891,7 +891,7 @@ Module error.
               |) in
             M.alloc (| M.read (| self |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_with : M.IsAssociatedFunction Self "provide_with" provide_with.
@@ -921,7 +921,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by_value_of :
@@ -957,7 +957,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by_ref_of :
@@ -1019,7 +1019,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by :
@@ -1059,7 +1059,7 @@ Module error.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1129,7 +1129,7 @@ Module error.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1194,7 +1194,7 @@ Module error.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1259,7 +1259,7 @@ Module error.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1320,7 +1320,7 @@ Module error.
             let~ erased := M.copy (| M.use (M.alloc (| M.read (| self |) |)) |) in
             M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| erased |) |)) |)) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_request :
@@ -1446,7 +1446,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -1545,7 +1545,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -1600,7 +1600,7 @@ Module error.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1640,7 +1640,7 @@ Module error.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1730,7 +1730,7 @@ Module error.
               |) in
             current
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1778,21 +1778,26 @@ Module error.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.Tuple
-                        [ Value.Integer 1; Value.StructTuple "core::option::Option::None" [] ]
+                        [
+                          Value.Integer IntegerKind.Usize 1;
+                          Value.StructTuple "core::option::Option::None" []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       Value.Tuple
                         [
-                          Value.Integer 0;
-                          Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                          Value.Integer IntegerKind.Usize 0;
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ Value.Integer IntegerKind.Usize 0 ]
                         ]
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1837,7 +1842,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1855,7 +1860,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1873,7 +1878,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1898,7 +1903,7 @@ Module error.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1930,7 +1935,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "an error occurred when formatting an argument" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1955,7 +1960,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "already mutably borrowed" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1980,7 +1985,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "already borrowed" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2005,7 +2010,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "converted integer out of range for `char`" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

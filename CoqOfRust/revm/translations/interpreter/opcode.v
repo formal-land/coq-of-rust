@@ -17,7 +17,7 @@ Module opcode.
     (Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTable") [] [ H ]) =
       (Ty.apply
         (Ty.path "array")
-        [ Value.Integer 256 ]
+        [ Value.Integer IntegerKind.Usize 256 ]
         [
           Ty.function
             [
@@ -47,7 +47,7 @@ Module opcode.
     (Ty.apply (Ty.path "revm_interpreter::opcode::BoxedInstructionTable") [] [ H ]) =
       (Ty.apply
         (Ty.path "array")
-        [ Value.Integer 256 ]
+        [ Value.Integer IntegerKind.Usize 256 ]
         [
           Ty.apply
             (Ty.path "alloc::boxed::Box")
@@ -76,7 +76,7 @@ Module opcode.
               [
                 Ty.apply
                   (Ty.path "array")
-                  [ Value.Integer 256 ]
+                  [ Value.Integer IntegerKind.Usize 256 ]
                   [
                     Ty.function
                       [
@@ -98,7 +98,7 @@ Module opcode.
               [
                 Ty.apply
                   (Ty.path "array")
-                  [ Value.Integer 256 ]
+                  [ Value.Integer IntegerKind.Usize 256 ]
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -144,7 +144,7 @@ Module opcode.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_plain :
@@ -280,7 +280,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert_boxed :
@@ -373,7 +373,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert :
@@ -456,56 +456,57 @@ Module opcode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let i := M.copy (| γ |) in
-                                                  M.read (|
-                                                    let~ instruction :=
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "alloc::boxed::Box")
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let i := M.copy (| γ |) in
+                                                    M.read (|
+                                                      let~ instruction :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "alloc::boxed::Box")
+                                                                []
+                                                                [
+                                                                  Ty.function
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&mut")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "revm_interpreter::interpreter::Interpreter"
+                                                                        ];
+                                                                      Ty.apply
+                                                                        (Ty.path "&mut")
+                                                                        []
+                                                                        [ H ]
+                                                                    ]
+                                                                    (Ty.tuple []);
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              "new",
                                                               []
-                                                              [
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "revm_interpreter::interpreter::Interpreter"
-                                                                      ];
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [ H ]
-                                                                  ]
-                                                                  (Ty.tuple []);
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            "new",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              M.SubPointer.get_array_field (|
-                                                                M.read (| table |),
-                                                                i
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_array_field (|
+                                                                  M.read (| table |),
+                                                                  i
+                                                                |)
                                                               |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |) in
-                                                    instruction
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      instruction
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -526,7 +527,7 @@ Module opcode.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_convert_boxed :
@@ -562,7 +563,7 @@ Module opcode.
     | [], [ H; SPEC ], [] =>
       ltac:(M.monadic
         (M.read (| M.get_constant (| "revm_interpreter::opcode::make_instruction_table::NEW" |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_make_instruction_table :
@@ -601,7 +602,7 @@ Module opcode.
       *)
       (* Ty.apply
         (Ty.path "array")
-        [ Value.Integer 256 ]
+        [ Value.Integer IntegerKind.Usize 256 ]
         [
           Ty.function
             [
@@ -623,10 +624,10 @@ Module opcode.
                       "revm_interpreter::instructions::control::unknown",
                       [ H ]
                     |)),
-                  Value.Integer 256
+                  Value.Integer IntegerKind.Usize 256
                 |)
               |) in
-            let~ i := M.alloc (| Value.Integer 0 |) in
+            let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ _ :=
               M.loop (|
                 ltac:(M.monadic
@@ -637,7 +638,9 @@ Module opcode.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.lt (M.read (| i |)) (Value.Integer 256) |)) in
+                              (M.alloc (|
+                                BinOp.lt (| M.read (| i |), Value.Integer IntegerKind.Usize 256 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ :=
@@ -655,7 +658,7 @@ Module opcode.
                             let β := i in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -739,47 +742,48 @@ Module opcode.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let i := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::function::FnMut",
-                                FN,
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let i := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::function::FnMut",
+                                  FN,
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.function
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::interpreter::Interpreter"
+                                              ];
+                                            Ty.apply (Ty.path "&mut") [] [ H ]
+                                          ]
+                                          (Ty.tuple [])
+                                      ]
+                                  ],
+                                  "call_mut",
+                                  []
+                                |),
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.function
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [ Ty.path "revm_interpreter::interpreter::Interpreter"
-                                            ];
-                                          Ty.apply (Ty.path "&mut") [] [ H ]
-                                        ]
-                                        (Ty.tuple [])
-                                    ]
-                                ],
-                                "call_mut",
-                                []
-                              |),
-                              [
-                                outer;
-                                Value.Tuple
-                                  [ M.read (| M.SubPointer.get_array_field (| table, i |) |) ]
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                  outer;
+                                  Value.Tuple
+                                    [ M.read (| M.SubPointer.get_array_field (| table, i |) |) ]
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_make_boxed_instruction_table :
@@ -823,7 +827,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -870,7 +874,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -900,7 +904,7 @@ Module opcode.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -930,7 +934,7 @@ Module opcode.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "invalid opcode" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -975,7 +979,7 @@ Module opcode.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1025,7 +1029,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1052,7 +1056,7 @@ Module opcode.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1084,22 +1088,23 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.Pure.eq
-            (M.read (|
+          BinOp.eq (|
+            M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "revm_interpreter::opcode::OpCode",
                 0
               |)
-            |))
-            (M.read (|
+            |),
+            M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| other |),
                 "revm_interpreter::opcode::OpCode",
                 0
               |)
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1129,7 +1134,7 @@ Module opcode.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1172,7 +1177,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1208,7 +1213,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1240,7 +1245,7 @@ Module opcode.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1367,14 +1372,14 @@ Module opcode.
                                         []
                                       |),
                                       [
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 8;
+                                        Value.Integer IntegerKind.U32 8;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Is"
-                                          [ Value.Integer 2 ]
+                                          [ Value.Integer IntegerKind.Usize 2 ]
                                       ]
                                     |)
                                   ]
@@ -1395,7 +1400,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1443,7 +1448,7 @@ Module opcode.
               Value.StructTuple "revm_interpreter::opcode::OpCodeError" [ Value.Tuple [] ]
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1502,7 +1507,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1546,7 +1551,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parse : M.IsAssociatedFunction Self "parse" parse.
@@ -1561,16 +1566,17 @@ Module opcode.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.read (|
+          BinOp.eq (|
+            M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "revm_interpreter::opcode::OpCode",
                 0
               |)
-            |))
-            (M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPDEST" |) |))))
-      | _, _, _ => M.impossible
+            |),
+            M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPDEST" |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_jumpdest : M.IsAssociatedFunction Self "is_jumpdest" is_jumpdest.
@@ -1627,7 +1633,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_jumpdest_by_op :
@@ -1643,12 +1649,13 @@ Module opcode.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.read (|
+          BinOp.eq (|
+            M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "revm_interpreter::opcode::OpCode", 0 |)
-            |))
-            (M.read (| M.get_constant (| "revm_interpreter::opcode::JUMP" |) |))))
-      | _, _, _ => M.impossible
+            |),
+            M.read (| M.get_constant (| "revm_interpreter::opcode::JUMP" |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_jump : M.IsAssociatedFunction Self "is_jump" is_jump.
@@ -1705,7 +1712,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_jump_by_op :
@@ -1722,27 +1729,29 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           LogicalOp.and (|
-            BinOp.Pure.ge
-              (M.read (|
+            BinOp.ge (|
+              M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   self,
                   "revm_interpreter::opcode::OpCode",
                   0
                 |)
-              |))
-              (M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH1" |) |)),
+              |),
+              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH1" |) |)
+            |),
             ltac:(M.monadic
-              (BinOp.Pure.le
-                (M.read (|
+              (BinOp.le (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     self,
                     "revm_interpreter::opcode::OpCode",
                     0
                   |)
-                |))
-                (M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH32" |) |))))
+                |),
+                M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH32" |) |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_push : M.IsAssociatedFunction Self "is_push" is_push.
@@ -1799,7 +1808,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_push_by_op :
@@ -1816,7 +1825,7 @@ Module opcode.
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           Value.StructTuple "revm_interpreter::opcode::OpCode" [ M.read (| opcode |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_unchecked :
@@ -1851,7 +1860,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1908,7 +1917,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name_by_op : M.IsAssociatedFunction Self "name_by_op" name_by_op.
@@ -1942,7 +1951,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_inputs : M.IsAssociatedFunction Self "inputs" inputs.
@@ -1976,7 +1985,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_outputs : M.IsAssociatedFunction Self "outputs" outputs.
@@ -2010,7 +2019,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
@@ -2072,7 +2081,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_info_by_op : M.IsAssociatedFunction Self "info_by_op" info_by_op.
@@ -2145,7 +2154,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_info : M.IsAssociatedFunction Self "info" info.
@@ -2193,7 +2202,7 @@ Module opcode.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_input_output : M.IsAssociatedFunction Self "input_output" input_output.
@@ -2211,7 +2220,7 @@ Module opcode.
           M.read (|
             M.SubPointer.get_struct_tuple_field (| self, "revm_interpreter::opcode::OpCode", 0 |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -2220,7 +2229,9 @@ Module opcode.
     Definition value_STOP : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 0 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 0 ]
+          |))).
     
     Axiom AssociatedConstant_value_STOP : M.IsAssociatedConstant Self "value_STOP" value_STOP.
     
@@ -2229,7 +2240,9 @@ Module opcode.
     Definition value_ADD : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 1 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 1 ]
+          |))).
     
     Axiom AssociatedConstant_value_ADD : M.IsAssociatedConstant Self "value_ADD" value_ADD.
     
@@ -2238,7 +2251,9 @@ Module opcode.
     Definition value_MUL : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 2 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 2 ]
+          |))).
     
     Axiom AssociatedConstant_value_MUL : M.IsAssociatedConstant Self "value_MUL" value_MUL.
     
@@ -2247,7 +2262,9 @@ Module opcode.
     Definition value_SUB : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 3 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 3 ]
+          |))).
     
     Axiom AssociatedConstant_value_SUB : M.IsAssociatedConstant Self "value_SUB" value_SUB.
     
@@ -2256,7 +2273,9 @@ Module opcode.
     Definition value_DIV : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 4 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 4 ]
+          |))).
     
     Axiom AssociatedConstant_value_DIV : M.IsAssociatedConstant Self "value_DIV" value_DIV.
     
@@ -2265,7 +2284,9 @@ Module opcode.
     Definition value_SDIV : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 5 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 5 ]
+          |))).
     
     Axiom AssociatedConstant_value_SDIV : M.IsAssociatedConstant Self "value_SDIV" value_SDIV.
     
@@ -2274,7 +2295,9 @@ Module opcode.
     Definition value_MOD : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 6 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 6 ]
+          |))).
     
     Axiom AssociatedConstant_value_MOD : M.IsAssociatedConstant Self "value_MOD" value_MOD.
     
@@ -2283,7 +2306,9 @@ Module opcode.
     Definition value_SMOD : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 7 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 7 ]
+          |))).
     
     Axiom AssociatedConstant_value_SMOD : M.IsAssociatedConstant Self "value_SMOD" value_SMOD.
     
@@ -2292,7 +2317,9 @@ Module opcode.
     Definition value_ADDMOD : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 8 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 8 ]
+          |))).
     
     Axiom AssociatedConstant_value_ADDMOD : M.IsAssociatedConstant Self "value_ADDMOD" value_ADDMOD.
     
@@ -2301,7 +2328,9 @@ Module opcode.
     Definition value_MULMOD : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 9 ] |))).
+          (M.alloc (|
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 9 ]
+          |))).
     
     Axiom AssociatedConstant_value_MULMOD : M.IsAssociatedConstant Self "value_MULMOD" value_MULMOD.
     
@@ -2311,7 +2340,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 10 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 10 ]
           |))).
     
     Axiom AssociatedConstant_value_EXP : M.IsAssociatedConstant Self "value_EXP" value_EXP.
@@ -2322,7 +2351,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 11 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 11 ]
           |))).
     
     Axiom AssociatedConstant_value_SIGNEXTEND :
@@ -2334,7 +2363,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 16 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 16 ]
           |))).
     
     Axiom AssociatedConstant_value_LT : M.IsAssociatedConstant Self "value_LT" value_LT.
@@ -2345,7 +2374,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 17 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 17 ]
           |))).
     
     Axiom AssociatedConstant_value_GT : M.IsAssociatedConstant Self "value_GT" value_GT.
@@ -2356,7 +2385,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 18 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 18 ]
           |))).
     
     Axiom AssociatedConstant_value_SLT : M.IsAssociatedConstant Self "value_SLT" value_SLT.
@@ -2367,7 +2396,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 19 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 19 ]
           |))).
     
     Axiom AssociatedConstant_value_SGT : M.IsAssociatedConstant Self "value_SGT" value_SGT.
@@ -2378,7 +2407,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 20 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 20 ]
           |))).
     
     Axiom AssociatedConstant_value_EQ : M.IsAssociatedConstant Self "value_EQ" value_EQ.
@@ -2389,7 +2418,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 21 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 21 ]
           |))).
     
     Axiom AssociatedConstant_value_ISZERO : M.IsAssociatedConstant Self "value_ISZERO" value_ISZERO.
@@ -2400,7 +2429,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 22 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 22 ]
           |))).
     
     Axiom AssociatedConstant_value_AND : M.IsAssociatedConstant Self "value_AND" value_AND.
@@ -2411,7 +2440,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 23 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 23 ]
           |))).
     
     Axiom AssociatedConstant_value_OR : M.IsAssociatedConstant Self "value_OR" value_OR.
@@ -2422,7 +2451,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 24 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 24 ]
           |))).
     
     Axiom AssociatedConstant_value_XOR : M.IsAssociatedConstant Self "value_XOR" value_XOR.
@@ -2433,7 +2462,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 25 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 25 ]
           |))).
     
     Axiom AssociatedConstant_value_NOT : M.IsAssociatedConstant Self "value_NOT" value_NOT.
@@ -2444,7 +2473,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 26 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 26 ]
           |))).
     
     Axiom AssociatedConstant_value_BYTE : M.IsAssociatedConstant Self "value_BYTE" value_BYTE.
@@ -2455,7 +2484,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 27 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 27 ]
           |))).
     
     Axiom AssociatedConstant_value_SHL : M.IsAssociatedConstant Self "value_SHL" value_SHL.
@@ -2466,7 +2495,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 28 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 28 ]
           |))).
     
     Axiom AssociatedConstant_value_SHR : M.IsAssociatedConstant Self "value_SHR" value_SHR.
@@ -2477,7 +2506,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 29 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 29 ]
           |))).
     
     Axiom AssociatedConstant_value_SAR : M.IsAssociatedConstant Self "value_SAR" value_SAR.
@@ -2488,7 +2517,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 32 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 32 ]
           |))).
     
     Axiom AssociatedConstant_value_KECCAK256 :
@@ -2500,7 +2529,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 48 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 48 ]
           |))).
     
     Axiom AssociatedConstant_value_ADDRESS :
@@ -2512,7 +2541,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 49 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 49 ]
           |))).
     
     Axiom AssociatedConstant_value_BALANCE :
@@ -2524,7 +2553,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 50 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 50 ]
           |))).
     
     Axiom AssociatedConstant_value_ORIGIN : M.IsAssociatedConstant Self "value_ORIGIN" value_ORIGIN.
@@ -2535,7 +2564,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 51 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 51 ]
           |))).
     
     Axiom AssociatedConstant_value_CALLER : M.IsAssociatedConstant Self "value_CALLER" value_CALLER.
@@ -2546,7 +2575,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 52 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 52 ]
           |))).
     
     Axiom AssociatedConstant_value_CALLVALUE :
@@ -2558,7 +2587,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 53 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 53 ]
           |))).
     
     Axiom AssociatedConstant_value_CALLDATALOAD :
@@ -2570,7 +2599,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 54 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 54 ]
           |))).
     
     Axiom AssociatedConstant_value_CALLDATASIZE :
@@ -2582,7 +2611,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 55 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 55 ]
           |))).
     
     Axiom AssociatedConstant_value_CALLDATACOPY :
@@ -2594,7 +2623,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 56 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 56 ]
           |))).
     
     Axiom AssociatedConstant_value_CODESIZE :
@@ -2606,7 +2635,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 57 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 57 ]
           |))).
     
     Axiom AssociatedConstant_value_CODECOPY :
@@ -2618,7 +2647,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 58 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 58 ]
           |))).
     
     Axiom AssociatedConstant_value_GASPRICE :
@@ -2630,7 +2659,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 59 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 59 ]
           |))).
     
     Axiom AssociatedConstant_value_EXTCODESIZE :
@@ -2642,7 +2671,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 60 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 60 ]
           |))).
     
     Axiom AssociatedConstant_value_EXTCODECOPY :
@@ -2654,7 +2683,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 61 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 61 ]
           |))).
     
     Axiom AssociatedConstant_value_RETURNDATASIZE :
@@ -2666,7 +2695,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 62 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 62 ]
           |))).
     
     Axiom AssociatedConstant_value_RETURNDATACOPY :
@@ -2678,7 +2707,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 63 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 63 ]
           |))).
     
     Axiom AssociatedConstant_value_EXTCODEHASH :
@@ -2690,7 +2719,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 64 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 64 ]
           |))).
     
     Axiom AssociatedConstant_value_BLOCKHASH :
@@ -2702,7 +2731,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 65 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 65 ]
           |))).
     
     Axiom AssociatedConstant_value_COINBASE :
@@ -2714,7 +2743,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 66 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 66 ]
           |))).
     
     Axiom AssociatedConstant_value_TIMESTAMP :
@@ -2726,7 +2755,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 67 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 67 ]
           |))).
     
     Axiom AssociatedConstant_value_NUMBER : M.IsAssociatedConstant Self "value_NUMBER" value_NUMBER.
@@ -2737,7 +2766,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 68 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 68 ]
           |))).
     
     Axiom AssociatedConstant_value_DIFFICULTY :
@@ -2749,7 +2778,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 69 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 69 ]
           |))).
     
     Axiom AssociatedConstant_value_GASLIMIT :
@@ -2761,7 +2790,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 70 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 70 ]
           |))).
     
     Axiom AssociatedConstant_value_CHAINID :
@@ -2773,7 +2802,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 71 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 71 ]
           |))).
     
     Axiom AssociatedConstant_value_SELFBALANCE :
@@ -2785,7 +2814,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 72 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 72 ]
           |))).
     
     Axiom AssociatedConstant_value_BASEFEE :
@@ -2797,7 +2826,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 73 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 73 ]
           |))).
     
     Axiom AssociatedConstant_value_BLOBHASH :
@@ -2809,7 +2838,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 74 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 74 ]
           |))).
     
     Axiom AssociatedConstant_value_BLOBBASEFEE :
@@ -2821,7 +2850,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 80 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 80 ]
           |))).
     
     Axiom AssociatedConstant_value_POP : M.IsAssociatedConstant Self "value_POP" value_POP.
@@ -2832,7 +2861,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 81 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 81 ]
           |))).
     
     Axiom AssociatedConstant_value_MLOAD : M.IsAssociatedConstant Self "value_MLOAD" value_MLOAD.
@@ -2843,7 +2872,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 82 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 82 ]
           |))).
     
     Axiom AssociatedConstant_value_MSTORE : M.IsAssociatedConstant Self "value_MSTORE" value_MSTORE.
@@ -2854,7 +2883,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 83 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 83 ]
           |))).
     
     Axiom AssociatedConstant_value_MSTORE8 :
@@ -2866,7 +2895,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 84 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 84 ]
           |))).
     
     Axiom AssociatedConstant_value_SLOAD : M.IsAssociatedConstant Self "value_SLOAD" value_SLOAD.
@@ -2877,7 +2906,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 85 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 85 ]
           |))).
     
     Axiom AssociatedConstant_value_SSTORE : M.IsAssociatedConstant Self "value_SSTORE" value_SSTORE.
@@ -2888,7 +2917,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 86 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 86 ]
           |))).
     
     Axiom AssociatedConstant_value_JUMP : M.IsAssociatedConstant Self "value_JUMP" value_JUMP.
@@ -2899,7 +2928,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 87 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 87 ]
           |))).
     
     Axiom AssociatedConstant_value_JUMPI : M.IsAssociatedConstant Self "value_JUMPI" value_JUMPI.
@@ -2910,7 +2939,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 88 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 88 ]
           |))).
     
     Axiom AssociatedConstant_value_PC : M.IsAssociatedConstant Self "value_PC" value_PC.
@@ -2921,7 +2950,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 89 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 89 ]
           |))).
     
     Axiom AssociatedConstant_value_MSIZE : M.IsAssociatedConstant Self "value_MSIZE" value_MSIZE.
@@ -2932,7 +2961,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 90 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 90 ]
           |))).
     
     Axiom AssociatedConstant_value_GAS : M.IsAssociatedConstant Self "value_GAS" value_GAS.
@@ -2943,7 +2972,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 91 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 91 ]
           |))).
     
     Axiom AssociatedConstant_value_JUMPDEST :
@@ -2955,7 +2984,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 92 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 92 ]
           |))).
     
     Axiom AssociatedConstant_value_TLOAD : M.IsAssociatedConstant Self "value_TLOAD" value_TLOAD.
@@ -2966,7 +2995,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 93 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 93 ]
           |))).
     
     Axiom AssociatedConstant_value_TSTORE : M.IsAssociatedConstant Self "value_TSTORE" value_TSTORE.
@@ -2977,7 +3006,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 94 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 94 ]
           |))).
     
     Axiom AssociatedConstant_value_MCOPY : M.IsAssociatedConstant Self "value_MCOPY" value_MCOPY.
@@ -2988,7 +3017,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 95 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 95 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH0 : M.IsAssociatedConstant Self "value_PUSH0" value_PUSH0.
@@ -2999,7 +3028,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 96 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 96 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH1 : M.IsAssociatedConstant Self "value_PUSH1" value_PUSH1.
@@ -3010,7 +3039,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 97 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 97 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH2 : M.IsAssociatedConstant Self "value_PUSH2" value_PUSH2.
@@ -3021,7 +3050,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 98 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 98 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH3 : M.IsAssociatedConstant Self "value_PUSH3" value_PUSH3.
@@ -3032,7 +3061,7 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 99 ]
+            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer IntegerKind.U8 99 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH4 : M.IsAssociatedConstant Self "value_PUSH4" value_PUSH4.
@@ -3043,7 +3072,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 100 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 100 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH5 : M.IsAssociatedConstant Self "value_PUSH5" value_PUSH5.
@@ -3054,7 +3085,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 101 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 101 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH6 : M.IsAssociatedConstant Self "value_PUSH6" value_PUSH6.
@@ -3065,7 +3098,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 102 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 102 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH7 : M.IsAssociatedConstant Self "value_PUSH7" value_PUSH7.
@@ -3076,7 +3111,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 103 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 103 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH8 : M.IsAssociatedConstant Self "value_PUSH8" value_PUSH8.
@@ -3087,7 +3124,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 104 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 104 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH9 : M.IsAssociatedConstant Self "value_PUSH9" value_PUSH9.
@@ -3098,7 +3137,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 105 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 105 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH10 : M.IsAssociatedConstant Self "value_PUSH10" value_PUSH10.
@@ -3109,7 +3150,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 106 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 106 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH11 : M.IsAssociatedConstant Self "value_PUSH11" value_PUSH11.
@@ -3120,7 +3163,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 107 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 107 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH12 : M.IsAssociatedConstant Self "value_PUSH12" value_PUSH12.
@@ -3131,7 +3176,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 108 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 108 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH13 : M.IsAssociatedConstant Self "value_PUSH13" value_PUSH13.
@@ -3142,7 +3189,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 109 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 109 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH14 : M.IsAssociatedConstant Self "value_PUSH14" value_PUSH14.
@@ -3153,7 +3202,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 110 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 110 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH15 : M.IsAssociatedConstant Self "value_PUSH15" value_PUSH15.
@@ -3164,7 +3215,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 111 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 111 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH16 : M.IsAssociatedConstant Self "value_PUSH16" value_PUSH16.
@@ -3175,7 +3228,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 112 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 112 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH17 : M.IsAssociatedConstant Self "value_PUSH17" value_PUSH17.
@@ -3186,7 +3241,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 113 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 113 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH18 : M.IsAssociatedConstant Self "value_PUSH18" value_PUSH18.
@@ -3197,7 +3254,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 114 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 114 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH19 : M.IsAssociatedConstant Self "value_PUSH19" value_PUSH19.
@@ -3208,7 +3267,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 115 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 115 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH20 : M.IsAssociatedConstant Self "value_PUSH20" value_PUSH20.
@@ -3219,7 +3280,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 116 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 116 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH21 : M.IsAssociatedConstant Self "value_PUSH21" value_PUSH21.
@@ -3230,7 +3293,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 117 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 117 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH22 : M.IsAssociatedConstant Self "value_PUSH22" value_PUSH22.
@@ -3241,7 +3306,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 118 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 118 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH23 : M.IsAssociatedConstant Self "value_PUSH23" value_PUSH23.
@@ -3252,7 +3319,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 119 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 119 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH24 : M.IsAssociatedConstant Self "value_PUSH24" value_PUSH24.
@@ -3263,7 +3332,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 120 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 120 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH25 : M.IsAssociatedConstant Self "value_PUSH25" value_PUSH25.
@@ -3274,7 +3345,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 121 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 121 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH26 : M.IsAssociatedConstant Self "value_PUSH26" value_PUSH26.
@@ -3285,7 +3358,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 122 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 122 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH27 : M.IsAssociatedConstant Self "value_PUSH27" value_PUSH27.
@@ -3296,7 +3371,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 123 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 123 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH28 : M.IsAssociatedConstant Self "value_PUSH28" value_PUSH28.
@@ -3307,7 +3384,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 124 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 124 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH29 : M.IsAssociatedConstant Self "value_PUSH29" value_PUSH29.
@@ -3318,7 +3397,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 125 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 125 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH30 : M.IsAssociatedConstant Self "value_PUSH30" value_PUSH30.
@@ -3329,7 +3410,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 126 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 126 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH31 : M.IsAssociatedConstant Self "value_PUSH31" value_PUSH31.
@@ -3340,7 +3423,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 127 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 127 ]
           |))).
     
     Axiom AssociatedConstant_value_PUSH32 : M.IsAssociatedConstant Self "value_PUSH32" value_PUSH32.
@@ -3351,7 +3436,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 128 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 128 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP1 : M.IsAssociatedConstant Self "value_DUP1" value_DUP1.
@@ -3362,7 +3449,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 129 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 129 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP2 : M.IsAssociatedConstant Self "value_DUP2" value_DUP2.
@@ -3373,7 +3462,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 130 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 130 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP3 : M.IsAssociatedConstant Self "value_DUP3" value_DUP3.
@@ -3384,7 +3475,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 131 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 131 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP4 : M.IsAssociatedConstant Self "value_DUP4" value_DUP4.
@@ -3395,7 +3488,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 132 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 132 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP5 : M.IsAssociatedConstant Self "value_DUP5" value_DUP5.
@@ -3406,7 +3501,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 133 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 133 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP6 : M.IsAssociatedConstant Self "value_DUP6" value_DUP6.
@@ -3417,7 +3514,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 134 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 134 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP7 : M.IsAssociatedConstant Self "value_DUP7" value_DUP7.
@@ -3428,7 +3527,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 135 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 135 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP8 : M.IsAssociatedConstant Self "value_DUP8" value_DUP8.
@@ -3439,7 +3540,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 136 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 136 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP9 : M.IsAssociatedConstant Self "value_DUP9" value_DUP9.
@@ -3450,7 +3553,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 137 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 137 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP10 : M.IsAssociatedConstant Self "value_DUP10" value_DUP10.
@@ -3461,7 +3566,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 138 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 138 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP11 : M.IsAssociatedConstant Self "value_DUP11" value_DUP11.
@@ -3472,7 +3579,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 139 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 139 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP12 : M.IsAssociatedConstant Self "value_DUP12" value_DUP12.
@@ -3483,7 +3592,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 140 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 140 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP13 : M.IsAssociatedConstant Self "value_DUP13" value_DUP13.
@@ -3494,7 +3605,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 141 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 141 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP14 : M.IsAssociatedConstant Self "value_DUP14" value_DUP14.
@@ -3505,7 +3618,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 142 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 142 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP15 : M.IsAssociatedConstant Self "value_DUP15" value_DUP15.
@@ -3516,7 +3631,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 143 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 143 ]
           |))).
     
     Axiom AssociatedConstant_value_DUP16 : M.IsAssociatedConstant Self "value_DUP16" value_DUP16.
@@ -3527,7 +3644,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 144 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 144 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP1 : M.IsAssociatedConstant Self "value_SWAP1" value_SWAP1.
@@ -3538,7 +3657,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 145 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 145 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP2 : M.IsAssociatedConstant Self "value_SWAP2" value_SWAP2.
@@ -3549,7 +3670,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 146 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 146 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP3 : M.IsAssociatedConstant Self "value_SWAP3" value_SWAP3.
@@ -3560,7 +3683,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 147 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 147 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP4 : M.IsAssociatedConstant Self "value_SWAP4" value_SWAP4.
@@ -3571,7 +3696,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 148 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 148 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP5 : M.IsAssociatedConstant Self "value_SWAP5" value_SWAP5.
@@ -3582,7 +3709,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 149 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 149 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP6 : M.IsAssociatedConstant Self "value_SWAP6" value_SWAP6.
@@ -3593,7 +3722,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 150 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 150 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP7 : M.IsAssociatedConstant Self "value_SWAP7" value_SWAP7.
@@ -3604,7 +3735,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 151 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 151 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP8 : M.IsAssociatedConstant Self "value_SWAP8" value_SWAP8.
@@ -3615,7 +3748,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 152 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 152 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP9 : M.IsAssociatedConstant Self "value_SWAP9" value_SWAP9.
@@ -3626,7 +3761,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 153 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 153 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP10 : M.IsAssociatedConstant Self "value_SWAP10" value_SWAP10.
@@ -3637,7 +3774,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 154 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 154 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP11 : M.IsAssociatedConstant Self "value_SWAP11" value_SWAP11.
@@ -3648,7 +3787,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 155 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 155 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP12 : M.IsAssociatedConstant Self "value_SWAP12" value_SWAP12.
@@ -3659,7 +3800,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 156 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 156 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP13 : M.IsAssociatedConstant Self "value_SWAP13" value_SWAP13.
@@ -3670,7 +3813,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 157 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 157 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP14 : M.IsAssociatedConstant Self "value_SWAP14" value_SWAP14.
@@ -3681,7 +3826,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 158 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 158 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP15 : M.IsAssociatedConstant Self "value_SWAP15" value_SWAP15.
@@ -3692,7 +3839,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 159 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 159 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAP16 : M.IsAssociatedConstant Self "value_SWAP16" value_SWAP16.
@@ -3703,7 +3852,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 160 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 160 ]
           |))).
     
     Axiom AssociatedConstant_value_LOG0 : M.IsAssociatedConstant Self "value_LOG0" value_LOG0.
@@ -3714,7 +3865,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 161 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 161 ]
           |))).
     
     Axiom AssociatedConstant_value_LOG1 : M.IsAssociatedConstant Self "value_LOG1" value_LOG1.
@@ -3725,7 +3878,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 162 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 162 ]
           |))).
     
     Axiom AssociatedConstant_value_LOG2 : M.IsAssociatedConstant Self "value_LOG2" value_LOG2.
@@ -3736,7 +3891,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 163 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 163 ]
           |))).
     
     Axiom AssociatedConstant_value_LOG3 : M.IsAssociatedConstant Self "value_LOG3" value_LOG3.
@@ -3747,7 +3904,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 164 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 164 ]
           |))).
     
     Axiom AssociatedConstant_value_LOG4 : M.IsAssociatedConstant Self "value_LOG4" value_LOG4.
@@ -3758,7 +3917,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 208 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 208 ]
           |))).
     
     Axiom AssociatedConstant_value_DATALOAD :
@@ -3770,7 +3931,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 209 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 209 ]
           |))).
     
     Axiom AssociatedConstant_value_DATALOADN :
@@ -3782,7 +3945,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 210 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 210 ]
           |))).
     
     Axiom AssociatedConstant_value_DATASIZE :
@@ -3794,7 +3959,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 211 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 211 ]
           |))).
     
     Axiom AssociatedConstant_value_DATACOPY :
@@ -3806,7 +3973,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 224 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 224 ]
           |))).
     
     Axiom AssociatedConstant_value_RJUMP : M.IsAssociatedConstant Self "value_RJUMP" value_RJUMP.
@@ -3817,7 +3986,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 225 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 225 ]
           |))).
     
     Axiom AssociatedConstant_value_RJUMPI : M.IsAssociatedConstant Self "value_RJUMPI" value_RJUMPI.
@@ -3828,7 +3999,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 226 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 226 ]
           |))).
     
     Axiom AssociatedConstant_value_RJUMPV : M.IsAssociatedConstant Self "value_RJUMPV" value_RJUMPV.
@@ -3839,7 +4012,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 227 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 227 ]
           |))).
     
     Axiom AssociatedConstant_value_CALLF : M.IsAssociatedConstant Self "value_CALLF" value_CALLF.
@@ -3850,7 +4025,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 228 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 228 ]
           |))).
     
     Axiom AssociatedConstant_value_RETF : M.IsAssociatedConstant Self "value_RETF" value_RETF.
@@ -3861,7 +4038,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 229 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 229 ]
           |))).
     
     Axiom AssociatedConstant_value_JUMPF : M.IsAssociatedConstant Self "value_JUMPF" value_JUMPF.
@@ -3872,7 +4051,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 230 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 230 ]
           |))).
     
     Axiom AssociatedConstant_value_DUPN : M.IsAssociatedConstant Self "value_DUPN" value_DUPN.
@@ -3883,7 +4064,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 231 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 231 ]
           |))).
     
     Axiom AssociatedConstant_value_SWAPN : M.IsAssociatedConstant Self "value_SWAPN" value_SWAPN.
@@ -3894,7 +4077,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 232 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 232 ]
           |))).
     
     Axiom AssociatedConstant_value_EXCHANGE :
@@ -3906,7 +4091,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 236 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 236 ]
           |))).
     
     Axiom AssociatedConstant_value_EOFCREATE :
@@ -3918,7 +4105,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 237 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 237 ]
           |))).
     
     Axiom AssociatedConstant_value_TXCREATE :
@@ -3930,7 +4119,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 238 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 238 ]
           |))).
     
     Axiom AssociatedConstant_value_RETURNCONTRACT :
@@ -3942,7 +4133,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 240 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 240 ]
           |))).
     
     Axiom AssociatedConstant_value_CREATE : M.IsAssociatedConstant Self "value_CREATE" value_CREATE.
@@ -3953,7 +4146,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 241 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 241 ]
           |))).
     
     Axiom AssociatedConstant_value_CALL : M.IsAssociatedConstant Self "value_CALL" value_CALL.
@@ -3964,7 +4159,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 242 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 242 ]
           |))).
     
     Axiom AssociatedConstant_value_CALLCODE :
@@ -3976,7 +4173,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 243 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 243 ]
           |))).
     
     Axiom AssociatedConstant_value_RETURN : M.IsAssociatedConstant Self "value_RETURN" value_RETURN.
@@ -3987,7 +4186,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 244 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 244 ]
           |))).
     
     Axiom AssociatedConstant_value_DELEGATECALL :
@@ -3999,7 +4200,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 245 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 245 ]
           |))).
     
     Axiom AssociatedConstant_value_CREATE2 :
@@ -4011,7 +4214,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 247 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 247 ]
           |))).
     
     Axiom AssociatedConstant_value_RETURNDATALOAD :
@@ -4023,7 +4228,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 248 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 248 ]
           |))).
     
     Axiom AssociatedConstant_value_EXTCALL :
@@ -4035,7 +4242,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 249 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 249 ]
           |))).
     
     Axiom AssociatedConstant_value_EXFCALL :
@@ -4047,7 +4256,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 250 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 250 ]
           |))).
     
     Axiom AssociatedConstant_value_STATICCALL :
@@ -4059,7 +4270,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 251 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 251 ]
           |))).
     
     Axiom AssociatedConstant_value_EXTSCALL :
@@ -4071,7 +4284,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 253 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 253 ]
           |))).
     
     Axiom AssociatedConstant_value_REVERT : M.IsAssociatedConstant Self "value_REVERT" value_REVERT.
@@ -4082,7 +4297,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 254 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 254 ]
           |))).
     
     Axiom AssociatedConstant_value_INVALID :
@@ -4094,7 +4311,9 @@ Module opcode.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            Value.StructTuple "revm_interpreter::opcode::OpCode" [ Value.Integer 255 ]
+            Value.StructTuple
+              "revm_interpreter::opcode::OpCode"
+              [ Value.Integer IntegerKind.U8 255 ]
           |))).
     
     Axiom AssociatedConstant_value_SELFDESTRUCT :
@@ -4147,7 +4366,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4218,108 +4437,114 @@ Module opcode.
                         ]
                       |),
                       ltac:(M.monadic
-                        (BinOp.Pure.eq
-                          (M.read (|
+                        (BinOp.eq (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "revm_interpreter::opcode::OpCodeInfo",
                               "name_len"
                             |)
-                          |))
-                          (M.read (|
+                          |),
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| other |),
                               "revm_interpreter::opcode::OpCodeInfo",
                               "name_len"
                             |)
-                          |))))
+                          |)
+                        |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "revm_interpreter::opcode::OpCodeInfo",
                             "inputs"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "revm_interpreter::opcode::OpCodeInfo",
                             "inputs"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm_interpreter::opcode::OpCodeInfo",
                           "outputs"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm_interpreter::opcode::OpCodeInfo",
                           "outputs"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_interpreter::opcode::OpCodeInfo",
                         "immediate_size"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_interpreter::opcode::OpCodeInfo",
                         "immediate_size"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::opcode::OpCodeInfo",
                       "not_eof"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::opcode::OpCodeInfo",
                       "not_eof"
                     |)
-                  |))))
+                  |)
+                |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::opcode::OpCodeInfo",
                     "terminating"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::opcode::OpCodeInfo",
                     "terminating"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4363,7 +4588,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4663,7 +4888,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4920,7 +5145,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5046,7 +5271,7 @@ Module opcode.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5217,7 +5442,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5260,13 +5485,15 @@ Module opcode.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.lt
-                                (M.call_closure (|
+                            UnOp.not (|
+                              BinOp.lt (|
+                                M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "len", [] |),
                                   [ M.read (| name |) ]
-                                |))
-                                (Value.Integer 256))
+                                |),
+                                Value.Integer IntegerKind.Usize 256
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -5327,15 +5554,15 @@ Module opcode.
                         M.get_associated_function (| Ty.path "str", "len", [] |),
                         [ M.read (| name |) ]
                       |)));
-                  ("inputs", Value.Integer 0);
-                  ("outputs", Value.Integer 0);
+                  ("inputs", Value.Integer IntegerKind.U8 0);
+                  ("outputs", Value.Integer IntegerKind.U8 0);
                   ("not_eof", Value.Bool false);
                   ("terminating", Value.Bool false);
-                  ("immediate_size", Value.Integer 0)
+                  ("immediate_size", Value.Integer IntegerKind.U8 0)
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -5397,7 +5624,7 @@ Module opcode.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -5412,25 +5639,25 @@ Module opcode.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.sub
-            Integer.I16
-            (M.rust_cast
+          BinOp.Wrap.sub (|
+            M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::opcode::OpCodeInfo",
                   "outputs"
                 |)
-              |)))
-            (M.rust_cast
+              |)),
+            M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::opcode::OpCodeInfo",
                   "inputs"
                 |)
-              |)))))
-      | _, _, _ => M.impossible
+              |))
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
@@ -5452,7 +5679,7 @@ Module opcode.
               "inputs"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_inputs : M.IsAssociatedFunction Self "inputs" inputs.
@@ -5474,7 +5701,7 @@ Module opcode.
               "outputs"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_outputs : M.IsAssociatedFunction Self "outputs" outputs.
@@ -5496,7 +5723,7 @@ Module opcode.
               "not_eof"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_disabled_in_eof :
@@ -5519,7 +5746,7 @@ Module opcode.
               "terminating"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_terminating :
@@ -5542,7 +5769,7 @@ Module opcode.
               "immediate_size"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_immediate_size :
@@ -5572,7 +5799,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_not_eof : M.IsFunction "revm_interpreter::opcode::not_eof" not_eof.
@@ -5601,7 +5828,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_immediate_size :
@@ -5630,7 +5857,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_terminating : M.IsFunction "revm_interpreter::opcode::terminating" terminating.
@@ -5670,7 +5897,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_stack_io : M.IsFunction "revm_interpreter::opcode::stack_io" stack_io.
@@ -5678,352 +5905,512 @@ Module opcode.
   Definition value_NOP : Value.t :=
     M.run ltac:(M.monadic (M.get_constant (| "revm_interpreter::opcode::JUMPDEST" |))).
   
-  Definition value_STOP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+  Definition value_STOP : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
   
-  Definition value_ADD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+  Definition value_ADD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
-  Definition value_MUL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+  Definition value_MUL : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
   
-  Definition value_SUB : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+  Definition value_SUB : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 3 |))).
   
-  Definition value_DIV : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+  Definition value_DIV : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
   
-  Definition value_SDIV : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 5 |))).
+  Definition value_SDIV : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 5 |))).
   
-  Definition value_MOD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 6 |))).
+  Definition value_MOD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 6 |))).
   
-  Definition value_SMOD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 7 |))).
+  Definition value_SMOD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 7 |))).
   
-  Definition value_ADDMOD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 8 |))).
+  Definition value_ADDMOD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 8 |))).
   
-  Definition value_MULMOD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 9 |))).
+  Definition value_MULMOD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 9 |))).
   
-  Definition value_EXP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+  Definition value_EXP : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 10 |))).
   
-  Definition value_SIGNEXTEND : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 11 |))).
+  Definition value_SIGNEXTEND : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 11 |))).
   
-  Definition value_LT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+  Definition value_LT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 16 |))).
   
-  Definition value_GT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 17 |))).
+  Definition value_GT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 17 |))).
   
-  Definition value_SLT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 18 |))).
+  Definition value_SLT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 18 |))).
   
-  Definition value_SGT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 19 |))).
+  Definition value_SGT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 19 |))).
   
-  Definition value_EQ : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 20 |))).
+  Definition value_EQ : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 20 |))).
   
-  Definition value_ISZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 21 |))).
+  Definition value_ISZERO : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 21 |))).
   
-  Definition value_AND : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 22 |))).
+  Definition value_AND : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 22 |))).
   
-  Definition value_OR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 23 |))).
+  Definition value_OR : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 23 |))).
   
-  Definition value_XOR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 24 |))).
+  Definition value_XOR : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 24 |))).
   
-  Definition value_NOT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 25 |))).
+  Definition value_NOT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 25 |))).
   
-  Definition value_BYTE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 26 |))).
+  Definition value_BYTE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 26 |))).
   
-  Definition value_SHL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 27 |))).
+  Definition value_SHL : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 27 |))).
   
-  Definition value_SHR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 28 |))).
+  Definition value_SHR : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 28 |))).
   
-  Definition value_SAR : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 29 |))).
+  Definition value_SAR : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 29 |))).
   
-  Definition value_KECCAK256 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 32 |))).
+  Definition value_KECCAK256 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 32 |))).
   
-  Definition value_ADDRESS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 48 |))).
+  Definition value_ADDRESS : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 48 |))).
   
-  Definition value_BALANCE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 49 |))).
+  Definition value_BALANCE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 49 |))).
   
-  Definition value_ORIGIN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 50 |))).
+  Definition value_ORIGIN : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 50 |))).
   
-  Definition value_CALLER : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 51 |))).
+  Definition value_CALLER : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 51 |))).
   
-  Definition value_CALLVALUE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 52 |))).
+  Definition value_CALLVALUE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 52 |))).
   
   Definition value_CALLDATALOAD : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 53 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 53 |))).
   
   Definition value_CALLDATASIZE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 54 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 54 |))).
   
   Definition value_CALLDATACOPY : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 55 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 55 |))).
   
-  Definition value_CODESIZE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 56 |))).
+  Definition value_CODESIZE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 56 |))).
   
-  Definition value_CODECOPY : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 57 |))).
+  Definition value_CODECOPY : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 57 |))).
   
-  Definition value_GASPRICE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 58 |))).
+  Definition value_GASPRICE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 58 |))).
   
-  Definition value_EXTCODESIZE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 59 |))).
+  Definition value_EXTCODESIZE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 59 |))).
   
-  Definition value_EXTCODECOPY : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 60 |))).
+  Definition value_EXTCODECOPY : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 60 |))).
   
   Definition value_RETURNDATASIZE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 61 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 61 |))).
   
   Definition value_RETURNDATACOPY : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 62 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 62 |))).
   
-  Definition value_EXTCODEHASH : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 63 |))).
+  Definition value_EXTCODEHASH : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
   
-  Definition value_BLOCKHASH : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 64 |))).
+  Definition value_BLOCKHASH : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 64 |))).
   
-  Definition value_COINBASE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 65 |))).
+  Definition value_COINBASE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 65 |))).
   
-  Definition value_TIMESTAMP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 66 |))).
+  Definition value_TIMESTAMP : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 66 |))).
   
-  Definition value_NUMBER : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 67 |))).
+  Definition value_NUMBER : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 67 |))).
   
-  Definition value_DIFFICULTY : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 68 |))).
+  Definition value_DIFFICULTY : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 68 |))).
   
-  Definition value_GASLIMIT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 69 |))).
+  Definition value_GASLIMIT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 69 |))).
   
-  Definition value_CHAINID : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 70 |))).
+  Definition value_CHAINID : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 70 |))).
   
-  Definition value_SELFBALANCE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 71 |))).
+  Definition value_SELFBALANCE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 71 |))).
   
-  Definition value_BASEFEE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 72 |))).
+  Definition value_BASEFEE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 72 |))).
   
-  Definition value_BLOBHASH : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 73 |))).
+  Definition value_BLOBHASH : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 73 |))).
   
-  Definition value_BLOBBASEFEE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 74 |))).
+  Definition value_BLOBBASEFEE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 74 |))).
   
-  Definition value_POP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 80 |))).
+  Definition value_POP : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 80 |))).
   
-  Definition value_MLOAD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 81 |))).
+  Definition value_MLOAD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 81 |))).
   
-  Definition value_MSTORE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 82 |))).
+  Definition value_MSTORE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 82 |))).
   
-  Definition value_MSTORE8 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 83 |))).
+  Definition value_MSTORE8 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 83 |))).
   
-  Definition value_SLOAD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 84 |))).
+  Definition value_SLOAD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 84 |))).
   
-  Definition value_SSTORE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 85 |))).
+  Definition value_SSTORE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 85 |))).
   
-  Definition value_JUMP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 86 |))).
+  Definition value_JUMP : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 86 |))).
   
-  Definition value_JUMPI : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 87 |))).
+  Definition value_JUMPI : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 87 |))).
   
-  Definition value_PC : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 88 |))).
+  Definition value_PC : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 88 |))).
   
-  Definition value_MSIZE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 89 |))).
+  Definition value_MSIZE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 89 |))).
   
-  Definition value_GAS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 90 |))).
+  Definition value_GAS : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 90 |))).
   
-  Definition value_JUMPDEST : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 91 |))).
+  Definition value_JUMPDEST : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 91 |))).
   
-  Definition value_TLOAD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 92 |))).
+  Definition value_TLOAD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 92 |))).
   
-  Definition value_TSTORE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 93 |))).
+  Definition value_TSTORE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 93 |))).
   
-  Definition value_MCOPY : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 94 |))).
+  Definition value_MCOPY : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 94 |))).
   
-  Definition value_PUSH0 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 95 |))).
+  Definition value_PUSH0 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 95 |))).
   
-  Definition value_PUSH1 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 96 |))).
+  Definition value_PUSH1 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 96 |))).
   
-  Definition value_PUSH2 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 97 |))).
+  Definition value_PUSH2 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 97 |))).
   
-  Definition value_PUSH3 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 98 |))).
+  Definition value_PUSH3 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 98 |))).
   
-  Definition value_PUSH4 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 99 |))).
+  Definition value_PUSH4 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 99 |))).
   
-  Definition value_PUSH5 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 100 |))).
+  Definition value_PUSH5 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 100 |))).
   
-  Definition value_PUSH6 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 101 |))).
+  Definition value_PUSH6 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 101 |))).
   
-  Definition value_PUSH7 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 102 |))).
+  Definition value_PUSH7 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 102 |))).
   
-  Definition value_PUSH8 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 103 |))).
+  Definition value_PUSH8 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 103 |))).
   
-  Definition value_PUSH9 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 104 |))).
+  Definition value_PUSH9 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 104 |))).
   
-  Definition value_PUSH10 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 105 |))).
+  Definition value_PUSH10 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 105 |))).
   
-  Definition value_PUSH11 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 106 |))).
+  Definition value_PUSH11 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 106 |))).
   
-  Definition value_PUSH12 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 107 |))).
+  Definition value_PUSH12 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 107 |))).
   
-  Definition value_PUSH13 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 108 |))).
+  Definition value_PUSH13 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 108 |))).
   
-  Definition value_PUSH14 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 109 |))).
+  Definition value_PUSH14 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 109 |))).
   
-  Definition value_PUSH15 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 110 |))).
+  Definition value_PUSH15 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 110 |))).
   
-  Definition value_PUSH16 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 111 |))).
+  Definition value_PUSH16 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 111 |))).
   
-  Definition value_PUSH17 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 112 |))).
+  Definition value_PUSH17 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 112 |))).
   
-  Definition value_PUSH18 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 113 |))).
+  Definition value_PUSH18 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 113 |))).
   
-  Definition value_PUSH19 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 114 |))).
+  Definition value_PUSH19 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 114 |))).
   
-  Definition value_PUSH20 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 115 |))).
+  Definition value_PUSH20 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 115 |))).
   
-  Definition value_PUSH21 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 116 |))).
+  Definition value_PUSH21 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 116 |))).
   
-  Definition value_PUSH22 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 117 |))).
+  Definition value_PUSH22 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 117 |))).
   
-  Definition value_PUSH23 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 118 |))).
+  Definition value_PUSH23 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 118 |))).
   
-  Definition value_PUSH24 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 119 |))).
+  Definition value_PUSH24 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 119 |))).
   
-  Definition value_PUSH25 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 120 |))).
+  Definition value_PUSH25 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 120 |))).
   
-  Definition value_PUSH26 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 121 |))).
+  Definition value_PUSH26 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 121 |))).
   
-  Definition value_PUSH27 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 122 |))).
+  Definition value_PUSH27 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 122 |))).
   
-  Definition value_PUSH28 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 123 |))).
+  Definition value_PUSH28 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 123 |))).
   
-  Definition value_PUSH29 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 124 |))).
+  Definition value_PUSH29 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 124 |))).
   
-  Definition value_PUSH30 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 125 |))).
+  Definition value_PUSH30 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 125 |))).
   
-  Definition value_PUSH31 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 126 |))).
+  Definition value_PUSH31 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 126 |))).
   
-  Definition value_PUSH32 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 127 |))).
+  Definition value_PUSH32 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 127 |))).
   
-  Definition value_DUP1 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
+  Definition value_DUP1 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
   
-  Definition value_DUP2 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 129 |))).
+  Definition value_DUP2 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 129 |))).
   
-  Definition value_DUP3 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 130 |))).
+  Definition value_DUP3 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 130 |))).
   
-  Definition value_DUP4 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 131 |))).
+  Definition value_DUP4 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 131 |))).
   
-  Definition value_DUP5 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 132 |))).
+  Definition value_DUP5 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 132 |))).
   
-  Definition value_DUP6 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 133 |))).
+  Definition value_DUP6 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 133 |))).
   
-  Definition value_DUP7 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 134 |))).
+  Definition value_DUP7 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 134 |))).
   
-  Definition value_DUP8 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 135 |))).
+  Definition value_DUP8 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 135 |))).
   
-  Definition value_DUP9 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 136 |))).
+  Definition value_DUP9 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 136 |))).
   
-  Definition value_DUP10 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 137 |))).
+  Definition value_DUP10 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 137 |))).
   
-  Definition value_DUP11 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 138 |))).
+  Definition value_DUP11 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 138 |))).
   
-  Definition value_DUP12 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 139 |))).
+  Definition value_DUP12 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 139 |))).
   
-  Definition value_DUP13 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 140 |))).
+  Definition value_DUP13 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 140 |))).
   
-  Definition value_DUP14 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 141 |))).
+  Definition value_DUP14 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 141 |))).
   
-  Definition value_DUP15 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 142 |))).
+  Definition value_DUP15 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 142 |))).
   
-  Definition value_DUP16 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 143 |))).
+  Definition value_DUP16 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 143 |))).
   
-  Definition value_SWAP1 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 144 |))).
+  Definition value_SWAP1 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 144 |))).
   
-  Definition value_SWAP2 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 145 |))).
+  Definition value_SWAP2 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 145 |))).
   
-  Definition value_SWAP3 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 146 |))).
+  Definition value_SWAP3 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 146 |))).
   
-  Definition value_SWAP4 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 147 |))).
+  Definition value_SWAP4 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 147 |))).
   
-  Definition value_SWAP5 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 148 |))).
+  Definition value_SWAP5 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 148 |))).
   
-  Definition value_SWAP6 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 149 |))).
+  Definition value_SWAP6 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 149 |))).
   
-  Definition value_SWAP7 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 150 |))).
+  Definition value_SWAP7 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 150 |))).
   
-  Definition value_SWAP8 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 151 |))).
+  Definition value_SWAP8 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 151 |))).
   
-  Definition value_SWAP9 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 152 |))).
+  Definition value_SWAP9 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 152 |))).
   
-  Definition value_SWAP10 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 153 |))).
+  Definition value_SWAP10 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 153 |))).
   
-  Definition value_SWAP11 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 154 |))).
+  Definition value_SWAP11 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 154 |))).
   
-  Definition value_SWAP12 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 155 |))).
+  Definition value_SWAP12 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 155 |))).
   
-  Definition value_SWAP13 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 156 |))).
+  Definition value_SWAP13 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 156 |))).
   
-  Definition value_SWAP14 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 157 |))).
+  Definition value_SWAP14 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 157 |))).
   
-  Definition value_SWAP15 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 158 |))).
+  Definition value_SWAP15 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 158 |))).
   
-  Definition value_SWAP16 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 159 |))).
+  Definition value_SWAP16 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 159 |))).
   
-  Definition value_LOG0 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 160 |))).
+  Definition value_LOG0 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 160 |))).
   
-  Definition value_LOG1 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 161 |))).
+  Definition value_LOG1 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 161 |))).
   
-  Definition value_LOG2 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 162 |))).
+  Definition value_LOG2 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 162 |))).
   
-  Definition value_LOG3 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 163 |))).
+  Definition value_LOG3 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 163 |))).
   
-  Definition value_LOG4 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 164 |))).
+  Definition value_LOG4 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 164 |))).
   
-  Definition value_DATALOAD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 208 |))).
+  Definition value_DATALOAD : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 208 |))).
   
-  Definition value_DATALOADN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 209 |))).
+  Definition value_DATALOADN : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 209 |))).
   
-  Definition value_DATASIZE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 210 |))).
+  Definition value_DATASIZE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 210 |))).
   
-  Definition value_DATACOPY : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 211 |))).
+  Definition value_DATACOPY : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 211 |))).
   
-  Definition value_RJUMP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 224 |))).
+  Definition value_RJUMP : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
   
-  Definition value_RJUMPI : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 225 |))).
+  Definition value_RJUMPI : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 225 |))).
   
-  Definition value_RJUMPV : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 226 |))).
+  Definition value_RJUMPV : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 226 |))).
   
-  Definition value_CALLF : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 227 |))).
+  Definition value_CALLF : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 227 |))).
   
-  Definition value_RETF : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 228 |))).
+  Definition value_RETF : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 228 |))).
   
-  Definition value_JUMPF : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 229 |))).
+  Definition value_JUMPF : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 229 |))).
   
-  Definition value_DUPN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 230 |))).
+  Definition value_DUPN : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 230 |))).
   
-  Definition value_SWAPN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 231 |))).
+  Definition value_SWAPN : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 231 |))).
   
-  Definition value_EXCHANGE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 232 |))).
+  Definition value_EXCHANGE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 232 |))).
   
-  Definition value_EOFCREATE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 236 |))).
+  Definition value_EOFCREATE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 236 |))).
   
-  Definition value_TXCREATE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 237 |))).
+  Definition value_TXCREATE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 237 |))).
   
   Definition value_RETURNCONTRACT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 238 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 238 |))).
   
-  Definition value_CREATE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 240 |))).
+  Definition value_CREATE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
   
-  Definition value_CALL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 241 |))).
+  Definition value_CALL : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 241 |))).
   
-  Definition value_CALLCODE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 242 |))).
+  Definition value_CALLCODE : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 242 |))).
   
-  Definition value_RETURN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 243 |))).
+  Definition value_RETURN : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 243 |))).
   
   Definition value_DELEGATECALL : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 244 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 244 |))).
   
-  Definition value_CREATE2 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 245 |))).
+  Definition value_CREATE2 : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 245 |))).
   
   Definition value_RETURNDATALOAD : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 247 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 247 |))).
   
-  Definition value_EXTCALL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 248 |))).
+  Definition value_EXTCALL : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 248 |))).
   
-  Definition value_EXFCALL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 249 |))).
+  Definition value_EXFCALL : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 249 |))).
   
-  Definition value_STATICCALL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 250 |))).
+  Definition value_STATICCALL : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 250 |))).
   
-  Definition value_EXTSCALL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 251 |))).
+  Definition value_EXTSCALL : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 251 |))).
   
-  Definition value_REVERT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 253 |))).
+  Definition value_REVERT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 253 |))).
   
-  Definition value_INVALID : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 254 |))).
+  Definition value_INVALID : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 254 |))).
   
   Definition value_SELFDESTRUCT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 255 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 255 |))).
   
   
   Definition value_OPCODE_INFO_JUMPTABLE : Value.t :=
@@ -6031,10 +6418,13 @@ Module opcode.
       ltac:(M.monadic
         (let~ map :=
           M.alloc (|
-            repeat (| Value.StructTuple "core::option::Option::None" [], Value.Integer 256 |)
+            repeat (|
+              Value.StructTuple "core::option::Option::None" [],
+              Value.Integer IntegerKind.Usize 256
+            |)
           |) in
-        let~ prev := M.alloc (| Value.Integer 0 |) in
-        let~ val := M.alloc (| Value.Integer 0 |) in
+        let~ prev := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6044,11 +6434,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6096,7 +6487,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -6108,10 +6499,10 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 0 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 0 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 1 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 1 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6121,11 +6512,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6173,15 +6565,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 1 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 1 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 2 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 2 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6191,11 +6583,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6243,15 +6636,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 2 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 2 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 3 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 3 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6261,11 +6654,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6313,15 +6707,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 3 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 3 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 4 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 4 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6331,11 +6725,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6383,15 +6778,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 4 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 4 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 5 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 5 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6401,11 +6796,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6453,15 +6849,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 5 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 5 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 6 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 6 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6471,11 +6867,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6523,15 +6920,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 6 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 6 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 7 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 7 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6541,11 +6938,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6593,15 +6991,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 7 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 7 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 8 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 8 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6611,11 +7009,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6663,15 +7062,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 8 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 8 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 9 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 9 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6681,11 +7080,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6733,15 +7133,15 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 9 |) |),
+            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer IntegerKind.Usize 9 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 10 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 10 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6751,11 +7151,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6803,15 +7204,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 10 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 10 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 11 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 11 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6821,11 +7225,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6873,15 +7278,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 11 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 11 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 16 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 16 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6891,11 +7299,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -6943,15 +7352,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 16 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 16 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 17 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 17 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -6961,11 +7373,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7013,15 +7426,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 17 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 17 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 18 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 18 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7031,11 +7447,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7083,15 +7500,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 18 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 18 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 19 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 19 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7101,11 +7521,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7153,15 +7574,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 19 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 19 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 20 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 20 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7171,11 +7595,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7223,15 +7648,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 20 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 20 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 21 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 21 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7241,11 +7669,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7293,15 +7722,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 21 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 21 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 22 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 22 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7311,11 +7743,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7363,15 +7796,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 22 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 22 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 23 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 23 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7381,11 +7817,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7433,15 +7870,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 23 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 23 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 24 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 24 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7451,11 +7891,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7503,15 +7944,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 24 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 24 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 25 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 25 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7521,11 +7965,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7573,15 +8018,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 25 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 25 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 26 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 26 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7591,11 +8039,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7643,15 +8092,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 26 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 26 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 27 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 27 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7661,11 +8113,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7713,15 +8166,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 27 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 27 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 28 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 28 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7731,11 +8187,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7783,15 +8240,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 28 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 28 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 29 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 29 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7801,11 +8261,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7853,15 +8314,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 29 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 29 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 32 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 32 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7871,11 +8335,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7923,15 +8388,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 32 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 32 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 48 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 48 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -7941,11 +8409,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -7993,15 +8462,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 48 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 48 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 49 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 49 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8011,11 +8483,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8063,15 +8536,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 49 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 49 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 50 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 50 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8081,11 +8557,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8133,15 +8610,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 50 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 50 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 51 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 51 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8151,11 +8631,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8203,15 +8684,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 51 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 51 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 52 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 52 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8221,11 +8705,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8273,15 +8758,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 52 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 52 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 53 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 53 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8291,11 +8779,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8343,15 +8832,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 53 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 53 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 54 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 54 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8361,11 +8853,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8413,15 +8906,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 54 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 54 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 55 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 55 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8431,11 +8927,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8483,15 +8980,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 55 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 55 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 56 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 56 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8501,11 +9001,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8553,7 +9054,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -8565,10 +9066,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 56 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 56 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 57 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 57 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8578,11 +9082,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8630,7 +9135,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -8642,10 +9147,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 57 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 57 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 58 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 58 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8655,11 +9163,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8707,15 +9216,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 58 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 58 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 59 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 59 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8725,11 +9237,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8777,7 +9290,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -8789,10 +9302,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 59 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 59 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 60 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 60 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8802,11 +9318,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8854,7 +9371,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 4; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -8866,10 +9383,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 60 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 60 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 61 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 61 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8879,11 +9399,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -8931,15 +9452,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 61 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 61 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 62 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 62 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -8949,11 +9473,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9001,15 +9526,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 62 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 62 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 63 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 63 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9019,11 +9547,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9071,7 +9600,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -9083,10 +9612,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 63 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 63 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 64 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 64 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9096,11 +9628,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9148,15 +9681,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 64 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 64 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 65 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 65 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9166,11 +9702,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9218,15 +9755,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 65 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 65 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 66 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 66 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9236,11 +9776,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9288,15 +9829,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 66 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 66 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 67 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 67 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9306,11 +9850,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9358,15 +9903,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 67 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 67 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 68 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 68 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9376,11 +9924,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9428,15 +9977,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 68 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 68 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 69 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 69 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9446,11 +9998,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9498,15 +10051,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 69 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 69 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 70 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 70 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9516,11 +10072,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9568,15 +10125,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 70 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 70 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 71 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 71 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9586,11 +10146,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9638,15 +10199,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 71 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 71 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 72 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 72 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9656,11 +10220,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9708,15 +10273,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 72 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 72 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 73 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 73 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9726,11 +10294,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9778,15 +10347,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 73 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 73 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 74 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 74 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9796,11 +10368,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9848,15 +10421,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 74 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 74 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 80 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 80 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9866,11 +10442,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9918,15 +10495,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 80 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 80 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 81 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 81 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -9936,11 +10516,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -9988,15 +10569,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 81 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 81 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 82 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 82 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10006,11 +10590,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10058,15 +10643,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 82 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 82 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 83 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 83 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10076,11 +10664,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10128,15 +10717,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 83 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 83 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 84 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 84 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10146,11 +10738,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10198,15 +10791,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 84 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 84 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 85 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 85 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10216,11 +10812,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10268,15 +10865,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 85 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 85 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 86 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 86 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10286,11 +10886,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10338,7 +10939,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -10350,10 +10951,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 86 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 86 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 87 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 87 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10363,11 +10967,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10415,7 +11020,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -10427,10 +11032,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 87 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 87 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 88 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 88 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10440,11 +11048,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10492,7 +11101,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -10504,10 +11113,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 88 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 88 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 89 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 89 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10517,11 +11129,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10569,15 +11182,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 89 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 89 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 90 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 90 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10587,11 +11203,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10639,7 +11256,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -10651,10 +11268,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 90 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 90 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 91 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 91 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10664,11 +11284,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10716,15 +11337,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 91 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 91 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 92 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 92 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10734,11 +11358,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10786,15 +11411,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 92 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 92 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 93 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 93 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10804,11 +11432,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10856,15 +11485,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 93 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 93 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 94 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 94 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10874,11 +11506,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10926,15 +11559,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 94 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 94 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 95 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 95 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -10944,11 +11580,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -10996,15 +11633,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 95 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 95 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 96 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 96 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11014,11 +11654,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11066,22 +11707,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 96 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 96 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 97 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 97 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11091,11 +11735,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11143,22 +11788,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 97 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 97 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 98 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 98 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11168,11 +11816,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11220,22 +11869,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 3 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 98 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 98 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 99 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 99 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11245,11 +11897,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11297,22 +11950,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 4 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 99 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 99 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 100 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 100 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11322,11 +11978,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11374,22 +12031,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 5 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 5 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 100 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 100 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 101 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 101 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11399,11 +12059,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11451,22 +12112,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 6 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 6 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 101 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 101 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 102 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 102 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11476,11 +12140,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11528,22 +12193,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 7 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 7 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 102 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 102 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 103 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 103 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11553,11 +12221,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11605,22 +12274,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 8 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 8 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 103 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 103 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 104 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 104 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11630,11 +12302,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11682,22 +12355,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 9 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 9 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 104 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 104 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 105 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 105 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11707,11 +12383,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11759,22 +12436,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 10 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 10 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 105 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 105 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 106 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 106 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11784,11 +12464,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11836,22 +12517,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 11 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 11 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 106 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 106 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 107 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 107 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11861,11 +12545,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11913,22 +12598,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 12 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 12 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 107 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 107 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 108 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 108 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -11938,11 +12626,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -11990,22 +12679,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 13 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 13 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 108 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 108 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 109 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 109 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12015,11 +12707,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12067,22 +12760,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 14 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 14 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 109 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 109 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 110 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 110 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12092,11 +12788,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12144,22 +12841,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 15 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 15 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 110 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 110 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 111 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 111 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12169,11 +12869,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12221,22 +12922,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 16 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 16 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 111 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 111 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 112 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 112 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12246,11 +12950,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12298,22 +13003,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 17 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 17 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 112 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 112 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 113 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 113 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12323,11 +13031,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12375,22 +13084,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 18 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 18 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 113 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 113 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 114 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 114 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12400,11 +13112,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12452,22 +13165,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 19 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 19 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 114 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 114 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 115 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 115 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12477,11 +13193,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12529,22 +13246,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 20 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 20 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 115 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 115 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 116 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 116 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12554,11 +13274,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12606,22 +13327,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 21 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 21 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 116 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 116 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 117 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 117 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12631,11 +13355,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12683,22 +13408,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 22 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 22 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 117 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 117 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 118 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 118 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12708,11 +13436,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12760,22 +13489,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 23 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 23 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 118 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 118 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 119 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 119 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12785,11 +13517,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12837,22 +13570,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 24 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 24 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 119 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 119 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 120 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 120 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12862,11 +13598,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12914,22 +13651,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 25 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 25 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 120 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 120 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 121 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 121 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -12939,11 +13679,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -12991,22 +13732,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 26 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 26 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 121 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 121 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 122 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 122 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13016,11 +13760,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13068,22 +13813,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 27 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 27 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 122 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 122 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 123 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 123 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13093,11 +13841,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13145,22 +13894,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 28 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 28 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 123 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 123 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 124 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 124 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13170,11 +13922,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13222,22 +13975,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 29 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 29 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 124 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 124 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 125 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 125 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13247,11 +14003,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13299,22 +14056,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 30 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 30 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 125 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 125 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 126 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 126 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13324,11 +14084,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13376,22 +14137,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 31 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 31 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 126 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 126 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 127 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 127 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13401,11 +14165,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13453,22 +14218,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 32 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 32 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 127 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 127 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 128 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 128 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13478,11 +14246,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13530,15 +14299,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 128 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 128 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 129 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 129 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13548,11 +14320,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13600,15 +14373,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 3 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 3 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 129 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 129 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 130 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 130 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13618,11 +14394,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13670,15 +14447,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 4 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 4 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 130 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 130 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 131 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 131 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13688,11 +14468,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13740,15 +14521,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 4; Value.Integer 5 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 5 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 131 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 131 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 132 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 132 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13758,11 +14542,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13810,15 +14595,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 5; Value.Integer 6 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 5; Value.Integer IntegerKind.U8 6 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 132 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 132 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 133 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 133 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13828,11 +14616,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13880,15 +14669,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 6; Value.Integer 7 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 6; Value.Integer IntegerKind.U8 7 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 133 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 133 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 134 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 134 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13898,11 +14690,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -13950,15 +14743,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 7; Value.Integer 8 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 7; Value.Integer IntegerKind.U8 8 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 134 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 134 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 135 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 135 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -13968,11 +14764,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14020,15 +14817,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 8; Value.Integer 9 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 8; Value.Integer IntegerKind.U8 9 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 135 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 135 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 136 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 136 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14038,11 +14838,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14090,15 +14891,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 9; Value.Integer 10 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 9; Value.Integer IntegerKind.U8 10 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 136 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 136 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 137 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 137 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14108,11 +14912,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14160,15 +14965,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 10; Value.Integer 11 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 10; Value.Integer IntegerKind.U8 11
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 137 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 137 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 138 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 138 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14178,11 +14987,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14230,15 +15040,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 11; Value.Integer 12 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 11; Value.Integer IntegerKind.U8 12
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 138 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 138 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 139 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 139 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14248,11 +15062,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14300,15 +15115,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 12; Value.Integer 13 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 12; Value.Integer IntegerKind.U8 13
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 139 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 139 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 140 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 140 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14318,11 +15137,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14370,15 +15190,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 13; Value.Integer 14 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 13; Value.Integer IntegerKind.U8 14
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 140 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 140 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 141 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 141 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14388,11 +15212,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14440,15 +15265,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 14; Value.Integer 15 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 14; Value.Integer IntegerKind.U8 15
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 141 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 141 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 142 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 142 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14458,11 +15287,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14510,15 +15340,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 15; Value.Integer 16 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 15; Value.Integer IntegerKind.U8 16
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 142 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 142 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 143 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 143 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14528,11 +15362,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14580,15 +15415,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 16; Value.Integer 17 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 16; Value.Integer IntegerKind.U8 17
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 143 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 143 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 144 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 144 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14598,11 +15437,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14650,15 +15490,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 144 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 144 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 145 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 145 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14668,11 +15511,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14720,15 +15564,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 3 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 3 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 145 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 145 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 146 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 146 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14738,11 +15585,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14790,15 +15638,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 4; Value.Integer 4 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 4 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 146 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 146 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 147 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 147 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14808,11 +15659,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14860,15 +15712,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 5; Value.Integer 5 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 5; Value.Integer IntegerKind.U8 5 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 147 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 147 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 148 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 148 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14878,11 +15733,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -14930,15 +15786,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 6; Value.Integer 6 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 6; Value.Integer IntegerKind.U8 6 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 148 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 148 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 149 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 149 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -14948,11 +15807,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15000,15 +15860,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 7; Value.Integer 7 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 7; Value.Integer IntegerKind.U8 7 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 149 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 149 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 150 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 150 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15018,11 +15881,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15070,15 +15934,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 8; Value.Integer 8 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 8; Value.Integer IntegerKind.U8 8 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 150 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 150 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 151 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 151 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15088,11 +15955,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15140,15 +16008,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 9; Value.Integer 9 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 9; Value.Integer IntegerKind.U8 9 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 151 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 151 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 152 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 152 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15158,11 +16029,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15210,15 +16082,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 10; Value.Integer 10 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 10; Value.Integer IntegerKind.U8 10
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 152 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 152 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 153 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 153 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15228,11 +16104,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15280,15 +16157,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 11; Value.Integer 11 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 11; Value.Integer IntegerKind.U8 11
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 153 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 153 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 154 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 154 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15298,11 +16179,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15350,15 +16232,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 12; Value.Integer 12 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 12; Value.Integer IntegerKind.U8 12
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 154 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 154 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 155 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 155 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15368,11 +16254,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15420,15 +16307,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 13; Value.Integer 13 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 13; Value.Integer IntegerKind.U8 13
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 155 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 155 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 156 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 156 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15438,11 +16329,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15490,15 +16382,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 14; Value.Integer 14 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 14; Value.Integer IntegerKind.U8 14
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 156 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 156 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 157 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 157 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15508,11 +16404,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15560,15 +16457,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 15; Value.Integer 15 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 15; Value.Integer IntegerKind.U8 15
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 157 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 157 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 158 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 158 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15578,11 +16479,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15630,15 +16532,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 16; Value.Integer 16 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 16; Value.Integer IntegerKind.U8 16
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 158 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 158 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 159 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 159 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15648,11 +16554,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15700,15 +16607,19 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 17; Value.Integer 17 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 17; Value.Integer IntegerKind.U8 17
+              ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 159 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 159 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 160 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 160 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15718,11 +16629,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15770,15 +16682,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 160 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 160 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 161 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 161 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15788,11 +16703,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15840,15 +16756,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 161 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 161 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 162 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 162 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15858,11 +16777,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15910,15 +16830,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 4; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 162 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 162 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 163 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 163 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15928,11 +16851,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -15980,15 +16904,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 5; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 5; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 163 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 163 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 164 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 164 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -15998,11 +16925,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16050,15 +16978,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 6; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 6; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 164 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 164 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 208 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 208 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16068,11 +16999,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16120,15 +17052,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 208 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 208 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 209 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 209 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16138,11 +17073,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16190,22 +17126,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 209 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 209 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 210 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 210 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16215,11 +17154,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16267,15 +17207,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 210 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 210 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 211 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 211 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16285,11 +17228,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16337,15 +17281,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 211 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 211 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 224 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 224 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16355,11 +17302,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16407,14 +17355,14 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ info :=
@@ -16426,10 +17374,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 224 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 224 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 225 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 225 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16439,11 +17390,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16491,22 +17443,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 225 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 225 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 226 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 226 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16516,11 +17471,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16568,22 +17524,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 226 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 226 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 227 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 227 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16593,11 +17552,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16645,22 +17605,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 227 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 227 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 228 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 228 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16670,11 +17633,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16722,7 +17686,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -16734,10 +17698,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 228 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 228 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 229 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 229 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16747,11 +17714,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16799,14 +17767,14 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 2 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2 ]
             |)
           |) in
         let~ info :=
@@ -16818,10 +17786,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 229 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 229 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 230 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 230 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16831,11 +17802,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16883,22 +17855,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 230 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 230 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 231 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 231 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16908,11 +17883,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -16960,22 +17936,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 231 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 231 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 232 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 232 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -16985,11 +17964,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17037,22 +18017,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 232 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 232 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 236 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 236 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17062,11 +18045,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17114,22 +18098,25 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 4; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 236 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 236 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 237 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 237 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17139,11 +18126,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17191,15 +18179,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 5; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 5; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 237 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 237 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 238 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 238 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17209,11 +18200,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17261,14 +18253,14 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
-              [ M.read (| info |); Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -17280,10 +18272,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 238 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 238 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 240 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 240 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17293,11 +18288,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17345,7 +18341,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -17357,10 +18353,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 240 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 240 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 241 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 241 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17370,11 +18369,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17422,7 +18422,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 7; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 7; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -17434,10 +18434,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 241 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 241 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 242 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 242 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17447,11 +18450,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17499,7 +18503,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 7; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 7; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -17511,10 +18515,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 242 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 242 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 243 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 243 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17524,11 +18531,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17576,7 +18584,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -17588,10 +18596,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 243 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 243 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 244 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 244 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17601,11 +18612,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17653,7 +18665,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 6; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 6; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -17665,10 +18677,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 244 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 244 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 245 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 245 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17678,11 +18693,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17730,7 +18746,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 4; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -17742,10 +18758,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 245 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 245 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 247 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 247 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17755,11 +18774,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17807,15 +18827,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 247 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 247 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 248 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 248 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17825,11 +18848,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17877,15 +18901,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 4; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 248 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 248 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 249 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 249 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17895,11 +18922,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -17947,15 +18975,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 249 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 249 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 250 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 250 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -17965,11 +18996,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -18017,7 +19049,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 6; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 6; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ info :=
@@ -18029,10 +19061,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 250 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 250 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 251 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 251 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -18042,11 +19077,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -18094,15 +19130,18 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 1 ]
             |)
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 251 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 251 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 253 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 253 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -18112,11 +19151,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -18164,7 +19204,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -18176,10 +19216,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 253 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 253 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 254 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 254 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -18189,11 +19232,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -18241,7 +19285,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -18253,10 +19297,13 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 254 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 254 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let~ val := M.alloc (| Value.Integer 255 |) in
+        let~ val := M.alloc (| Value.Integer IntegerKind.U8 255 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -18266,11 +19313,12 @@ Module opcode.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.or (|
-                            BinOp.Pure.eq (M.read (| val |)) (Value.Integer 0),
-                            ltac:(M.monadic (BinOp.Pure.gt (M.read (| val |)) (M.read (| prev |))))
-                          |))
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
+                            ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -18318,7 +19366,7 @@ Module opcode.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
-              [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
+              [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 0 ]
             |)
           |) in
         let~ info :=
@@ -18337,7 +19385,10 @@ Module opcode.
           |) in
         let~ _ :=
           M.write (|
-            M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 255 |) |),
+            M.SubPointer.get_array_field (|
+              map,
+              M.alloc (| Value.Integer IntegerKind.Usize 255 |)
+            |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
         M.match_operator (| prev, [ fun γ => ltac:(M.monadic map) ] |))).
@@ -18350,45 +19401,79 @@ Module opcode.
             Value.StructRecord
               "phf::map::Map"
               [
-                ("key", Value.Integer 12913932095322966823);
+                ("key", Value.Integer IntegerKind.U64 12913932095322966823);
                 ("disps",
                   M.alloc (|
                     Value.Array
                       [
-                        Value.Tuple [ Value.Integer 0; Value.Integer 27 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 3 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 155 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 153 ];
-                        Value.Tuple [ Value.Integer 26; Value.Integer 134 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 135 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 123 ];
-                        Value.Tuple [ Value.Integer 2; Value.Integer 3 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 70 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 100 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 4 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 111 ];
-                        Value.Tuple [ Value.Integer 2; Value.Integer 33 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
-                        Value.Tuple [ Value.Integer 1; Value.Integer 154 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 8 ];
-                        Value.Tuple [ Value.Integer 1; Value.Integer 49 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 1 ];
-                        Value.Tuple [ Value.Integer 7; Value.Integer 29 ];
-                        Value.Tuple [ Value.Integer 39; Value.Integer 151 ];
-                        Value.Tuple [ Value.Integer 2; Value.Integer 77 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 55 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 17 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 75 ];
-                        Value.Tuple [ Value.Integer 15; Value.Integer 42 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 2 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 3 ];
-                        Value.Tuple [ Value.Integer 2; Value.Integer 32 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 5 ];
-                        Value.Tuple [ Value.Integer 1; Value.Integer 18 ];
-                        Value.Tuple [ Value.Integer 0; Value.Integer 2 ];
-                        Value.Tuple [ Value.Integer 69; Value.Integer 21 ]
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 27 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 3 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 155 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 153 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 26; Value.Integer IntegerKind.U32 134 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 135 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 123 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 2; Value.Integer IntegerKind.U32 3 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 70 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 100 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 4 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 111 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 2; Value.Integer IntegerKind.U32 33 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.U32 154 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 8 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.U32 49 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 1 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 7; Value.Integer IntegerKind.U32 29 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 39; Value.Integer IntegerKind.U32 151 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 2; Value.Integer IntegerKind.U32 77 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 55 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 17 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 75 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 15; Value.Integer IntegerKind.U32 42 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 2 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 3 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 2; Value.Integer IntegerKind.U32 32 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 5 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.U32 18 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 2 ];
+                        Value.Tuple
+                          [ Value.Integer IntegerKind.U32 69; Value.Integer IntegerKind.U32 21 ]
                       ]
                   |));
                 ("entries",
@@ -19293,7 +20378,11 @@ Module opcode.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 0
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19301,7 +20390,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 1
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19312,7 +20405,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 2
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19323,7 +20420,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 3
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19334,7 +20435,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 4
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19345,7 +20450,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 5
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19356,7 +20465,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 6 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 6
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19367,7 +20480,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 7 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 7
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19378,7 +20495,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 8 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 8
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19389,7 +20510,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 9
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19400,7 +20525,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 10
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19411,7 +20540,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 11 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 11
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19422,7 +20555,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 16 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 16
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19430,7 +20567,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 17 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 17
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19438,7 +20579,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 18 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 18
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19446,7 +20591,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 19 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 19
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19454,7 +20603,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 20 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 20
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19462,7 +20615,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 21 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 21
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19473,7 +20630,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 22 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 22
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19484,7 +20645,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 23 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 23
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19492,7 +20657,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 24 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 24
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19503,7 +20672,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 25 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 25
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19511,7 +20684,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 26 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 26
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19519,7 +20696,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 27 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 27
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19530,7 +20711,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 28 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 28
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19541,7 +20726,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 29 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 29
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19552,7 +20741,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 32 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 32
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19563,7 +20756,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 48 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 48
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19574,7 +20771,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 49 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 49
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19585,7 +20786,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 50 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 50
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19596,7 +20801,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 51 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 51
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19604,7 +20813,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 52 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 52
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19615,7 +20828,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 53 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 53
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19626,7 +20843,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 54 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 54
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19637,7 +20858,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 55 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 55
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19648,7 +20873,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 56 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 56
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19659,7 +20888,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 57 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 57
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19670,7 +20903,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 58 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 58
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19681,7 +20918,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 59 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 59
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19692,7 +20933,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 60 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 60
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19703,7 +20948,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 61 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 61
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19714,7 +20963,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 62 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 62
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19725,7 +20978,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 63 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 63
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19736,7 +20993,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 64 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 64
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19747,7 +21008,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 65 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 65
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19758,7 +21023,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 66 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 66
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19769,7 +21038,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 67 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 67
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19780,7 +21053,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 68 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 68
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19791,7 +21068,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 69 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 69
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19802,7 +21083,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 70 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 70
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19813,7 +21098,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 71 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 71
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19824,7 +21113,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 72 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 72
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19835,7 +21128,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 73 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 73
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19846,7 +21143,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 74 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 74
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19857,7 +21158,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 80 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 80
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19865,7 +21170,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 81 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 81
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19873,7 +21182,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 82 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 82
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19881,7 +21194,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 83 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 83
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19892,7 +21209,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 84 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 84
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19903,7 +21224,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 85 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 85
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19914,7 +21239,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 86 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 86
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19922,7 +21251,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 87 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 87
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19930,7 +21263,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 88 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 88
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19938,7 +21275,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 89 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 89
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19946,7 +21287,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 90 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 90
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19954,7 +21299,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 91 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 91
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19965,7 +21314,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 92 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 92
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19976,7 +21329,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 93 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 93
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19987,7 +21344,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 94 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 94
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -19998,7 +21359,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 95 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 95
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20009,7 +21374,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 96 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 96
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20017,7 +21386,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 97 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 97
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20025,7 +21398,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 98 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 98
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20033,7 +21410,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 99 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 99
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20041,7 +21422,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 100 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 100
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20049,7 +21434,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 101 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 101
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20057,7 +21446,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 102 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 102
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20065,7 +21458,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 103 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 103
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20073,7 +21470,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 104 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 104
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20081,7 +21482,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 105 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 105
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20089,7 +21494,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 106 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 106
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20097,7 +21506,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 107 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 107
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20105,7 +21518,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 108 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 108
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20113,7 +21530,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 109 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 109
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20121,7 +21542,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 110 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 110
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20129,7 +21554,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 111 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 111
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20137,7 +21566,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 112 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 112
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20145,7 +21578,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 113 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 113
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20153,7 +21590,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 114 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 114
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20161,7 +21602,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 115 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 115
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20169,7 +21614,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 116 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 116
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20177,7 +21626,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 117 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 117
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20185,7 +21638,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 118 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 118
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20193,7 +21650,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 119 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 119
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20201,7 +21662,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 120 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 120
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20209,7 +21674,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 121 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 121
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20217,7 +21686,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 122 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 122
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20225,7 +21698,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 123 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 123
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20233,7 +21710,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 124 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 124
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20241,7 +21722,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 125 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 125
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20249,7 +21734,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 126 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 126
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20257,7 +21746,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 127 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 127
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20265,7 +21758,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 128 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 128
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20273,7 +21770,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 129 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 129
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20281,7 +21782,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 130 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 130
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20289,7 +21794,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 131 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 131
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20297,7 +21806,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 132 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 132
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20305,7 +21818,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 133 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 133
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20313,7 +21830,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 134 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 134
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20321,7 +21842,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 135 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 135
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20329,7 +21854,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 136 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 136
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20337,7 +21866,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 137 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 137
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20345,7 +21878,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 138 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 138
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20353,7 +21890,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 139 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 139
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20361,7 +21902,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 140 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 140
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20369,7 +21914,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 141 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 141
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20377,7 +21926,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 142 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 142
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20385,7 +21938,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 143 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 143
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20393,7 +21950,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 144 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 144
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20401,7 +21962,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 145 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 145
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20409,7 +21974,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 146 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 146
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20417,7 +21986,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 147 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 147
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20425,7 +21998,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 148 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 148
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20433,7 +22010,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 149 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 149
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20441,7 +22022,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 150 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 150
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20449,7 +22034,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 151 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 151
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20457,7 +22046,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 152 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 152
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20465,7 +22058,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 153 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 153
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20473,7 +22070,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 154 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 154
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20481,7 +22082,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 155 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 155
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20489,7 +22094,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 156 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 156
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20497,7 +22106,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 157 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 157
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20505,7 +22118,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 158 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 158
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20513,7 +22130,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 159 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 159
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20521,7 +22142,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 160 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 160
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20529,7 +22154,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 161 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 161
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20537,7 +22166,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 162 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 162
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20545,7 +22178,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 163 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 163
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20553,7 +22190,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 164 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 164
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20561,7 +22202,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 208 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 208
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20572,7 +22217,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 209 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 209
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20583,7 +22232,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 210 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 210
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20594,7 +22247,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 211 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 211
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20605,7 +22262,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 224 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 224
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20613,7 +22274,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 225 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 225
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20624,7 +22289,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 226 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 226
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20635,7 +22304,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 227 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 227
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20643,7 +22316,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 228 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 228
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20651,7 +22328,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 229 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 229
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20659,7 +22340,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 230 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 230
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20667,7 +22352,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 231 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 231
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20675,7 +22364,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 232 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 232
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20686,7 +22379,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 236 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 236
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20697,7 +22394,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 237 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 237
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20708,7 +22409,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 238 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 238
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20719,7 +22424,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 240 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 240
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20730,7 +22439,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 241 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 241
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20741,7 +22454,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 242 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 242
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20752,7 +22469,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 243 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 243
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20760,7 +22481,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 244 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 244
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20771,7 +22496,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 245 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 245
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20782,7 +22511,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 247 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 247
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20793,7 +22526,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 248 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 248
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20804,7 +22541,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 249 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 249
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20815,7 +22556,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 250 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 250
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20826,7 +22571,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 251 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 251
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20837,7 +22586,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 253 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 253
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20848,7 +22601,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 254 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 254
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20859,7 +22616,11 @@ Module opcode.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 255 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 255
+                    |) in
                   M.alloc (|
                     (* ReifyFnPointer *)
                     M.pointer_coercion
@@ -20881,7 +22642,7 @@ Module opcode.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_instruction : M.IsFunction "revm_interpreter::opcode::instruction" instruction.

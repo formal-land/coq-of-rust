@@ -28,7 +28,7 @@ Module future.
               ("dtor", Value.StructTuple "core::option::Option::None" []);
               ("_pinned", Value.StructTuple "core::marker::PhantomPinned" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_async_drop : M.IsFunction "core::future::async_drop::async_drop" async_drop.
@@ -85,7 +85,7 @@ Module future.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -203,39 +203,41 @@ Module future.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            M.get_function (|
-                                              "core::future::async_drop::async_drop_in_place",
-                                              [ T ]
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.call_closure (|
+                                              M.get_function (|
+                                                "core::future::async_drop::async_drop_in_place",
+                                                [ T ]
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
+                                                      [ T ],
+                                                    "as_mut_ptr",
                                                     []
-                                                    [ T ],
-                                                  "as_mut_ptr",
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| this |),
-                                                    "core::future::async_drop::AsyncDropOwning",
-                                                    "value"
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                                  |),
+                                                  [
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| this |),
+                                                      "core::future::async_drop::AsyncDropOwning",
+                                                      "value"
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -255,7 +257,7 @@ Module future.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -288,7 +290,7 @@ Module future.
             M.get_function (| "core::future::async_drop::async_drop_in_place_raw", [ T ] |),
             [ M.read (| to_drop |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_async_drop_in_place_raw :
@@ -313,7 +315,7 @@ Module future.
                 [ M.read (| to_drop |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_async_drop_in_place :
@@ -362,7 +364,7 @@ Module future.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -443,7 +445,7 @@ Module future.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -483,133 +485,138 @@ Module future.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _task_context := M.copy (| γ |) in
-                          M.read (|
-                            let~ ptr := M.copy (| ptr |) in
-                            M.use
-                              (M.match_operator (|
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::future::into_future::IntoFuture",
-                                      Ty.associated,
-                                      [],
-                                      "into_future",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::future::async_drop::AsyncDrop",
-                                          T,
-                                          [],
-                                          "async_drop",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::pin::Pin")
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _task_context := M.copy (| γ |) in
+                            M.read (|
+                              let~ ptr := M.copy (| ptr |) in
+                              M.use
+                                (M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::future::into_future::IntoFuture",
+                                        Ty.associated,
+                                        [],
+                                        "into_future",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::future::async_drop::AsyncDrop",
+                                            T,
+                                            [],
+                                            "async_drop",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::pin::Pin")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                                                "new_unchecked",
                                                 []
-                                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                                              "new_unchecked",
-                                              []
-                                            |),
-                                            [ M.read (| ptr |) ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let __awaitee := M.copy (| γ |) in
-                                      M.loop (|
-                                        ltac:(M.monadic
-                                          (let~ _ :=
-                                            M.match_operator (|
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::future::future::Future",
-                                                    Ty.associated,
-                                                    [],
-                                                    "poll",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::pin::Pin")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&mut")
-                                                              []
-                                                              [ Ty.associated ]
-                                                          ],
-                                                        "new_unchecked",
-                                                        []
-                                                      |),
-                                                      [ __awaitee ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::future::get_context",
-                                                        []
-                                                      |),
-                                                      [ M.read (| _task_context |) ]
-                                                    |)
-                                                  ]
-                                                |)
                                               |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::task::poll::Poll::Ready",
-                                                        0
-                                                      |) in
-                                                    let result := M.copy (| γ0_0 |) in
-                                                    M.alloc (|
-                                                      M.never_to_any (| M.read (| M.break (||) |) |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let _ :=
-                                                      M.is_struct_tuple (|
-                                                        γ,
-                                                        "core::task::poll::Poll::Pending"
-                                                      |) in
-                                                    M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |) in
-                                          let~ _ :=
-                                            M.write (|
-                                              _task_context,
-                                              M.read (| yield (| M.alloc (| Value.Tuple [] |) |) |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                      |)))
-                                ]
-                              |))
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                              [ M.read (| ptr |) ]
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let __awaitee := M.copy (| γ |) in
+                                        M.loop (|
+                                          ltac:(M.monadic
+                                            (let~ _ :=
+                                              M.match_operator (|
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::future::future::Future",
+                                                      Ty.associated,
+                                                      [],
+                                                      "poll",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::pin::Pin")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [ Ty.associated ]
+                                                            ],
+                                                          "new_unchecked",
+                                                          []
+                                                        |),
+                                                        [ __awaitee ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::future::get_context",
+                                                          []
+                                                        |),
+                                                        [ M.read (| _task_context |) ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::task::poll::Poll::Ready",
+                                                          0
+                                                        |) in
+                                                      let result := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (| M.break (||) |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::task::poll::Poll::Pending"
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)))
+                                                ]
+                                              |) in
+                                            let~ _ :=
+                                              M.write (|
+                                                _task_context,
+                                                M.read (|
+                                                  yield (| M.alloc (| Value.Tuple [] |) |)
+                                                |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)))
+                                        |)))
+                                  ]
+                                |))
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_surface_async_drop_in_place :
@@ -638,30 +645,31 @@ Module future.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _task_context := M.copy (| γ |) in
-                          M.read (|
-                            let~ ptr := M.copy (| ptr |) in
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (|
-                                    "core::ops::drop::fallback_surface_drop",
-                                    [ T ]
-                                  |),
-                                  [ M.read (| ptr |) ]
-                                |)
-                              |))
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _task_context := M.copy (| γ |) in
+                            M.read (|
+                              let~ ptr := M.copy (| ptr |) in
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::ops::drop::fallback_surface_drop",
+                                      [ T ]
+                                    |),
+                                    [ M.read (| ptr |) ]
+                                  |)
+                                |))
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_surface_drop_in_place :
@@ -692,7 +700,7 @@ Module future.
           Value.StructRecord
             "core::future::async_drop::Fuse"
             [ ("inner", Value.StructTuple "core::option::Option::Some" [ M.read (| inner |) ]) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_fuse : M.IsFunction "core::future::async_drop::fuse" fuse.
@@ -840,7 +848,7 @@ Module future.
                   M.alloc (| Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -873,254 +881,258 @@ Module future.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _task_context := M.copy (| γ |) in
-                          M.read (|
-                            let~ s := M.copy (| s |) in
-                            M.use
-                              (let~ len :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "*mut")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                      "len",
-                                      []
-                                    |),
-                                    [ M.read (| s |) ]
-                                  |)
-                                |) in
-                              let~ ptr :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "*mut")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                      "as_mut_ptr",
-                                      []
-                                    |),
-                                    [ M.read (| s |) ]
-                                  |)
-                                |) in
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _task_context := M.copy (| γ |) in
+                            M.read (|
+                              let~ s := M.copy (| s |) in
                               M.use
-                                (M.match_operator (|
+                                (let~ len :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::collect::IntoIterator",
+                                      M.get_associated_function (|
                                         Ty.apply
-                                          (Ty.path "core::ops::range::Range")
+                                          (Ty.path "*mut")
                                           []
-                                          [ Ty.path "usize" ],
-                                        [],
-                                        "into_iter",
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                        "len",
                                         []
                                       |),
-                                      [
-                                        Value.StructRecord
-                                          "core::ops::range::Range"
-                                          [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
-                                      ]
+                                      [ M.read (| s |) ]
                                     |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let iter := M.copy (| γ |) in
-                                        M.loop (|
-                                          ltac:(M.monadic
-                                            (let~ _ :=
-                                              M.match_operator (|
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::iter::traits::iterator::Iterator",
-                                                      Ty.apply
-                                                        (Ty.path "core::ops::range::Range")
+                                  |) in
+                                let~ ptr :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                        "as_mut_ptr",
+                                        []
+                                      |),
+                                      [ M.read (| s |) ]
+                                    |)
+                                  |) in
+                                M.use
+                                  (M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::traits::collect::IntoIterator",
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ],
+                                          [],
+                                          "into_iter",
+                                          []
+                                        |),
+                                        [
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start", Value.Integer IntegerKind.Usize 0);
+                                              ("end_", M.read (| len |))
+                                            ]
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let iter := M.copy (| γ |) in
+                                          M.loop (|
+                                            ltac:(M.monadic
+                                              (let~ _ :=
+                                                M.match_operator (|
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::iter::traits::iterator::Iterator",
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ],
+                                                        [],
+                                                        "next",
                                                         []
-                                                        [ Ty.path "usize" ],
-                                                      [],
-                                                      "next",
-                                                      []
-                                                    |),
-                                                    [ iter ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let _ :=
-                                                        M.is_struct_tuple (|
-                                                          γ,
-                                                          "core::option::Option::None"
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (| M.break (||) |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::option::Option::Some",
-                                                          0
-                                                        |) in
-                                                      let i := M.copy (| γ0_0 |) in
-                                                      M.match_operator (|
+                                                      |),
+                                                      [ iter ]
+                                                    |)
+                                                  |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let _ :=
+                                                          M.is_struct_tuple (|
+                                                            γ,
+                                                            "core::option::Option::None"
+                                                          |) in
                                                         M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::future::into_future::IntoFuture",
-                                                              Ty.associated,
-                                                              [],
-                                                              "into_future",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "core::future::async_drop::async_drop_in_place_raw",
-                                                                  [ T ]
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "*mut")
-                                                                        []
-                                                                        [ T ],
-                                                                      "add",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (| ptr |);
-                                                                      M.read (| i |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
+                                                          M.never_to_any (|
+                                                            M.read (| M.break (||) |)
                                                           |)
-                                                        |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let __awaitee := M.copy (| γ |) in
-                                                              M.loop (|
-                                                                ltac:(M.monadic
-                                                                  (let~ _ :=
-                                                                    M.match_operator (|
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::future::future::Future",
-                                                                            Ty.associated,
-                                                                            [],
-                                                                            "poll",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::pin::Pin")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "&mut")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.associated
-                                                                                      ]
-                                                                                  ],
-                                                                                "new_unchecked",
-                                                                                []
-                                                                              |),
-                                                                              [ __awaitee ]
-                                                                            |);
-                                                                            M.call_closure (|
-                                                                              M.get_function (|
-                                                                                "core::future::get_context",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  _task_context
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::option::Option::Some",
+                                                            0
+                                                          |) in
+                                                        let i := M.copy (| γ0_0 |) in
+                                                        M.match_operator (|
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::future::into_future::IntoFuture",
+                                                                Ty.associated,
+                                                                [],
+                                                                "into_future",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "core::future::async_drop::async_drop_in_place_raw",
+                                                                    [ T ]
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path "*mut")
+                                                                          []
+                                                                          [ T ],
+                                                                        "add",
+                                                                        []
                                                                       |),
                                                                       [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "core::task::poll::Poll::Ready",
-                                                                                0
-                                                                              |) in
-                                                                            let result :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            M.alloc (|
-                                                                              M.never_to_any (|
-                                                                                M.read (|
-                                                                                  M.break (||)
-                                                                                |)
+                                                                        M.read (| ptr |);
+                                                                        M.read (| i |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let __awaitee := M.copy (| γ |) in
+                                                                M.loop (|
+                                                                  ltac:(M.monadic
+                                                                    (let~ _ :=
+                                                                      M.match_operator (|
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::future::future::Future",
+                                                                              Ty.associated,
+                                                                              [],
+                                                                              "poll",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::pin::Pin")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&mut")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.associated
+                                                                                        ]
+                                                                                    ],
+                                                                                  "new_unchecked",
+                                                                                  []
+                                                                                |),
+                                                                                [ __awaitee ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_function (|
+                                                                                  "core::future::get_context",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    _task_context
+                                                                                  |)
+                                                                                ]
                                                                               |)
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let _ :=
-                                                                              M.is_struct_tuple (|
-                                                                                γ,
-                                                                                "core::task::poll::Poll::Pending"
-                                                                              |) in
+                                                                            ]
+                                                                          |)
+                                                                        |),
+                                                                        [
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let γ0_0 :=
+                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                  γ,
+                                                                                  "core::task::poll::Poll::Ready",
+                                                                                  0
+                                                                                |) in
+                                                                              let result :=
+                                                                                M.copy (| γ0_0 |) in
+                                                                              M.alloc (|
+                                                                                M.never_to_any (|
+                                                                                  M.read (|
+                                                                                    M.break (||)
+                                                                                  |)
+                                                                                |)
+                                                                              |)));
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let _ :=
+                                                                                M.is_struct_tuple (|
+                                                                                  γ,
+                                                                                  "core::task::poll::Poll::Pending"
+                                                                                |) in
+                                                                              M.alloc (|
+                                                                                Value.Tuple []
+                                                                              |)))
+                                                                        ]
+                                                                      |) in
+                                                                    let~ _ :=
+                                                                      M.write (|
+                                                                        _task_context,
+                                                                        M.read (|
+                                                                          yield (|
                                                                             M.alloc (|
                                                                               Value.Tuple []
-                                                                            |)))
-                                                                      ]
-                                                                    |) in
-                                                                  let~ _ :=
-                                                                    M.write (|
-                                                                      _task_context,
-                                                                      M.read (|
-                                                                        yield (|
-                                                                          M.alloc (|
-                                                                            Value.Tuple []
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |)
-                                                                    |) in
-                                                                  M.alloc (| Value.Tuple [] |)))
-                                                              |)))
-                                                        ]
-                                                      |)))
-                                                ]
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)))
-                                        |)))
-                                  ]
-                                |)))
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                                                      |) in
+                                                                    M.alloc (| Value.Tuple [] |)))
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)))
+                                          |)))
+                                    ]
+                                  |)))
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice : M.IsFunction "core::future::async_drop::slice" slice.
@@ -1150,211 +1162,212 @@ Module future.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _task_context := M.copy (| γ |) in
-                          M.read (|
-                            let~ first := M.copy (| first |) in
-                            let~ last := M.copy (| last |) in
-                            M.use
-                              (let~ _ :=
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::future::into_future::IntoFuture",
-                                        F,
-                                        [],
-                                        "into_future",
-                                        []
-                                      |),
-                                      [ M.read (| first |) ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let __awaitee := M.copy (| γ |) in
-                                        M.loop (|
-                                          ltac:(M.monadic
-                                            (let~ _ :=
-                                              M.match_operator (|
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::future::future::Future",
-                                                      Ty.associated,
-                                                      [],
-                                                      "poll",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "core::pin::Pin")
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _task_context := M.copy (| γ |) in
+                            M.read (|
+                              let~ first := M.copy (| first |) in
+                              let~ last := M.copy (| last |) in
+                              M.use
+                                (let~ _ :=
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::future::into_future::IntoFuture",
+                                          F,
+                                          [],
+                                          "into_future",
+                                          []
+                                        |),
+                                        [ M.read (| first |) ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let __awaitee := M.copy (| γ |) in
+                                          M.loop (|
+                                            ltac:(M.monadic
+                                              (let~ _ :=
+                                                M.match_operator (|
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::future::future::Future",
+                                                        Ty.associated,
+                                                        [],
+                                                        "poll",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "core::pin::Pin")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
+                                                                  [ Ty.associated ]
+                                                              ],
+                                                            "new_unchecked",
                                                             []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&mut")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          "new_unchecked",
-                                                          []
-                                                        |),
-                                                        [ __awaitee ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::future::get_context",
-                                                          []
-                                                        |),
-                                                        [ M.read (| _task_context |) ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::task::poll::Poll::Ready",
-                                                          0
-                                                        |) in
-                                                      let result := M.copy (| γ0_0 |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (| M.break (||) |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let _ :=
-                                                        M.is_struct_tuple (|
-                                                          γ,
-                                                          "core::task::poll::Poll::Pending"
-                                                        |) in
-                                                      M.alloc (| Value.Tuple [] |)))
-                                                ]
-                                              |) in
-                                            let~ _ :=
-                                              M.write (|
-                                                _task_context,
-                                                M.read (|
-                                                  yield (| M.alloc (| Value.Tuple [] |) |)
-                                                |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)))
-                                        |)))
-                                  ]
-                                |) in
-                              let~ _ :=
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::future::into_future::IntoFuture",
-                                        G,
-                                        [],
-                                        "into_future",
-                                        []
-                                      |),
-                                      [ M.read (| last |) ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let __awaitee := M.copy (| γ |) in
-                                        M.loop (|
-                                          ltac:(M.monadic
-                                            (let~ _ :=
-                                              M.match_operator (|
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::future::future::Future",
-                                                      Ty.associated,
-                                                      [],
-                                                      "poll",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "core::pin::Pin")
+                                                          |),
+                                                          [ __awaitee ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::future::get_context",
                                                             []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&mut")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          "new_unchecked",
-                                                          []
-                                                        |),
-                                                        [ __awaitee ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::future::get_context",
-                                                          []
-                                                        |),
-                                                        [ M.read (| _task_context |) ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::task::poll::Poll::Ready",
-                                                          0
-                                                        |) in
-                                                      let result := M.copy (| γ0_0 |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (| M.break (||) |)
+                                                          |),
+                                                          [ M.read (| _task_context |) ]
                                                         |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let _ :=
-                                                        M.is_struct_tuple (|
-                                                          γ,
-                                                          "core::task::poll::Poll::Pending"
-                                                        |) in
-                                                      M.alloc (| Value.Tuple [] |)))
-                                                ]
-                                              |) in
-                                            let~ _ :=
-                                              M.write (|
-                                                _task_context,
-                                                M.read (|
-                                                  yield (| M.alloc (| Value.Tuple [] |) |)
-                                                |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)))
-                                        |)))
-                                  ]
-                                |) in
-                              M.alloc (| Value.Tuple [] |))
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                                      ]
+                                                    |)
+                                                  |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::task::poll::Poll::Ready",
+                                                            0
+                                                          |) in
+                                                        let result := M.copy (| γ0_0 |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (| M.break (||) |)
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let _ :=
+                                                          M.is_struct_tuple (|
+                                                            γ,
+                                                            "core::task::poll::Poll::Pending"
+                                                          |) in
+                                                        M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              let~ _ :=
+                                                M.write (|
+                                                  _task_context,
+                                                  M.read (|
+                                                    yield (| M.alloc (| Value.Tuple [] |) |)
+                                                  |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)))
+                                          |)))
+                                    ]
+                                  |) in
+                                let~ _ :=
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::future::into_future::IntoFuture",
+                                          G,
+                                          [],
+                                          "into_future",
+                                          []
+                                        |),
+                                        [ M.read (| last |) ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let __awaitee := M.copy (| γ |) in
+                                          M.loop (|
+                                            ltac:(M.monadic
+                                              (let~ _ :=
+                                                M.match_operator (|
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::future::future::Future",
+                                                        Ty.associated,
+                                                        [],
+                                                        "poll",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "core::pin::Pin")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
+                                                                  [ Ty.associated ]
+                                                              ],
+                                                            "new_unchecked",
+                                                            []
+                                                          |),
+                                                          [ __awaitee ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::future::get_context",
+                                                            []
+                                                          |),
+                                                          [ M.read (| _task_context |) ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::task::poll::Poll::Ready",
+                                                            0
+                                                          |) in
+                                                        let result := M.copy (| γ0_0 |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (| M.break (||) |)
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let _ :=
+                                                          M.is_struct_tuple (|
+                                                            γ,
+                                                            "core::task::poll::Poll::Pending"
+                                                          |) in
+                                                        M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              let~ _ :=
+                                                M.write (|
+                                                  _task_context,
+                                                  M.read (|
+                                                    yield (| M.alloc (| Value.Tuple [] |) |)
+                                                  |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)))
+                                          |)))
+                                    ]
+                                  |) in
+                                M.alloc (| Value.Tuple [] |))
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_chain : M.IsFunction "core::future::async_drop::chain" chain.
@@ -1379,131 +1392,136 @@ Module future.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _task_context := M.copy (| γ |) in
-                          M.read (|
-                            let~ to_drop := M.copy (| to_drop |) in
-                            M.use
-                              (M.match_operator (|
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::future::into_future::IntoFuture",
-                                      Ty.apply
-                                        (Ty.path "core::future::async_drop::AsyncDropInPlace")
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _task_context := M.copy (| γ |) in
+                            M.read (|
+                              let~ to_drop := M.copy (| to_drop |) in
+                              M.use
+                                (M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::future::into_future::IntoFuture",
+                                        Ty.apply
+                                          (Ty.path "core::future::async_drop::AsyncDropInPlace")
+                                          []
+                                          [ T ],
+                                        [],
+                                        "into_future",
                                         []
-                                        [ T ],
-                                      [],
-                                      "into_future",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "core::future::async_drop::async_drop_in_place",
-                                          [ T ]
-                                        |),
-                                        [ M.read (| to_drop |) ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let __awaitee := M.copy (| γ |) in
-                                      M.loop (|
-                                        ltac:(M.monadic
-                                          (let~ _ :=
-                                            M.match_operator (|
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::future::future::Future",
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "core::future::async_drop::AsyncDropInPlace")
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "core::future::async_drop::async_drop_in_place",
+                                            [ T ]
+                                          |),
+                                          [ M.read (| to_drop |) ]
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let __awaitee := M.copy (| γ |) in
+                                        M.loop (|
+                                          ltac:(M.monadic
+                                            (let~ _ :=
+                                              M.match_operator (|
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::future::future::Future",
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::future::async_drop::AsyncDropInPlace")
+                                                        []
+                                                        [ T ],
+                                                      [],
+                                                      "poll",
                                                       []
-                                                      [ T ],
-                                                    [],
-                                                    "poll",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::pin::Pin")
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::pin::Pin")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::future::async_drop::AsyncDropInPlace")
+                                                                    []
+                                                                    [ T ]
+                                                                ]
+                                                            ],
+                                                          "new_unchecked",
                                                           []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&mut")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::future::async_drop::AsyncDropInPlace")
-                                                                  []
-                                                                  [ T ]
-                                                              ]
-                                                          ],
-                                                        "new_unchecked",
-                                                        []
-                                                      |),
-                                                      [ __awaitee ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::future::get_context",
-                                                        []
-                                                      |),
-                                                      [ M.read (| _task_context |) ]
-                                                    |)
-                                                  ]
+                                                        |),
+                                                        [ __awaitee ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::future::get_context",
+                                                          []
+                                                        |),
+                                                        [ M.read (| _task_context |) ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::task::poll::Poll::Ready",
+                                                          0
+                                                        |) in
+                                                      let result := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (| M.break (||) |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::task::poll::Poll::Pending"
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)))
+                                                ]
+                                              |) in
+                                            let~ _ :=
+                                              M.write (|
+                                                _task_context,
+                                                M.read (|
+                                                  yield (| M.alloc (| Value.Tuple [] |) |)
                                                 |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::task::poll::Poll::Ready",
-                                                        0
-                                                      |) in
-                                                    let result := M.copy (| γ0_0 |) in
-                                                    M.alloc (|
-                                                      M.never_to_any (| M.read (| M.break (||) |) |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let _ :=
-                                                      M.is_struct_tuple (|
-                                                        γ,
-                                                        "core::task::poll::Poll::Pending"
-                                                      |) in
-                                                    M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |) in
-                                          let~ _ :=
-                                            M.write (|
-                                              _task_context,
-                                              M.read (| yield (| M.alloc (| Value.Tuple [] |) |) |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                      |)))
-                                ]
-                              |))
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)))
+                                        |)))
+                                  ]
+                                |))
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_defer : M.IsFunction "core::future::async_drop::defer" defer.
@@ -1542,263 +1560,264 @@ Module future.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _task_context := M.copy (| γ |) in
-                          M.read (|
-                            let~ other := M.copy (| other |) in
-                            let~ matched := M.copy (| matched |) in
-                            let~ this := M.copy (| this |) in
-                            let~ discr := M.copy (| discr |) in
-                            M.use
-                              (M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _task_context := M.copy (| γ |) in
+                            M.read (|
+                              let~ other := M.copy (| other |) in
+                              let~ matched := M.copy (| matched |) in
+                              let~ this := M.copy (| this |) in
+                              let~ discr := M.copy (| discr |) in
+                              M.use
+                                (M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.associated,
+                                                  [ Ty.associated ],
+                                                  "eq",
+                                                  []
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::intrinsics::discriminant_value",
+                                                        [ T ]
+                                                      |),
+                                                      [ M.read (| this |) ]
+                                                    |)
+                                                  |);
+                                                  discr
+                                                ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_function (| "core::mem::drop", [ O ] |),
+                                              [ M.read (| other |) ]
+                                            |)
+                                          |) in
+                                        M.match_operator (|
+                                          M.alloc (|
                                             M.call_closure (|
                                               M.get_trait_method (|
-                                                "core::cmp::PartialEq",
-                                                Ty.associated,
-                                                [ Ty.associated ],
-                                                "eq",
+                                                "core::future::into_future::IntoFuture",
+                                                M_,
+                                                [],
+                                                "into_future",
                                                 []
                                               |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_function (|
-                                                      "core::intrinsics::discriminant_value",
-                                                      [ T ]
-                                                    |),
-                                                    [ M.read (| this |) ]
-                                                  |)
-                                                |);
-                                                discr
-                                              ]
+                                              [ M.read (| matched |) ]
                                             |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (| "core::mem::drop", [ O ] |),
-                                            [ M.read (| other |) ]
-                                          |)
-                                        |) in
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::future::into_future::IntoFuture",
-                                              M_,
-                                              [],
-                                              "into_future",
-                                              []
-                                            |),
-                                            [ M.read (| matched |) ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let __awaitee := M.copy (| γ |) in
-                                              M.loop (|
-                                                ltac:(M.monadic
-                                                  (let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::future::future::Future",
-                                                            Ty.associated,
-                                                            [],
-                                                            "poll",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::pin::Pin")
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let __awaitee := M.copy (| γ |) in
+                                                M.loop (|
+                                                  ltac:(M.monadic
+                                                    (let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::future::future::Future",
+                                                              Ty.associated,
+                                                              [],
+                                                              "poll",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::pin::Pin")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&mut")
+                                                                        []
+                                                                        [ Ty.associated ]
+                                                                    ],
+                                                                  "new_unchecked",
                                                                   []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [ Ty.associated ]
-                                                                  ],
-                                                                "new_unchecked",
-                                                                []
-                                                              |),
-                                                              [ __awaitee ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "core::future::get_context",
-                                                                []
-                                                              |),
-                                                              [ M.read (| _task_context |) ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::task::poll::Poll::Ready",
-                                                                0
-                                                              |) in
-                                                            let result := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (| M.break (||) |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let _ :=
-                                                              M.is_struct_tuple (|
-                                                                γ,
-                                                                "core::task::poll::Poll::Pending"
-                                                              |) in
-                                                            M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      _task_context,
-                                                      M.read (|
-                                                        yield (| M.alloc (| Value.Tuple [] |) |)
-                                                      |)
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)))
-                                              |)))
-                                        ]
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (| "core::mem::drop", [ M_ ] |),
-                                            [ M.read (| matched |) ]
-                                          |)
-                                        |) in
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::future::into_future::IntoFuture",
-                                              O,
-                                              [],
-                                              "into_future",
-                                              []
-                                            |),
-                                            [ M.read (| other |) ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let __awaitee := M.copy (| γ |) in
-                                              M.loop (|
-                                                ltac:(M.monadic
-                                                  (let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::future::future::Future",
-                                                            Ty.associated,
-                                                            [],
-                                                            "poll",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::pin::Pin")
+                                                                |),
+                                                                [ __awaitee ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "core::future::get_context",
                                                                   []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [ Ty.associated ]
-                                                                  ],
-                                                                "new_unchecked",
-                                                                []
-                                                              |),
-                                                              [ __awaitee ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "core::future::get_context",
-                                                                []
-                                                              |),
-                                                              [ M.read (| _task_context |) ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::task::poll::Poll::Ready",
-                                                                0
-                                                              |) in
-                                                            let result := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (| M.break (||) |)
+                                                                |),
+                                                                [ M.read (| _task_context |) ]
                                                               |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let _ :=
-                                                              M.is_struct_tuple (|
-                                                                γ,
-                                                                "core::task::poll::Poll::Pending"
-                                                              |) in
-                                                            M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      _task_context,
-                                                      M.read (|
-                                                        yield (| M.alloc (| Value.Tuple [] |) |)
-                                                      |)
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)))
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |))
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::task::poll::Poll::Ready",
+                                                                  0
+                                                                |) in
+                                                              let result := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (| M.break (||) |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ,
+                                                                  "core::task::poll::Poll::Pending"
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        _task_context,
+                                                        M.read (|
+                                                          yield (| M.alloc (| Value.Tuple [] |) |)
+                                                        |)
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)))
+                                                |)))
+                                          ]
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_function (| "core::mem::drop", [ M_ ] |),
+                                              [ M.read (| matched |) ]
+                                            |)
+                                          |) in
+                                        M.match_operator (|
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::future::into_future::IntoFuture",
+                                                O,
+                                                [],
+                                                "into_future",
+                                                []
+                                              |),
+                                              [ M.read (| other |) ]
+                                            |)
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let __awaitee := M.copy (| γ |) in
+                                                M.loop (|
+                                                  ltac:(M.monadic
+                                                    (let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::future::future::Future",
+                                                              Ty.associated,
+                                                              [],
+                                                              "poll",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::pin::Pin")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&mut")
+                                                                        []
+                                                                        [ Ty.associated ]
+                                                                    ],
+                                                                  "new_unchecked",
+                                                                  []
+                                                                |),
+                                                                [ __awaitee ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "core::future::get_context",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| _task_context |) ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::task::poll::Poll::Ready",
+                                                                  0
+                                                                |) in
+                                                              let result := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (| M.break (||) |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ,
+                                                                  "core::task::poll::Poll::Pending"
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        _task_context,
+                                                        M.read (|
+                                                          yield (| M.alloc (| Value.Tuple [] |) |)
+                                                        |)
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)))
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |))
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_either : M.IsFunction "core::future::async_drop::either" either.
@@ -1824,27 +1843,28 @@ Module future.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _task_context := M.copy (| γ |) in
-                          M.read (|
-                            let~ to_drop := M.copy (| to_drop |) in
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "core::ptr::drop_in_place", [ T ] |),
-                                  [ M.read (| to_drop |) ]
-                                |)
-                              |))
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _task_context := M.copy (| γ |) in
+                            M.read (|
+                              let~ to_drop := M.copy (| to_drop |) in
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                                    [ M.read (| to_drop |) ]
+                                  |)
+                                |))
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_deferred_drop_in_place :
@@ -1872,7 +1892,7 @@ Module future.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1902,7 +1922,7 @@ Module future.
     Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::future::async_drop::Noop" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_noop : M.IsFunction "core::future::async_drop::noop" noop.
@@ -1932,7 +1952,7 @@ Module future.
                     (Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ]))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

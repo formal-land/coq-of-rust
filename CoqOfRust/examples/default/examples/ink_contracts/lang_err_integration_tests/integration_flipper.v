@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -56,7 +56,7 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "integration_flipper::Flipper" [ ("value", M.read (| init_value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -79,7 +79,7 @@ Module Impl_integration_flipper_Flipper.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -130,7 +130,7 @@ Module Impl_integration_flipper_Flipper.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -153,18 +153,19 @@ Module Impl_integration_flipper_Flipper.
                 "integration_flipper::Flipper",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "integration_flipper::Flipper",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -186,7 +187,7 @@ Module Impl_integration_flipper_Flipper.
             "value"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -212,7 +213,7 @@ Module Impl_integration_flipper_Flipper.
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_err_flip : M.IsAssociatedFunction Self "err_flip" err_flip.

@@ -96,13 +96,16 @@ Module slice.
                                   (M.alloc (|
                                     LogicalOp.or (|
                                       LogicalOp.or (|
-                                        BinOp.Pure.eq (M.read (| mid |)) (Value.Integer 0),
+                                        BinOp.eq (|
+                                          M.read (| mid |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.ge (M.read (| mid |)) (M.read (| len |))))
+                                          (BinOp.ge (| M.read (| mid |), M.read (| len |) |)))
                                       |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.lt
-                                          (M.call_closure (|
+                                        (BinOp.lt (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -117,20 +120,21 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| scratch |) ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_function (|
                                               "core::cmp::min",
                                               [ Ty.path "usize" ]
                                             |),
                                             [
                                               M.read (| mid |);
-                                              BinOp.Wrap.sub
-                                                Integer.Usize
-                                                (M.read (| len |))
-                                                (M.read (| mid |))
+                                              BinOp.Wrap.sub (|
+                                                M.read (| len |),
+                                                M.read (| mid |)
+                                              |)
                                             ]
-                                          |))))
+                                          |)
+                                        |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -190,13 +194,9 @@ Module slice.
                       |) in
                     let~ left_len := M.copy (| mid |) in
                     let~ right_len :=
-                      M.alloc (|
-                        BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
-                      |) in
+                      M.alloc (| BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |) |) in
                     let~ left_is_shorter :=
-                      M.alloc (|
-                        BinOp.Pure.le (M.read (| left_len |)) (M.read (| right_len |))
-                      |) in
+                      M.alloc (| BinOp.le (| M.read (| left_len |), M.read (| right_len |) |) |) in
                     let~ save_base :=
                       M.copy (|
                         M.match_operator (|
@@ -318,7 +318,7 @@ Module slice.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_merge : M.IsFunction "core::slice::sort::stable::merge::merge" merge.
@@ -408,19 +408,21 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.and (|
-                                      BinOp.Pure.ne
-                                        (M.read (| M.read (| left |) |))
-                                        (M.read (|
+                                      BinOp.ne (|
+                                        M.read (| M.read (| left |) |),
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "core::slice::sort::stable::merge::MergeState",
                                             "end"
                                           |)
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.ne
-                                          (M.rust_cast (M.read (| right |)))
-                                          (M.read (| right_end |))))
+                                        (BinOp.ne (|
+                                          M.rust_cast (M.read (| right |)),
+                                          M.read (| right_end |)
+                                        |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -430,8 +432,8 @@ Module slice.
                                 |) in
                               let~ consume_left :=
                                 M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
@@ -450,7 +452,8 @@ Module slice.
                                         Value.Tuple
                                           [ M.read (| right |); M.read (| M.read (| left |) |) ]
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |) in
                               let~ src :=
                                 M.copy (|
@@ -483,7 +486,7 @@ Module slice.
                                     [
                                       M.read (| src |);
                                       M.read (| M.read (| out |) |);
-                                      Value.Integer 1
+                                      Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
                                 |) in
@@ -513,7 +516,7 @@ Module slice.
                                     |),
                                     [
                                       M.read (| right |);
-                                      M.rust_cast (UnOp.Pure.not (M.read (| consume_left |)))
+                                      M.rust_cast (UnOp.not (| M.read (| consume_left |) |))
                                     ]
                                   |)
                                 |) in
@@ -526,7 +529,10 @@ Module slice.
                                       "add",
                                       []
                                     |),
-                                    [ M.read (| M.read (| out |) |); Value.Integer 1 ]
+                                    [
+                                      M.read (| M.read (| out |) |);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -547,7 +553,7 @@ Module slice.
                       |)))
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_merge_up :
@@ -618,7 +624,7 @@ Module slice.
                                   "dst"
                                 |)
                               |);
-                              Value.Integer 1
+                              Value.Integer IntegerKind.Usize 1
                             ]
                           |)
                         |) in
@@ -638,7 +644,7 @@ Module slice.
                                   "end"
                                 |)
                               |);
-                              Value.Integer 1
+                              Value.Integer IntegerKind.Usize 1
                             ]
                           |)
                         |) in
@@ -651,7 +657,7 @@ Module slice.
                               "sub",
                               []
                             |),
-                            [ M.read (| out |); Value.Integer 1 ]
+                            [ M.read (| out |); Value.Integer IntegerKind.Usize 1 ]
                           |)
                         |) in
                       let~ consume_left :=
@@ -699,7 +705,7 @@ Module slice.
                             [
                               (* MutToConstPointer *) M.pointer_coercion (M.read (| src |));
                               M.read (| out |);
-                              Value.Integer 1
+                              Value.Integer IntegerKind.Usize 1
                             ]
                           |)
                         |) in
@@ -718,7 +724,7 @@ Module slice.
                             |),
                             [
                               M.read (| left |);
-                              M.rust_cast (UnOp.Pure.not (M.read (| consume_left |)))
+                              M.rust_cast (UnOp.not (| M.read (| consume_left |) |))
                             ]
                           |)
                         |) in
@@ -747,8 +753,8 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.eq
-                                        (M.rust_cast
+                                      BinOp.eq (|
+                                        M.rust_cast
                                           (* MutToConstPointer *)
                                           (M.pointer_coercion
                                             (M.read (|
@@ -757,11 +763,12 @@ Module slice.
                                                 "core::slice::sort::stable::merge::MergeState",
                                                 "dst"
                                               |)
-                                            |))))
-                                        (M.read (| left_end |)),
+                                            |))),
+                                        M.read (| left_end |)
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.eq
-                                          (M.rust_cast
+                                        (BinOp.eq (|
+                                          M.rust_cast
                                             (* MutToConstPointer *)
                                             (M.pointer_coercion
                                               (M.read (|
@@ -770,8 +777,9 @@ Module slice.
                                                   "core::slice::sort::stable::merge::MergeState",
                                                   "end"
                                                 |)
-                                              |))))
-                                          (M.read (| right_end |))))
+                                              |))),
+                                          M.read (| right_end |)
+                                        |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -785,7 +793,7 @@ Module slice.
                       |)))
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_merge_down :
@@ -872,7 +880,7 @@ Module slice.
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :

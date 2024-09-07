@@ -42,7 +42,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "alloc::boxed::Box")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
@@ -50,7 +53,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [
                       M.alloc (|
-                        Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                        Value.Array
+                          [
+                            Value.Integer IntegerKind.I32 1;
+                            Value.Integer IntegerKind.I32 2;
+                            Value.Integer IntegerKind.I32 3
+                          ]
                       |)
                     ]
                   |)
@@ -65,38 +73,39 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let needle := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                                "contains",
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let needle := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                                  "contains",
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                                      [],
+                                      "deref",
                                       []
-                                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                                    [],
-                                    "deref",
-                                    []
-                                  |),
-                                  [ haystack ]
-                                |);
-                                M.read (| needle |)
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                    |),
+                                    [ haystack ]
+                                  |);
+                                  M.read (| needle |)
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -133,7 +142,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "call",
                                       []
                                     |),
-                                    [ contains; Value.Tuple [ M.alloc (| Value.Integer 1 |) ] ]
+                                    [
+                                      contains;
+                                      Value.Tuple [ M.alloc (| Value.Integer IntegerKind.I32 1 |) ]
+                                    ]
                                   |)
                                 |)
                               ]
@@ -180,7 +192,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "call",
                                       []
                                     |),
-                                    [ contains; Value.Tuple [ M.alloc (| Value.Integer 4 |) ] ]
+                                    [
+                                      contains;
+                                      Value.Tuple [ M.alloc (| Value.Integer IntegerKind.I32 4 |) ]
+                                    ]
                                   |)
                                 |)
                               ]
@@ -195,7 +210,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_forced_capturing_with_move::main" main.

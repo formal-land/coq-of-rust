@@ -59,7 +59,7 @@ Module serializer.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.gt (M.read (| x |)) (M.read (| max |)) |)) in
+                          M.use (M.alloc (| BinOp.gt (| M.read (| x |), M.read (| max |) |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -158,7 +158,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write_as_uleb128 :
@@ -194,7 +194,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_signature_index :
@@ -236,7 +236,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_module_handle_index :
@@ -274,7 +274,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_identifier_index :
@@ -316,7 +316,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_struct_handle_index :
@@ -361,7 +361,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_address_identifier_index :
@@ -399,7 +399,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_struct_def_index :
@@ -446,7 +446,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_function_handle_index :
@@ -488,7 +488,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_handle_index :
@@ -529,7 +529,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_inst_index :
@@ -574,7 +574,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_function_inst_index :
@@ -621,7 +621,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_struct_def_inst_index :
@@ -653,7 +653,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_seiralize_table_offset :
@@ -683,7 +683,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_table_size :
@@ -723,7 +723,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_constant_pool_index :
@@ -755,7 +755,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_bytecode_count :
@@ -787,7 +787,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_identifier_size :
@@ -819,7 +819,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_constant_size :
@@ -853,7 +853,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_metadata_key_size :
@@ -889,7 +889,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_metadata_value_size :
@@ -921,7 +921,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_count :
@@ -951,7 +951,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_offset :
@@ -981,7 +981,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_acquires_count :
@@ -1013,7 +1013,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_signature_size :
@@ -1051,7 +1051,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_type_parameter_index :
@@ -1089,7 +1089,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_type_parameter_count :
@@ -1121,7 +1121,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_bytecode_offset :
@@ -1153,7 +1153,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_table_count :
@@ -1183,7 +1183,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_local_index :
@@ -1219,8 +1219,8 @@ Module serializer.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeInclusive")
@@ -1256,7 +1256,8 @@ Module serializer.
                                   |);
                                   version
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1369,7 +1370,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_validate_version :
@@ -1401,7 +1402,7 @@ Module serializer.
               M.read (| binary |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize : M.IsAssociatedFunction Self "serialize" serialize.
@@ -1678,16 +1679,16 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.gt
-                                  (M.call_closure (|
+                                BinOp.gt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "len",
                                       []
                                     |),
                                     [ temp ]
-                                  |))
-                                  (M.rust_cast
+                                  |),
+                                  M.rust_cast
                                     (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "u32",
@@ -1695,7 +1696,8 @@ Module serializer.
                                         []
                                       |),
                                       []
-                                    |)))
+                                    |))
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2156,7 +2158,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_for_version :
@@ -2295,7 +2297,7 @@ Module serializer.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2410,7 +2412,7 @@ Module serializer.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2450,13 +2452,14 @@ Module serializer.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| index |))
-                                (M.rust_cast
+                              BinOp.gt (|
+                                M.read (| index |),
+                                M.rust_cast
                                   (M.call_closure (|
                                     M.get_associated_function (| Ty.path "u32", "max_value", [] |),
                                     []
-                                  |)))
+                                  |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2563,7 +2566,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_check_index_in_binary :
@@ -2603,7 +2606,9 @@ Module serializer.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.ne (M.read (| count |)) (Value.Integer 0) |)) in
+                            (M.alloc (|
+                              BinOp.ne (| M.read (| count |), Value.Integer IntegerKind.U32 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
@@ -2842,7 +2847,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_table_index :
@@ -2874,7 +2879,12 @@ Module serializer.
                           Ty.apply
                             (Ty.path "&")
                             []
-                            [ Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ],
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.path "u8" ]
+                            ],
                           [],
                           "into_iter",
                           []
@@ -3018,7 +3028,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_magic :
@@ -3062,7 +3072,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3097,7 +3107,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3132,7 +3142,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3171,7 +3181,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3204,7 +3214,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3239,7 +3249,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3274,7 +3284,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3309,7 +3319,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3341,7 +3351,7 @@ Module serializer.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3548,7 +3558,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_module_handle :
@@ -3857,7 +3867,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_struct_handle :
@@ -4130,7 +4140,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_type_parameters :
@@ -4257,13 +4267,13 @@ Module serializer.
                           "is_phantom"
                         |)
                       |));
-                    Value.Integer 1
+                    Value.Integer IntegerKind.U64 1
                   ]
                 |)
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_type_parameter :
@@ -4656,7 +4666,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_function_handle :
@@ -4856,7 +4866,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_function_instantiation :
@@ -5129,7 +5139,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_identifier :
@@ -5316,7 +5326,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_address :
@@ -5469,7 +5479,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_constant :
@@ -5654,7 +5664,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_metadata_entry :
@@ -5941,7 +5951,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_byte_blob :
@@ -6085,12 +6095,12 @@ Module serializer.
                           [
                             M.read (| binary |);
                             M.rust_cast
-                              (BinOp.Wrap.add
-                                Integer.U8
-                                (M.get_constant (|
+                              (BinOp.Wrap.add (|
+                                M.get_constant (|
                                   "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE_discriminant"
-                                |))
-                                (Value.Integer 0))
+                                |),
+                                Value.Integer IntegerKind.U8 0
+                              |))
                           ]
                         |)
                       |)));
@@ -6128,12 +6138,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -6221,7 +6231,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_struct_definition :
@@ -6421,7 +6431,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_struct_def_instantiation :
@@ -6699,7 +6709,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_definitions :
@@ -6830,7 +6840,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_definition :
@@ -7025,7 +7035,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_handle :
@@ -7223,7 +7233,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_field_instantiation :
@@ -7495,7 +7505,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_acquires :
@@ -7540,7 +7550,7 @@ Module serializer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_signature :
@@ -7809,7 +7819,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_signature_tokens :
@@ -7907,12 +7917,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::BOOL_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8000,12 +8010,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U8_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8093,12 +8103,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U16_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8186,12 +8196,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U32_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8279,12 +8289,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U64_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8372,12 +8382,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U128_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8465,12 +8475,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::U256_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8558,12 +8568,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::ADDRESS_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8651,12 +8661,12 @@ Module serializer.
                                   [
                                     M.read (| binary |);
                                     M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.get_constant (|
+                                      (BinOp.Wrap.add (|
+                                        M.get_constant (|
                                           "move_binary_format::file_format_common::SerializedType::SIGNER_discriminant"
-                                        |))
-                                        (Value.Integer 0))
+                                        |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
                                   ]
                                 |)
                               ]
@@ -8746,12 +8756,12 @@ Module serializer.
                                     [
                                       M.read (| binary |);
                                       M.rust_cast
-                                        (BinOp.Wrap.add
-                                          Integer.U8
-                                          (M.get_constant (|
+                                        (BinOp.Wrap.add (|
+                                          M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::VECTOR_discriminant"
-                                          |))
-                                          (Value.Integer 0))
+                                          |),
+                                          Value.Integer IntegerKind.U8 0
+                                        |))
                                     ]
                                   |)
                                 ]
@@ -8843,12 +8853,12 @@ Module serializer.
                                     [
                                       M.read (| binary |);
                                       M.rust_cast
-                                        (BinOp.Wrap.add
-                                          Integer.U8
-                                          (M.get_constant (|
+                                        (BinOp.Wrap.add (|
+                                          M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::STRUCT_discriminant"
-                                          |))
-                                          (Value.Integer 0))
+                                          |),
+                                          Value.Integer IntegerKind.U8 0
+                                        |))
                                     ]
                                   |)
                                 ]
@@ -9027,12 +9037,12 @@ Module serializer.
                                             [
                                               M.read (| binary |);
                                               M.rust_cast
-                                                (BinOp.Wrap.add
-                                                  Integer.U8
-                                                  (M.get_constant (|
+                                                (BinOp.Wrap.add (|
+                                                  M.get_constant (|
                                                     "move_binary_format::file_format_common::SerializedType::STRUCT_INST_discriminant"
-                                                  |))
-                                                  (Value.Integer 0))
+                                                  |),
+                                                  Value.Integer IntegerKind.U8 0
+                                                |))
                                             ]
                                           |)
                                         ]
@@ -9294,12 +9304,12 @@ Module serializer.
                                     [
                                       M.read (| binary |);
                                       M.rust_cast
-                                        (BinOp.Wrap.add
-                                          Integer.U8
-                                          (M.get_constant (|
+                                        (BinOp.Wrap.add (|
+                                          M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::REFERENCE_discriminant"
-                                          |))
-                                          (Value.Integer 0))
+                                          |),
+                                          Value.Integer IntegerKind.U8 0
+                                        |))
                                     ]
                                   |)
                                 ]
@@ -9390,12 +9400,12 @@ Module serializer.
                                     [
                                       M.read (| binary |);
                                       M.rust_cast
-                                        (BinOp.Wrap.add
-                                          Integer.U8
-                                          (M.get_constant (|
+                                        (BinOp.Wrap.add (|
+                                          M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE_discriminant"
-                                          |))
-                                          (Value.Integer 0))
+                                          |),
+                                          Value.Integer IntegerKind.U8 0
+                                        |))
                                     ]
                                   |)
                                 ]
@@ -9487,12 +9497,12 @@ Module serializer.
                                     [
                                       M.read (| binary |);
                                       M.rust_cast
-                                        (BinOp.Wrap.add
-                                          Integer.U8
-                                          (M.get_constant (|
+                                        (BinOp.Wrap.add (|
+                                          M.get_constant (|
                                             "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER_discriminant"
-                                          |))
-                                          (Value.Integer 0))
+                                          |),
+                                          Value.Integer IntegerKind.U8 0
+                                        |))
                                     ]
                                   |)
                                 ]
@@ -9631,7 +9641,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_signature_token_single_node_impl :
@@ -9738,13 +9748,14 @@ Module serializer.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.Pure.gt
-                                                          (M.read (| depth |))
-                                                          (M.read (|
+                                                        BinOp.gt (|
+                                                          M.read (| depth |),
+                                                          M.read (|
                                                             M.get_constant (|
                                                               "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX"
                                                             |)
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -9890,7 +9901,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_signature_token :
@@ -10014,7 +10025,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_ability_set :
@@ -10283,7 +10294,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_ability_sets :
@@ -10421,7 +10432,7 @@ Module serializer.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_code_unit :
@@ -10750,97 +10761,100 @@ Module serializer.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  let γ :=
-                                    M.alloc (|
-                                      BinOp.Pure.lt
-                                        (M.read (| major_version |))
-                                        (M.read (|
-                                          M.get_constant (|
-                                            "move_binary_format::file_format_common::VERSION_6"
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.alloc (|
+                                        BinOp.lt (|
+                                          M.read (| major_version |),
+                                          M.read (|
+                                            M.get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_6"
+                                            |)
                                           |)
-                                        |))
-                                    |) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          Value.StructTuple
-                                            "core::result::Result::Err"
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "anyhow::Error",
-                                                  "msg",
-                                                  [ Ty.path "alloc::string::String" ]
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_function (|
-                                                      "core::hint::must_use",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [
-                                                      M.read (|
-                                                        let~ res :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "alloc::fmt::format",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "core::fmt::Arguments",
-                                                                    "new_v1",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "Loading or casting u16, u32, u256 integers not supported in bytecode version "
-                                                                          |)
-                                                                        ]
-                                                                    |);
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [ Ty.path "u32" ]
-                                                                            |),
-                                                                            [ major_version ]
-                                                                          |)
-                                                                        ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          |) in
-                                                        res
-                                                      |)
-                                                    ]
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
+                                        |)
+                                      |) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "anyhow::Error",
+                                                    "msg",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [ Ty.path "u32" ]
+                                                                              |),
+                                                                              [ major_version ]
+                                                                            |)
+                                                                          ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10869,12 +10883,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::FREEZE_REF_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -10896,12 +10910,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::POP_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -10923,12 +10937,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::RET_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -10967,12 +10981,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::BR_TRUE_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11073,12 +11087,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::BR_FALSE_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11179,12 +11193,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::BRANCH_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11285,12 +11299,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U8_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11392,12 +11406,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U64_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11498,12 +11512,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U128_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11587,12 +11601,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U8_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -11614,12 +11628,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U64_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -11641,12 +11655,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U128_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -11685,12 +11699,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_CONST_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11774,12 +11788,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LD_TRUE_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -11801,12 +11815,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LD_FALSE_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -11845,12 +11859,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::COPY_LOC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -11951,12 +11965,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_LOC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12057,12 +12071,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::ST_LOC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12163,12 +12177,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12269,12 +12283,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12375,12 +12389,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12481,12 +12495,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12587,12 +12601,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12693,12 +12707,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12799,12 +12813,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::CALL_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -12905,12 +12919,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::PACK_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -13011,12 +13025,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::UNPACK_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -13117,12 +13131,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::CALL_GENERIC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -13223,12 +13237,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::PACK_GENERIC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -13329,12 +13343,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -13418,12 +13432,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::READ_REF_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13445,12 +13459,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::WRITE_REF_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13472,12 +13486,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::ADD_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13499,12 +13513,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::SUB_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13526,12 +13540,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::MUL_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13553,12 +13567,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::MOD_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13580,12 +13594,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::DIV_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13607,12 +13621,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::BIT_OR_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13634,12 +13648,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::BIT_AND_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13661,12 +13675,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::XOR_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13688,12 +13702,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::SHL_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13715,12 +13729,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::SHR_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13742,12 +13756,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::OR_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13769,12 +13783,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::AND_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13796,12 +13810,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::NOT_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13823,12 +13837,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::EQ_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13850,12 +13864,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::NEQ_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13877,12 +13891,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LT_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13904,12 +13918,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::GT_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13931,12 +13945,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::LE_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13958,12 +13972,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::GE_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -13985,12 +13999,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::ABORT_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -14012,12 +14026,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::NOP_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -14056,12 +14070,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14162,12 +14176,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14268,12 +14282,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14374,12 +14388,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14480,12 +14494,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14586,12 +14600,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14692,12 +14706,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14798,12 +14812,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -14904,12 +14918,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15010,12 +15024,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15123,12 +15137,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_PACK_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15305,12 +15319,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_LEN_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15411,12 +15425,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15517,12 +15531,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15623,12 +15637,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15729,12 +15743,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -15842,12 +15856,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_UNPACK_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -16024,12 +16038,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::VEC_SWAP_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -16130,12 +16144,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U16_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -16236,12 +16250,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U32_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -16342,12 +16356,12 @@ Module serializer.
                                       [
                                         M.read (| binary |);
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.get_constant (|
+                                          (BinOp.Wrap.add (|
+                                            M.get_constant (|
                                               "move_binary_format::file_format_common::Opcodes::LD_U256_discriminant"
-                                            |))
-                                            (Value.Integer 0))
+                                            |),
+                                            Value.Integer IntegerKind.U8 0
+                                          |))
                                       ]
                                     |)
                                   ]
@@ -16431,12 +16445,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U16_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -16458,12 +16472,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U32_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)));
@@ -16485,12 +16499,12 @@ Module serializer.
                               [
                                 M.read (| binary |);
                                 M.rust_cast
-                                  (BinOp.Wrap.add
-                                    Integer.U8
-                                    (M.get_constant (|
+                                  (BinOp.Wrap.add (|
+                                    M.get_constant (|
                                       "move_binary_format::file_format_common::Opcodes::CAST_U256_discriminant"
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |))
                               ]
                             |)
                           |)))
@@ -16568,7 +16582,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_instruction_inner :
@@ -16841,7 +16855,7 @@ Module serializer.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_code :
@@ -16963,8 +16977,7 @@ Module serializer.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.ge (M.read (| offset |)) (M.read (| start |)))
+                              UnOp.not (| BinOp.ge (| M.read (| offset |), M.read (| start |) |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16997,11 +17010,11 @@ Module serializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
-                  [ BinOp.Wrap.sub Integer.U32 (M.read (| offset |)) (M.read (| start |)) ]
+                  [ BinOp.Wrap.sub (| M.read (| offset |), M.read (| start |) |) ]
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_checked_calculate_table_size :
@@ -17038,18 +17051,27 @@ Module serializer.
             "move_binary_format::serializer::CommonSerializer"
             [
               ("major_version", M.read (| major_version |));
-              ("table_count", Value.Integer 0);
-              ("module_handles", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("struct_handles", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("function_handles", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("function_instantiations", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("signatures", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("identifiers", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("address_identifiers", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("constant_pool", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("metadata", Value.Tuple [ Value.Integer 0; Value.Integer 0 ])
+              ("table_count", Value.Integer IntegerKind.U8 0);
+              ("module_handles",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("struct_handles",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("function_handles",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("function_instantiations",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("signatures",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("identifiers",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("address_identifiers",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("constant_pool",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("metadata",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -17234,7 +17256,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_header :
@@ -18215,19 +18237,20 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (M.read (|
+                                BinOp.ge (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "move_binary_format::serializer::CommonSerializer",
                                       "major_version"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::VERSION_5"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -18339,7 +18362,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_table_indices :
@@ -18395,16 +18418,18 @@ Module serializer.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.eq
-                                              (M.read (|
+                                          UnOp.not (|
+                                            BinOp.eq (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "table_count"
                                                 |)
-                                              |))
-                                              (Value.Integer 0))
+                                              |),
+                                              Value.Integer IntegerKind.U8 0
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -18718,16 +18743,18 @@ Module serializer.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.lt
-                                              (M.read (|
+                                          UnOp.not (|
+                                            BinOp.lt (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "move_binary_format::serializer::CommonSerializer",
                                                   "table_count"
                                                 |)
-                                              |))
-                                              (Value.Integer 6))
+                                              |),
+                                              Value.Integer IntegerKind.U8 6
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -19212,19 +19239,20 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (M.read (|
+                                BinOp.ge (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "move_binary_format::serializer::CommonSerializer",
                                       "major_version"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::VERSION_5"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -19325,7 +19353,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_common_tables :
@@ -19367,8 +19395,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -19378,7 +19406,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| module_handles |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -19391,7 +19420,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -19767,7 +19796,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_module_handles :
@@ -19809,8 +19838,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -19820,7 +19849,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| struct_handles |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -19833,7 +19863,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -20209,7 +20239,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_struct_handles :
@@ -20256,8 +20286,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -20268,7 +20298,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| function_handles |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -20281,7 +20312,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -20657,7 +20688,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_function_handles :
@@ -20704,8 +20735,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -20718,7 +20749,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| function_instantiations |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -20731,7 +20763,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -21110,7 +21142,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_function_instantiations :
@@ -21156,8 +21188,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -21167,7 +21199,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| identifiers |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -21180,7 +21213,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -21573,7 +21606,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_identifiers :
@@ -21620,8 +21653,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -21632,7 +21665,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| addresses |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -21645,7 +21679,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -22021,7 +22055,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_address_identifiers :
@@ -22063,8 +22097,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -22074,7 +22108,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| constants |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -22087,7 +22122,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -22460,7 +22495,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_constants :
@@ -22498,8 +22533,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -22509,7 +22544,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| metadata |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -22522,7 +22558,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -22895,7 +22931,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_metadata :
@@ -22937,8 +22973,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -22948,7 +22984,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| signatures |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -22961,7 +22998,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -23334,7 +23371,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_signatures :
@@ -23357,7 +23394,7 @@ Module serializer.
               "major_version"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_major_version :
@@ -23397,14 +23434,20 @@ Module serializer.
                   |),
                   [ M.read (| major_version |) ]
                 |));
-              ("struct_defs", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("struct_def_instantiations", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("function_defs", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("field_handles", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("field_instantiations", Value.Tuple [ Value.Integer 0; Value.Integer 0 ]);
-              ("friend_decls", Value.Tuple [ Value.Integer 0; Value.Integer 0 ])
+              ("struct_defs",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("struct_def_instantiations",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("function_defs",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("field_handles",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("field_instantiations",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ]);
+              ("friend_decls",
+                Value.Tuple [ Value.Integer IntegerKind.U32 0; Value.Integer IntegerKind.U32 0 ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -24063,7 +24106,7 @@ Module serializer.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_tables :
@@ -24813,7 +24856,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_table_indices :
@@ -24859,8 +24902,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -24873,7 +24916,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| struct_definitions |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -24902,7 +24946,7 @@ Module serializer.
                                       "table_count"
                                     |)
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.U8 1
                                 ]
                               |)
                             |) in
@@ -25280,7 +25324,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_struct_definitions :
@@ -25327,8 +25371,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -25341,7 +25385,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| struct_def_instantiations |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -25370,7 +25415,7 @@ Module serializer.
                                       "table_count"
                                     |)
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.U8 1
                                 ]
                               |)
                             |) in
@@ -25748,7 +25793,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_struct_def_instantiations :
@@ -25793,8 +25838,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -25804,7 +25849,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| field_handles |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -25821,7 +25867,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -26195,7 +26241,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_field_handles :
@@ -26242,8 +26288,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -26256,7 +26302,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| field_instantiations |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -26273,7 +26320,7 @@ Module serializer.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -26649,7 +26696,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_field_instantiations :
@@ -26695,8 +26742,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -26709,7 +26756,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| function_definitions |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -26738,7 +26786,7 @@ Module serializer.
                                       "table_count"
                                     |)
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.U8 1
                                 ]
                               |)
                             |) in
@@ -27119,7 +27167,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_function_definitions :
@@ -27258,7 +27306,7 @@ Module serializer.
                           val))
                     ]
                   |) in
-                let~ flags := M.alloc (| Value.Integer 0 |) in
+                let~ flags := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
                 let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -27268,8 +27316,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.read (|
+                                BinOp.lt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -27279,12 +27327,13 @@ Module serializer.
                                       "move_binary_format::serializer::CommonSerializer",
                                       "major_version"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.get_constant (|
                                       "move_binary_format::file_format_common::VERSION_5"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -27547,7 +27596,7 @@ Module serializer.
                                     let β := flags in
                                     M.write (|
                                       β,
-                                      BinOp.Pure.bit_or
+                                      BinOp.bit_or
                                         (M.read (| β |))
                                         (M.read (|
                                           M.get_constant (|
@@ -27584,7 +27633,7 @@ Module serializer.
                           let β := flags in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
                               (M.read (|
                                 M.get_constant (| "move_binary_format::file_format::NATIVE" |)
@@ -27894,7 +27943,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_function_definition :
@@ -27940,8 +27989,8 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -27951,7 +28000,8 @@ Module serializer.
                                       []
                                     |),
                                     [ M.read (| friend_declarations |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -27980,7 +28030,7 @@ Module serializer.
                                       "table_count"
                                     |)
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.U8 1
                                 ]
                               |)
                             |) in
@@ -28358,7 +28408,7 @@ Module serializer.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_friend_declarations :

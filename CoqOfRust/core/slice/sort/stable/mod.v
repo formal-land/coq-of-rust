@@ -81,7 +81,12 @@ Module slice.
                                 (M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "core::intrinsics::likely", [] |),
-                                    [ BinOp.Pure.lt (M.read (| len |)) (Value.Integer 2) ]
+                                    [
+                                      BinOp.lt (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 2
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -104,13 +109,14 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (| "core::intrinsics::likely", [] |),
                                     [
-                                      BinOp.Pure.le
-                                        (M.read (| len |))
-                                        (M.read (|
+                                      BinOp.le (|
+                                        M.read (| len |),
+                                        M.read (|
                                           M.get_constant (|
                                             "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
                                           |)
-                                        |))
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -126,7 +132,11 @@ Module slice.
                                           "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
                                           [ T; F ]
                                         |),
-                                        [ M.read (| v |); Value.Integer 1; M.read (| is_less |) ]
+                                        [
+                                          M.read (| v |);
+                                          Value.Integer IntegerKind.Usize 1;
+                                          M.read (| is_less |)
+                                        ]
                                       |)
                                     |) in
                                   M.return_ (| Value.Tuple [] |)
@@ -149,14 +159,14 @@ Module slice.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_sort : M.IsFunction "core::slice::sort::stable::sort" sort.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 20 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
       End sort.
       
       (*
@@ -203,14 +213,14 @@ Module slice.
             M.read (|
               let~ max_full_alloc :=
                 M.alloc (|
-                  BinOp.Wrap.div
-                    Integer.Usize
-                    (M.read (|
+                  BinOp.Wrap.div (|
+                    M.read (|
                       M.get_constant (|
                         "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES"
                       |)
-                    |))
-                    (M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |))
+                    |),
+                    M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                  |)
                 |) in
               let~ len :=
                 M.alloc (|
@@ -227,7 +237,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                         [
-                          BinOp.Wrap.div Integer.Usize (M.read (| len |)) (Value.Integer 2);
+                          BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |);
                           M.call_closure (|
                             M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
                             [ M.read (| len |); M.read (| max_full_alloc |) ]
@@ -248,7 +258,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::slice::sort::stable::AlignedStorage")
-                        [ Value.Integer 4096 ]
+                        [ Value.Integer IntegerKind.Usize 4096 ]
                         [ T ],
                       "new",
                       []
@@ -262,7 +272,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::slice::sort::stable::AlignedStorage")
-                        [ Value.Integer 4096 ]
+                        [ Value.Integer IntegerKind.Usize 4096 ]
                         [ T ],
                       "as_uninit_slice_mut",
                       []
@@ -281,8 +291,8 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (M.call_closure (|
+                                BinOp.ge (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -297,8 +307,9 @@ Module slice.
                                       []
                                     |),
                                     [ M.read (| stack_scratch |) ]
-                                  |))
-                                  (M.read (| alloc_len |))
+                                  |),
+                                  M.read (| alloc_len |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -340,11 +351,10 @@ Module slice.
                 |) in
               let~ eager_sort :=
                 M.alloc (|
-                  BinOp.Pure.le
-                    (M.read (| len |))
-                    (BinOp.Wrap.mul
-                      Integer.Usize
-                      (M.call_closure (|
+                  BinOp.le (|
+                    M.read (| len |),
+                    BinOp.Wrap.mul (|
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl",
                           T,
@@ -353,8 +363,10 @@ Module slice.
                           []
                         |),
                         []
-                      |))
-                      (Value.Integer 2))
+                      |),
+                      Value.Integer IntegerKind.Usize 2
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 M.alloc (|
@@ -370,7 +382,7 @@ Module slice.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_driftsort_main :
@@ -378,7 +390,7 @@ Module slice.
       
       Module driftsort_main.
         Definition value_MAX_FULL_ALLOC_BYTES : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 8000000 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8000000 |))).
       End driftsort_main.
       
       (* Trait *)
@@ -391,7 +403,7 @@ Module slice.
           ty_params := [ "T" ];
           fields :=
             [
-              ("_align", Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ]);
+              ("_align", Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ]);
               ("storage",
                 Ty.apply
                   (Ty.path "array")
@@ -432,7 +444,7 @@ Module slice.
                       N
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -462,10 +474,10 @@ Module slice.
               M.read (|
                 let~ len :=
                   M.alloc (|
-                    BinOp.Wrap.div
-                      Integer.Usize
-                      (M.read (| M.get_constant (| "core::slice::sort::stable::N" |) |))
-                      (M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |))
+                    BinOp.Wrap.div (|
+                      M.read (| M.get_constant (| "core::slice::sort::stable::N" |) |),
+                      M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -518,7 +530,7 @@ Module slice.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_as_uninit_slice_mut :

@@ -11,7 +11,7 @@ Module identity.
             [
               M.call_closure (|
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
-                [ Value.Integer 4 ]
+                [ Value.Integer IntegerKind.U64 4 ]
               |);
               Value.StructTuple
                 "revm_primitives::precompile::Precompile::Standard"
@@ -24,10 +24,10 @@ Module identity.
         |))).
   
   Definition value_IDENTITY_BASE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 15 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
   
   Definition value_IDENTITY_PER_WORD : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
   
   (*
   pub fn identity_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -83,7 +83,7 @@ Module identity.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| gas_used |)) (M.read (| gas_limit |))
+                              BinOp.gt (| M.read (| gas_used |), M.read (| gas_limit |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -127,7 +127,7 @@ Module identity.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_identity_run : M.IsFunction "revm_precompile::identity::identity_run" identity_run.

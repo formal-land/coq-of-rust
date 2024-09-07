@@ -287,7 +287,7 @@ Module stack_usage_verifier.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify : M.IsAssociatedFunction Self "verify" verify.
@@ -383,7 +383,7 @@ Module stack_usage_verifier.
                       "code"
                     |)
                   |) in
-                let~ stack_size_increment := M.alloc (| Value.Integer 0 |) in
+                let~ stack_size_increment := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
                 let~ block_start :=
                   M.alloc (|
                     M.call_closure (|
@@ -399,7 +399,7 @@ Module stack_usage_verifier.
                       [ M.read (| cfg |); M.read (| block_id |) ]
                     |)
                   |) in
-                let~ overall_push := M.alloc (| Value.Integer 0 |) in
+                let~ overall_push := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
                 let~ _ :=
                   M.use
                     (M.match_operator (|
@@ -672,14 +672,15 @@ Module stack_usage_verifier.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          BinOp.Pure.gt
-                                                                            (M.read (|
+                                                                          BinOp.gt (|
+                                                                            M.read (|
                                                                               overall_push
-                                                                            |))
-                                                                            (M.rust_cast
+                                                                            |),
+                                                                            M.rust_cast
                                                                               (M.read (|
                                                                                 max_push_size
-                                                                              |)))
+                                                                              |))
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -756,11 +757,12 @@ Module stack_usage_verifier.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.lt
-                                                                    (M.read (|
+                                                                  BinOp.lt (|
+                                                                    M.read (|
                                                                       stack_size_increment
-                                                                    |))
-                                                                    (M.read (| num_pops |))
+                                                                    |),
+                                                                    M.read (| num_pops |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -989,18 +991,17 @@ Module stack_usage_verifier.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.gt
-                                                                  (M.read (|
-                                                                    stack_size_increment
-                                                                  |))
-                                                                  (M.rust_cast
+                                                                BinOp.gt (|
+                                                                  M.read (| stack_size_increment |),
+                                                                  M.rust_cast
                                                                     (M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.read (| config |),
                                                                         "move_vm_config::verifier::VerifierConfig",
                                                                         "max_value_stack_size"
                                                                       |)
-                                                                    |)))
+                                                                    |))
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -1073,7 +1074,10 @@ Module stack_usage_verifier.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq (M.read (| stack_size_increment |)) (Value.Integer 0)
+                              BinOp.eq (|
+                                M.read (| stack_size_increment |),
+                                Value.Integer IntegerKind.U64 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1123,7 +1127,7 @@ Module stack_usage_verifier.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_block : M.IsAssociatedFunction Self "verify_block" verify_block.
@@ -1354,8 +1358,15 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (| Value.Tuple [ Value.Integer 1; Value.Integer 0 ] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.Tuple
+                                        [
+                                          Value.Integer IntegerKind.U64 1;
+                                          Value.Integer IntegerKind.U64 0
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1497,8 +1508,15 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (| Value.Tuple [ Value.Integer 0; Value.Integer 1 ] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.Tuple
+                                        [
+                                          Value.Integer IntegerKind.U64 0;
+                                          Value.Integer IntegerKind.U64 1
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1733,8 +1751,15 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (| Value.Tuple [ Value.Integer 1; Value.Integer 1 ] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.Tuple
+                                        [
+                                          Value.Integer IntegerKind.U64 1;
+                                          Value.Integer IntegerKind.U64 1
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1910,8 +1935,15 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (| Value.Tuple [ Value.Integer 2; Value.Integer 1 ] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.Tuple
+                                        [
+                                          Value.Integer IntegerKind.U64 2;
+                                          Value.Integer IntegerKind.U64 1
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1931,7 +1963,8 @@ Module stack_usage_verifier.
                           |) in
                         let num := M.alloc (| γ1_1 |) in
                         M.alloc (|
-                          Value.Tuple [ M.read (| M.read (| num |) |); Value.Integer 1 ]
+                          Value.Tuple
+                            [ M.read (| M.read (| num |) |); Value.Integer IntegerKind.U64 1 ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1950,7 +1983,8 @@ Module stack_usage_verifier.
                           |) in
                         let num := M.alloc (| γ1_1 |) in
                         M.alloc (|
-                          Value.Tuple [ Value.Integer 1; M.read (| M.read (| num |) |) ]
+                          Value.Tuple
+                            [ Value.Integer IntegerKind.U64 1; M.read (| M.read (| num |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1983,8 +2017,15 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (| Value.Tuple [ Value.Integer 2; Value.Integer 1 ] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.Tuple
+                                        [
+                                          Value.Integer IntegerKind.U64 2;
+                                          Value.Integer IntegerKind.U64 1
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2037,8 +2078,15 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (| Value.Tuple [ Value.Integer 2; Value.Integer 0 ] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.Tuple
+                                        [
+                                          Value.Integer IntegerKind.U64 2;
+                                          Value.Integer IntegerKind.U64 0
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2050,7 +2098,10 @@ Module stack_usage_verifier.
                             "move_binary_format::file_format::Bytecode::VecSwap",
                             0
                           |) in
-                        M.alloc (| Value.Tuple [ Value.Integer 3; Value.Integer 0 ] |)));
+                        M.alloc (|
+                          Value.Tuple
+                            [ Value.Integer IntegerKind.U64 3; Value.Integer IntegerKind.U64 0 ]
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.find_or_pattern (|
@@ -2081,8 +2132,15 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (| Value.Tuple [ Value.Integer 0; Value.Integer 0 ] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.Tuple
+                                        [
+                                          Value.Integer IntegerKind.U64 0;
+                                          Value.Integer IntegerKind.U64 0
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2113,7 +2171,11 @@ Module stack_usage_verifier.
                             |)
                           |) in
                         M.alloc (|
-                          Value.Tuple [ M.rust_cast (M.read (| return_count |)); Value.Integer 0 ]
+                          Value.Tuple
+                            [
+                              M.rust_cast (M.read (| return_count |));
+                              Value.Integer IntegerKind.U64 0
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2400,7 +2462,7 @@ Module stack_usage_verifier.
                                         γ,
                                         "move_binary_format::file_format::StructFieldInformation::Native"
                                       |) in
-                                    M.alloc (| Value.Integer 0 |)));
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ := M.read (| γ |) in
@@ -2432,7 +2494,11 @@ Module stack_usage_verifier.
                             |)
                           |) in
                         M.alloc (|
-                          Value.Tuple [ M.rust_cast (M.read (| field_count |)); Value.Integer 1 ]
+                          Value.Tuple
+                            [
+                              M.rust_cast (M.read (| field_count |));
+                              Value.Integer IntegerKind.U64 1
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2509,7 +2575,7 @@ Module stack_usage_verifier.
                                         γ,
                                         "move_binary_format::file_format::StructFieldInformation::Native"
                                       |) in
-                                    M.alloc (| Value.Integer 0 |)));
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ := M.read (| γ |) in
@@ -2541,7 +2607,11 @@ Module stack_usage_verifier.
                             |)
                           |) in
                         M.alloc (|
-                          Value.Tuple [ M.rust_cast (M.read (| field_count |)); Value.Integer 1 ]
+                          Value.Tuple
+                            [
+                              M.rust_cast (M.read (| field_count |));
+                              Value.Integer IntegerKind.U64 1
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2592,7 +2662,7 @@ Module stack_usage_verifier.
                                         γ,
                                         "move_binary_format::file_format::StructFieldInformation::Native"
                                       |) in
-                                    M.alloc (| Value.Integer 0 |)));
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ := M.read (| γ |) in
@@ -2624,7 +2694,11 @@ Module stack_usage_verifier.
                             |)
                           |) in
                         M.alloc (|
-                          Value.Tuple [ Value.Integer 1; M.rust_cast (M.read (| field_count |)) ]
+                          Value.Tuple
+                            [
+                              Value.Integer IntegerKind.U64 1;
+                              M.rust_cast (M.read (| field_count |))
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2701,7 +2775,7 @@ Module stack_usage_verifier.
                                         γ,
                                         "move_binary_format::file_format::StructFieldInformation::Native"
                                       |) in
-                                    M.alloc (| Value.Integer 0 |)));
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ := M.read (| γ |) in
@@ -2733,13 +2807,17 @@ Module stack_usage_verifier.
                             |)
                           |) in
                         M.alloc (|
-                          Value.Tuple [ Value.Integer 1; M.rust_cast (M.read (| field_count |)) ]
+                          Value.Tuple
+                            [
+                              Value.Integer IntegerKind.U64 1;
+                              M.rust_cast (M.read (| field_count |))
+                            ]
                         |)))
                   ]
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_instruction_effect :
@@ -2774,10 +2852,10 @@ Module stack_usage_verifier.
               |);
               Value.StructTuple
                 "move_binary_format::file_format::FunctionDefinitionIndex"
-                [ Value.Integer 0 ]
+                [ Value.Integer IntegerKind.U16 0 ]
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_current_function :

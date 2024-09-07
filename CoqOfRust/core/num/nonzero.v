@@ -46,7 +46,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -72,7 +72,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -115,22 +115,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroU8Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroU8Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -177,7 +178,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -203,7 +204,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -246,22 +247,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroU16Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroU16Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -308,7 +310,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -334,7 +336,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -377,22 +379,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroU32Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroU32Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -439,7 +442,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -465,7 +468,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -508,22 +511,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroU64Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroU64Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -570,7 +574,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -596,7 +600,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -639,22 +643,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroU128Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroU128Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -701,7 +706,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -727,7 +732,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -770,22 +775,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroUsizeInner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroUsizeInner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -832,7 +838,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -858,7 +864,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -901,22 +907,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroI8Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroI8Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -963,7 +970,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -989,7 +996,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1032,22 +1039,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroI16Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroI16Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1094,7 +1102,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1120,7 +1128,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1163,22 +1171,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroI32Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroI32Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1225,7 +1234,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1251,7 +1260,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1294,22 +1303,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroI64Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroI64Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1356,7 +1366,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1382,7 +1392,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1425,22 +1435,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroI128Inner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroI128Inner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1487,7 +1498,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1513,7 +1524,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1556,22 +1567,23 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::num::nonzero::private::NonZeroIsizeInner",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "core::num::nonzero::private::NonZeroIsizeInner",
                     0
                   |)
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1923,7 +1935,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1967,7 +1979,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2011,7 +2023,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2055,7 +2067,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2099,7 +2111,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2143,7 +2155,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2259,7 +2271,7 @@ Module num.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2325,7 +2337,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2365,7 +2377,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2445,7 +2457,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2485,7 +2497,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2525,7 +2537,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2565,7 +2577,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2605,7 +2617,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2665,7 +2677,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2711,7 +2723,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2757,7 +2769,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2812,7 +2824,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2865,7 +2877,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2900,7 +2912,7 @@ Module num.
               |),
               [ M.read (| nonzero |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2964,7 +2976,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3021,7 +3033,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3077,7 +3089,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3129,7 +3141,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3179,7 +3191,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3221,7 +3233,7 @@ Module num.
               |),
               [ M.read (| n |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -3331,7 +3343,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -3389,7 +3401,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut :
@@ -3500,7 +3512,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut_unchecked :
@@ -3537,7 +3549,7 @@ Module num.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get :
@@ -3591,7 +3603,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -3628,7 +3640,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -3669,7 +3681,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -3716,7 +3728,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -3763,7 +3775,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -3809,7 +3821,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -3854,7 +3866,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -3900,7 +3912,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -3945,7 +3957,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -3990,7 +4002,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -4035,7 +4047,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -4062,7 +4074,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer 1 ]
+                    [ Value.Integer IntegerKind.U8 1 ]
                   |)
                 ]
               |)
@@ -4178,7 +4190,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -4224,7 +4236,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -4265,7 +4277,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -4350,7 +4362,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -4366,21 +4378,21 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.U32
-              (BinOp.Wrap.sub
-                Integer.U32
-                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                (Value.Integer 1))
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.sub (|
+                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                Value.Integer IntegerKind.U32 1
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -4408,7 +4420,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -4458,7 +4470,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -4478,8 +4490,8 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.lt
-              (M.call_closure (|
+            BinOp.lt (|
+              M.call_closure (|
                 M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
@@ -4491,9 +4503,10 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (Value.Integer 2)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U32 2
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -4545,12 +4558,12 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ res := M.alloc (| Value.Integer 0 |) in
+              let~ res := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
               let~ one :=
                 M.alloc (|
-                  BinOp.Wrap.shl
-                    (Value.Integer 1)
-                    (BinOp.Pure.bit_and
+                  BinOp.Wrap.shl (|
+                    Value.Integer IntegerKind.U8 1,
+                    BinOp.bit_and
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -4559,7 +4572,8 @@ Module num.
                         |),
                         [ M.read (| self |) ]
                       |))
-                      (UnOp.Pure.not (Value.Integer 1)))
+                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
+                  |)
                 |) in
               let~ _ :=
                 M.loop (|
@@ -4572,7 +4586,7 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne (M.read (| one |)) (Value.Integer 0)
+                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U8 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4585,12 +4599,13 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.read (| op |))
-                                              (BinOp.Wrap.add
-                                                Integer.U8
-                                                (M.read (| res |))
-                                                (M.read (| one |)))
+                                            BinOp.ge (|
+                                              M.read (| op |),
+                                              BinOp.Wrap.add (|
+                                                M.read (| res |),
+                                                M.read (| one |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -4601,21 +4616,21 @@ Module num.
                                         let β := op in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub
-                                            Integer.U8
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.U8
-                                              (M.read (| res |))
-                                              (M.read (| one |)))
+                                          BinOp.Wrap.sub (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
                                           res,
-                                          BinOp.Wrap.add
-                                            Integer.U8
-                                            (BinOp.Wrap.shr (M.read (| res |)) (Value.Integer 1))
-                                            (M.read (| one |))
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.shr (|
+                                              M.read (| res |),
+                                              Value.Integer IntegerKind.I32 1
+                                            |),
+                                            M.read (| one |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -4624,14 +4639,20 @@ Module num.
                                         let β := res in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
+                                          BinOp.Wrap.shr (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.I32 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
                             let~ _ :=
                               let β := one in
-                              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 2) |) in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
+                              |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -4652,14 +4673,16 @@ Module num.
                   M.call_closure (|
                     M.get_function (| "core::hint::assert_unchecked", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| res |))
-                        (BinOp.Wrap.shl
-                          (Value.Integer 1)
-                          (BinOp.Wrap.div
-                            Integer.U32
-                            (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                            (Value.Integer 2)))
+                      BinOp.lt (|
+                        M.read (| res |),
+                        BinOp.Wrap.shl (|
+                          Value.Integer IntegerKind.U8 1,
+                          BinOp.Wrap.div (|
+                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                            Value.Integer IntegerKind.U32 2
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -4674,7 +4697,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
@@ -4767,7 +4790,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -4821,7 +4844,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -4869,7 +4892,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -4953,7 +4976,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -5000,7 +5023,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -5067,7 +5090,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -5138,7 +5161,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5183,7 +5206,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5227,7 +5250,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5272,7 +5295,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5316,7 +5339,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5374,7 +5397,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -5411,7 +5434,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -5452,7 +5475,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -5499,7 +5522,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -5546,7 +5569,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -5592,7 +5615,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -5637,7 +5660,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -5683,7 +5706,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -5728,7 +5751,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -5773,7 +5796,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -5818,7 +5841,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -5845,7 +5868,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer 1 ]
+                    [ Value.Integer IntegerKind.U16 1 ]
                   |)
                 ]
               |)
@@ -5961,7 +5984,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -6007,7 +6030,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -6048,7 +6071,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -6133,7 +6156,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -6149,21 +6172,21 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.U32
-              (BinOp.Wrap.sub
-                Integer.U32
-                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                (Value.Integer 1))
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.sub (|
+                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                Value.Integer IntegerKind.U32 1
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -6191,7 +6214,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -6241,7 +6264,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -6261,8 +6284,8 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.lt
-              (M.call_closure (|
+            BinOp.lt (|
+              M.call_closure (|
                 M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u16" ] |),
                 [
                   M.call_closure (|
@@ -6274,9 +6297,10 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (Value.Integer 2)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U32 2
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -6328,12 +6352,12 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ res := M.alloc (| Value.Integer 0 |) in
+              let~ res := M.alloc (| Value.Integer IntegerKind.U16 0 |) in
               let~ one :=
                 M.alloc (|
-                  BinOp.Wrap.shl
-                    (Value.Integer 1)
-                    (BinOp.Pure.bit_and
+                  BinOp.Wrap.shl (|
+                    Value.Integer IntegerKind.U16 1,
+                    BinOp.bit_and
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -6342,7 +6366,8 @@ Module num.
                         |),
                         [ M.read (| self |) ]
                       |))
-                      (UnOp.Pure.not (Value.Integer 1)))
+                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
+                  |)
                 |) in
               let~ _ :=
                 M.loop (|
@@ -6355,7 +6380,7 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne (M.read (| one |)) (Value.Integer 0)
+                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U16 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6368,12 +6393,13 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.read (| op |))
-                                              (BinOp.Wrap.add
-                                                Integer.U16
-                                                (M.read (| res |))
-                                                (M.read (| one |)))
+                                            BinOp.ge (|
+                                              M.read (| op |),
+                                              BinOp.Wrap.add (|
+                                                M.read (| res |),
+                                                M.read (| one |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -6384,21 +6410,21 @@ Module num.
                                         let β := op in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub
-                                            Integer.U16
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.U16
-                                              (M.read (| res |))
-                                              (M.read (| one |)))
+                                          BinOp.Wrap.sub (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
                                           res,
-                                          BinOp.Wrap.add
-                                            Integer.U16
-                                            (BinOp.Wrap.shr (M.read (| res |)) (Value.Integer 1))
-                                            (M.read (| one |))
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.shr (|
+                                              M.read (| res |),
+                                              Value.Integer IntegerKind.I32 1
+                                            |),
+                                            M.read (| one |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -6407,14 +6433,20 @@ Module num.
                                         let β := res in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
+                                          BinOp.Wrap.shr (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.I32 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
                             let~ _ :=
                               let β := one in
-                              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 2) |) in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
+                              |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -6435,14 +6467,16 @@ Module num.
                   M.call_closure (|
                     M.get_function (| "core::hint::assert_unchecked", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| res |))
-                        (BinOp.Wrap.shl
-                          (Value.Integer 1)
-                          (BinOp.Wrap.div
-                            Integer.U32
-                            (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                            (Value.Integer 2)))
+                      BinOp.lt (|
+                        M.read (| res |),
+                        BinOp.Wrap.shl (|
+                          Value.Integer IntegerKind.U16 1,
+                          BinOp.Wrap.div (|
+                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                            Value.Integer IntegerKind.U32 2
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -6457,7 +6491,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
@@ -6550,7 +6584,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -6604,7 +6638,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -6652,7 +6686,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -6736,7 +6770,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -6783,7 +6817,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -6850,7 +6884,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -6921,7 +6955,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6966,7 +7000,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7010,7 +7044,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7055,7 +7089,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7099,7 +7133,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7157,7 +7191,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -7194,7 +7228,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -7235,7 +7269,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -7282,7 +7316,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -7329,7 +7363,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -7375,7 +7409,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -7420,7 +7454,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -7466,7 +7500,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -7511,7 +7545,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -7556,7 +7590,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -7601,7 +7635,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -7628,7 +7662,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer 1 ]
+                    [ Value.Integer IntegerKind.U32 1 ]
                   |)
                 ]
               |)
@@ -7744,7 +7778,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -7790,7 +7824,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -7831,7 +7865,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -7916,7 +7950,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -7932,21 +7966,21 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.U32
-              (BinOp.Wrap.sub
-                Integer.U32
-                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                (Value.Integer 1))
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.sub (|
+                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                Value.Integer IntegerKind.U32 1
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -7974,7 +8008,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -8024,7 +8058,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -8044,8 +8078,8 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.lt
-              (M.call_closure (|
+            BinOp.lt (|
+              M.call_closure (|
                 M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u32" ] |),
                 [
                   M.call_closure (|
@@ -8057,9 +8091,10 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (Value.Integer 2)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U32 2
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -8111,12 +8146,12 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ res := M.alloc (| Value.Integer 0 |) in
+              let~ res := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
               let~ one :=
                 M.alloc (|
-                  BinOp.Wrap.shl
-                    (Value.Integer 1)
-                    (BinOp.Pure.bit_and
+                  BinOp.Wrap.shl (|
+                    Value.Integer IntegerKind.U32 1,
+                    BinOp.bit_and
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -8125,7 +8160,8 @@ Module num.
                         |),
                         [ M.read (| self |) ]
                       |))
-                      (UnOp.Pure.not (Value.Integer 1)))
+                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
+                  |)
                 |) in
               let~ _ :=
                 M.loop (|
@@ -8138,7 +8174,7 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne (M.read (| one |)) (Value.Integer 0)
+                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U32 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8151,12 +8187,13 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.read (| op |))
-                                              (BinOp.Wrap.add
-                                                Integer.U32
-                                                (M.read (| res |))
-                                                (M.read (| one |)))
+                                            BinOp.ge (|
+                                              M.read (| op |),
+                                              BinOp.Wrap.add (|
+                                                M.read (| res |),
+                                                M.read (| one |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -8167,21 +8204,21 @@ Module num.
                                         let β := op in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub
-                                            Integer.U32
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.U32
-                                              (M.read (| res |))
-                                              (M.read (| one |)))
+                                          BinOp.Wrap.sub (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
                                           res,
-                                          BinOp.Wrap.add
-                                            Integer.U32
-                                            (BinOp.Wrap.shr (M.read (| res |)) (Value.Integer 1))
-                                            (M.read (| one |))
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.shr (|
+                                              M.read (| res |),
+                                              Value.Integer IntegerKind.I32 1
+                                            |),
+                                            M.read (| one |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -8190,14 +8227,20 @@ Module num.
                                         let β := res in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
+                                          BinOp.Wrap.shr (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.I32 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
                             let~ _ :=
                               let β := one in
-                              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 2) |) in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
+                              |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -8218,14 +8261,16 @@ Module num.
                   M.call_closure (|
                     M.get_function (| "core::hint::assert_unchecked", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| res |))
-                        (BinOp.Wrap.shl
-                          (Value.Integer 1)
-                          (BinOp.Wrap.div
-                            Integer.U32
-                            (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                            (Value.Integer 2)))
+                      BinOp.lt (|
+                        M.read (| res |),
+                        BinOp.Wrap.shl (|
+                          Value.Integer IntegerKind.U32 1,
+                          BinOp.Wrap.div (|
+                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                            Value.Integer IntegerKind.U32 2
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -8240,7 +8285,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
@@ -8333,7 +8378,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -8387,7 +8432,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -8435,7 +8480,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -8519,7 +8564,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -8566,7 +8611,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -8633,7 +8678,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -8704,7 +8749,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8749,7 +8794,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8793,7 +8838,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8838,7 +8883,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8882,7 +8927,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8940,7 +8985,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -8977,7 +9022,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -9018,7 +9063,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -9065,7 +9110,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -9112,7 +9157,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -9158,7 +9203,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -9203,7 +9248,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -9249,7 +9294,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -9294,7 +9339,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -9339,7 +9384,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -9384,7 +9429,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -9411,7 +9456,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer 1 ]
+                    [ Value.Integer IntegerKind.U64 1 ]
                   |)
                 ]
               |)
@@ -9527,7 +9572,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -9573,7 +9618,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -9614,7 +9659,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -9699,7 +9744,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -9715,21 +9760,21 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.U32
-              (BinOp.Wrap.sub
-                Integer.U32
-                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                (Value.Integer 1))
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.sub (|
+                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                Value.Integer IntegerKind.U32 1
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -9757,7 +9802,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -9807,7 +9852,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -9827,8 +9872,8 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.lt
-              (M.call_closure (|
+            BinOp.lt (|
+              M.call_closure (|
                 M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u64" ] |),
                 [
                   M.call_closure (|
@@ -9840,9 +9885,10 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (Value.Integer 2)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U32 2
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -9894,12 +9940,12 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ res := M.alloc (| Value.Integer 0 |) in
+              let~ res := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
               let~ one :=
                 M.alloc (|
-                  BinOp.Wrap.shl
-                    (Value.Integer 1)
-                    (BinOp.Pure.bit_and
+                  BinOp.Wrap.shl (|
+                    Value.Integer IntegerKind.U64 1,
+                    BinOp.bit_and
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -9908,7 +9954,8 @@ Module num.
                         |),
                         [ M.read (| self |) ]
                       |))
-                      (UnOp.Pure.not (Value.Integer 1)))
+                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
+                  |)
                 |) in
               let~ _ :=
                 M.loop (|
@@ -9921,7 +9968,7 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne (M.read (| one |)) (Value.Integer 0)
+                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U64 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9934,12 +9981,13 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.read (| op |))
-                                              (BinOp.Wrap.add
-                                                Integer.U64
-                                                (M.read (| res |))
-                                                (M.read (| one |)))
+                                            BinOp.ge (|
+                                              M.read (| op |),
+                                              BinOp.Wrap.add (|
+                                                M.read (| res |),
+                                                M.read (| one |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -9950,21 +9998,21 @@ Module num.
                                         let β := op in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub
-                                            Integer.U64
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.U64
-                                              (M.read (| res |))
-                                              (M.read (| one |)))
+                                          BinOp.Wrap.sub (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
                                           res,
-                                          BinOp.Wrap.add
-                                            Integer.U64
-                                            (BinOp.Wrap.shr (M.read (| res |)) (Value.Integer 1))
-                                            (M.read (| one |))
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.shr (|
+                                              M.read (| res |),
+                                              Value.Integer IntegerKind.I32 1
+                                            |),
+                                            M.read (| one |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -9973,14 +10021,20 @@ Module num.
                                         let β := res in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
+                                          BinOp.Wrap.shr (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.I32 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
                             let~ _ :=
                               let β := one in
-                              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 2) |) in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
+                              |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -10001,14 +10055,16 @@ Module num.
                   M.call_closure (|
                     M.get_function (| "core::hint::assert_unchecked", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| res |))
-                        (BinOp.Wrap.shl
-                          (Value.Integer 1)
-                          (BinOp.Wrap.div
-                            Integer.U32
-                            (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                            (Value.Integer 2)))
+                      BinOp.lt (|
+                        M.read (| res |),
+                        BinOp.Wrap.shl (|
+                          Value.Integer IntegerKind.U64 1,
+                          BinOp.Wrap.div (|
+                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                            Value.Integer IntegerKind.U32 2
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -10023,7 +10079,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
@@ -10116,7 +10172,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -10170,7 +10226,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -10218,7 +10274,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -10302,7 +10358,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -10349,7 +10405,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -10416,7 +10472,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -10487,7 +10543,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10532,7 +10588,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10576,7 +10632,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10621,7 +10677,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10665,7 +10721,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10723,7 +10779,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -10760,7 +10816,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -10801,7 +10857,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -10848,7 +10904,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -10895,7 +10951,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -10941,7 +10997,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -10986,7 +11042,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -11032,7 +11088,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -11077,7 +11133,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -11122,7 +11178,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -11167,7 +11223,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -11194,7 +11250,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer 1 ]
+                    [ Value.Integer IntegerKind.U128 1 ]
                   |)
                 ]
               |)
@@ -11310,7 +11366,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -11356,7 +11412,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -11397,7 +11453,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -11482,7 +11538,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -11498,21 +11554,21 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.U32
-              (BinOp.Wrap.sub
-                Integer.U32
-                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                (Value.Integer 1))
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.sub (|
+                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                Value.Integer IntegerKind.U32 1
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -11540,7 +11596,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -11590,7 +11646,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -11610,8 +11666,8 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.lt
-              (M.call_closure (|
+            BinOp.lt (|
+              M.call_closure (|
                 M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u128" ] |),
                 [
                   M.call_closure (|
@@ -11623,9 +11679,10 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (Value.Integer 2)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U32 2
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -11677,12 +11734,12 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ res := M.alloc (| Value.Integer 0 |) in
+              let~ res := M.alloc (| Value.Integer IntegerKind.U128 0 |) in
               let~ one :=
                 M.alloc (|
-                  BinOp.Wrap.shl
-                    (Value.Integer 1)
-                    (BinOp.Pure.bit_and
+                  BinOp.Wrap.shl (|
+                    Value.Integer IntegerKind.U128 1,
+                    BinOp.bit_and
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -11691,7 +11748,8 @@ Module num.
                         |),
                         [ M.read (| self |) ]
                       |))
-                      (UnOp.Pure.not (Value.Integer 1)))
+                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
+                  |)
                 |) in
               let~ _ :=
                 M.loop (|
@@ -11704,7 +11762,7 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne (M.read (| one |)) (Value.Integer 0)
+                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U128 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -11717,12 +11775,13 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.read (| op |))
-                                              (BinOp.Wrap.add
-                                                Integer.U128
-                                                (M.read (| res |))
-                                                (M.read (| one |)))
+                                            BinOp.ge (|
+                                              M.read (| op |),
+                                              BinOp.Wrap.add (|
+                                                M.read (| res |),
+                                                M.read (| one |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -11733,21 +11792,21 @@ Module num.
                                         let β := op in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub
-                                            Integer.U128
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.U128
-                                              (M.read (| res |))
-                                              (M.read (| one |)))
+                                          BinOp.Wrap.sub (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
                                           res,
-                                          BinOp.Wrap.add
-                                            Integer.U128
-                                            (BinOp.Wrap.shr (M.read (| res |)) (Value.Integer 1))
-                                            (M.read (| one |))
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.shr (|
+                                              M.read (| res |),
+                                              Value.Integer IntegerKind.I32 1
+                                            |),
+                                            M.read (| one |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -11756,14 +11815,20 @@ Module num.
                                         let β := res in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
+                                          BinOp.Wrap.shr (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.I32 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
                             let~ _ :=
                               let β := one in
-                              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 2) |) in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
+                              |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -11784,14 +11849,16 @@ Module num.
                   M.call_closure (|
                     M.get_function (| "core::hint::assert_unchecked", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| res |))
-                        (BinOp.Wrap.shl
-                          (Value.Integer 1)
-                          (BinOp.Wrap.div
-                            Integer.U32
-                            (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                            (Value.Integer 2)))
+                      BinOp.lt (|
+                        M.read (| res |),
+                        BinOp.Wrap.shl (|
+                          Value.Integer IntegerKind.U128 1,
+                          BinOp.Wrap.div (|
+                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                            Value.Integer IntegerKind.U32 2
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -11806,7 +11873,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
@@ -11899,7 +11966,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -11953,7 +12020,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -12001,7 +12068,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -12085,7 +12152,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -12132,7 +12199,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -12199,7 +12266,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -12270,7 +12337,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12315,7 +12382,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12359,7 +12426,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12404,7 +12471,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12448,7 +12515,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12506,7 +12573,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -12543,7 +12610,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -12584,7 +12651,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -12631,7 +12698,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -12678,7 +12745,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -12724,7 +12791,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -12769,7 +12836,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -12815,7 +12882,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -12860,7 +12927,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -12905,7 +12972,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -12950,7 +13017,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -12977,7 +13044,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer 1 ]
+                    [ Value.Integer IntegerKind.Usize 1 ]
                   |)
                 ]
               |)
@@ -13093,7 +13160,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -13139,7 +13206,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -13180,7 +13247,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -13265,7 +13332,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -13281,21 +13348,21 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.U32
-              (BinOp.Wrap.sub
-                Integer.U32
-                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                (Value.Integer 1))
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              BinOp.Wrap.sub (|
+                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                Value.Integer IntegerKind.U32 1
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -13323,7 +13390,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -13373,7 +13440,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -13393,8 +13460,8 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.lt
-              (M.call_closure (|
+            BinOp.lt (|
+              M.call_closure (|
                 M.get_function (| "core::intrinsics::ctpop", [ Ty.path "usize" ] |),
                 [
                   M.call_closure (|
@@ -13406,9 +13473,10 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (Value.Integer 2)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.U32 2
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -13460,12 +13528,12 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ res := M.alloc (| Value.Integer 0 |) in
+              let~ res := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ one :=
                 M.alloc (|
-                  BinOp.Wrap.shl
-                    (Value.Integer 1)
-                    (BinOp.Pure.bit_and
+                  BinOp.Wrap.shl (|
+                    Value.Integer IntegerKind.Usize 1,
+                    BinOp.bit_and
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -13474,7 +13542,8 @@ Module num.
                         |),
                         [ M.read (| self |) ]
                       |))
-                      (UnOp.Pure.not (Value.Integer 1)))
+                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
+                  |)
                 |) in
               let~ _ :=
                 M.loop (|
@@ -13487,7 +13556,7 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne (M.read (| one |)) (Value.Integer 0)
+                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13500,12 +13569,13 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.read (| op |))
-                                              (BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| res |))
-                                                (M.read (| one |)))
+                                            BinOp.ge (|
+                                              M.read (| op |),
+                                              BinOp.Wrap.add (|
+                                                M.read (| res |),
+                                                M.read (| one |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -13516,21 +13586,21 @@ Module num.
                                         let β := op in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| res |))
-                                              (M.read (| one |)))
+                                          BinOp.Wrap.sub (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
                                           res,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (BinOp.Wrap.shr (M.read (| res |)) (Value.Integer 1))
-                                            (M.read (| one |))
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.shr (|
+                                              M.read (| res |),
+                                              Value.Integer IntegerKind.I32 1
+                                            |),
+                                            M.read (| one |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -13539,14 +13609,20 @@ Module num.
                                         let β := res in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
+                                          BinOp.Wrap.shr (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.I32 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
                             let~ _ :=
                               let β := one in
-                              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 2) |) in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
+                              |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -13567,14 +13643,16 @@ Module num.
                   M.call_closure (|
                     M.get_function (| "core::hint::assert_unchecked", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| res |))
-                        (BinOp.Wrap.shl
-                          (Value.Integer 1)
-                          (BinOp.Wrap.div
-                            Integer.U32
-                            (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
-                            (Value.Integer 2)))
+                      BinOp.lt (|
+                        M.read (| res |),
+                        BinOp.Wrap.shl (|
+                          Value.Integer IntegerKind.Usize 1,
+                          BinOp.Wrap.div (|
+                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                            Value.Integer IntegerKind.U32 2
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -13589,7 +13667,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
@@ -13682,7 +13760,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -13736,7 +13814,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -13784,7 +13862,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -13868,7 +13946,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -13915,7 +13993,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -13982,7 +14060,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -14053,7 +14131,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14098,7 +14176,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14142,7 +14220,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14187,7 +14265,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14231,7 +14309,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14285,7 +14363,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -14318,7 +14396,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -14359,7 +14437,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -14406,7 +14484,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -14453,7 +14531,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -14499,7 +14577,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -14544,7 +14622,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -14590,7 +14668,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -14635,7 +14713,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -14680,7 +14758,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -14725,7 +14803,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -14823,7 +14901,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -14898,7 +14976,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -14962,7 +15040,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -15001,7 +15079,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -15040,7 +15118,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -15079,7 +15157,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -15108,7 +15186,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -15136,7 +15214,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -15219,7 +15297,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -15280,7 +15358,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -15338,7 +15416,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -15384,7 +15462,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -15478,7 +15556,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -15532,7 +15610,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -15580,7 +15658,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -15664,7 +15742,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -15711,7 +15789,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -15778,7 +15856,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -15849,7 +15927,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15902,7 +15980,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15956,7 +16034,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -15989,7 +16067,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -16030,7 +16108,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -16077,7 +16155,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -16124,7 +16202,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -16170,7 +16248,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -16215,7 +16293,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -16261,7 +16339,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -16306,7 +16384,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -16351,7 +16429,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -16396,7 +16474,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -16494,7 +16572,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -16569,7 +16647,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -16633,7 +16711,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -16672,7 +16750,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -16711,7 +16789,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -16750,7 +16828,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -16779,7 +16857,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -16807,7 +16885,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -16890,7 +16968,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -16951,7 +17029,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -17009,7 +17087,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -17055,7 +17133,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -17149,7 +17227,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -17203,7 +17281,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -17251,7 +17329,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -17335,7 +17413,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -17382,7 +17460,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -17449,7 +17527,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -17520,7 +17598,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17573,7 +17651,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17627,7 +17705,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -17660,7 +17738,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -17701,7 +17779,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -17748,7 +17826,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -17795,7 +17873,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -17841,7 +17919,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -17886,7 +17964,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -17932,7 +18010,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -17977,7 +18055,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -18022,7 +18100,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -18067,7 +18145,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -18165,7 +18243,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -18240,7 +18318,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -18304,7 +18382,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -18343,7 +18421,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -18382,7 +18460,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -18421,7 +18499,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -18450,7 +18528,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -18478,7 +18556,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -18561,7 +18639,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -18622,7 +18700,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -18680,7 +18758,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -18726,7 +18804,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -18820,7 +18898,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -18874,7 +18952,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -18922,7 +19000,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -19006,7 +19084,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -19053,7 +19131,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -19120,7 +19198,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -19191,7 +19269,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19244,7 +19322,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19298,7 +19376,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -19331,7 +19409,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -19372,7 +19450,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -19419,7 +19497,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -19466,7 +19544,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -19512,7 +19590,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -19557,7 +19635,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -19603,7 +19681,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -19648,7 +19726,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -19693,7 +19771,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -19738,7 +19816,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -19836,7 +19914,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -19911,7 +19989,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -19975,7 +20053,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -20014,7 +20092,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -20053,7 +20131,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -20092,7 +20170,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -20121,7 +20199,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -20149,7 +20227,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -20232,7 +20310,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -20293,7 +20371,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -20351,7 +20429,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -20397,7 +20475,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -20491,7 +20569,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -20545,7 +20623,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -20593,7 +20671,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -20677,7 +20755,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -20724,7 +20802,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -20791,7 +20869,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -20862,7 +20940,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -20915,7 +20993,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -20969,7 +21047,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -21002,7 +21080,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -21043,7 +21121,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -21090,7 +21168,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -21137,7 +21215,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -21183,7 +21261,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -21228,7 +21306,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -21274,7 +21352,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -21319,7 +21397,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -21364,7 +21442,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -21409,7 +21487,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -21507,7 +21585,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -21582,7 +21660,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -21646,7 +21724,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -21685,7 +21763,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -21724,7 +21802,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -21763,7 +21841,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -21792,7 +21870,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -21820,7 +21898,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -21903,7 +21981,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -21964,7 +22042,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -22022,7 +22100,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -22068,7 +22146,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -22162,7 +22240,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -22216,7 +22294,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -22264,7 +22342,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -22348,7 +22426,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -22395,7 +22473,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -22462,7 +22540,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -22533,7 +22611,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -22586,7 +22664,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -22640,7 +22718,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -22673,7 +22751,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -22714,7 +22792,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -22761,7 +22839,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -22808,7 +22886,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -22854,7 +22932,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -22899,7 +22977,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -22945,7 +23023,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -22990,7 +23068,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -23035,7 +23113,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -23080,7 +23158,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -23178,7 +23256,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -23253,7 +23331,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -23317,7 +23395,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -23356,7 +23434,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -23395,7 +23473,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -23434,7 +23512,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -23463,7 +23541,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -23491,7 +23569,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -23578,7 +23656,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -23639,7 +23717,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -23697,7 +23775,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -23743,7 +23821,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -23837,7 +23915,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -23891,7 +23969,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -23939,7 +24017,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -24023,7 +24101,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -24070,7 +24148,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -24137,7 +24215,7 @@ Module num.
                                       "from_str_radix",
                                       []
                                     |),
-                                    [ M.read (| src |); Value.Integer 10 ]
+                                    [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
                                   |)
                                 ]
                               |)
@@ -24208,7 +24286,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -24261,7 +24339,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

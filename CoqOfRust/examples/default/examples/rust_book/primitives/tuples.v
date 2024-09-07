@@ -28,7 +28,7 @@ Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
@@ -68,7 +68,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -132,14 +132,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Integer 1;
-                Value.Integer 2;
-                Value.Integer 3;
-                Value.Integer 4;
-                Value.Integer (-1);
-                Value.Integer (-2);
-                Value.Integer (-3);
-                Value.Integer (-4);
+                Value.Integer IntegerKind.U8 1;
+                Value.Integer IntegerKind.U16 2;
+                Value.Integer IntegerKind.U32 3;
+                Value.Integer IntegerKind.U64 4;
+                Value.Integer IntegerKind.I8 (-1);
+                Value.Integer IntegerKind.I16 (-2);
+                Value.Integer IntegerKind.I32 (-3);
+                Value.Integer IntegerKind.I64 (-4);
                 M.read (| UnsupportedLiteral |);
                 M.read (| UnsupportedLiteral |);
                 Value.UnicodeChar 97;
@@ -222,9 +222,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Tuple [ Value.Integer 1; Value.Integer 2; Value.Integer 2 ];
-                Value.Tuple [ Value.Integer 4; Value.Integer (-1) ];
-                Value.Integer (-2)
+                Value.Tuple
+                  [
+                    Value.Integer IntegerKind.U8 1;
+                    Value.Integer IntegerKind.U16 2;
+                    Value.Integer IntegerKind.U32 2
+                  ];
+                Value.Tuple [ Value.Integer IntegerKind.U64 4; Value.Integer IntegerKind.I8 (-1) ];
+                Value.Integer IntegerKind.I16 (-2)
               ]
           |) in
         let~ _ :=
@@ -270,7 +275,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ pair_ := M.alloc (| Value.Tuple [ Value.Integer 1; Value.Bool true ] |) in
+        let~ pair_ :=
+          M.alloc (| Value.Tuple [ Value.Integer IntegerKind.I32 1; Value.Bool true ] |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -373,7 +379,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "new_debug",
                                 [ Ty.tuple [ Ty.path "u32" ] ]
                               |),
-                              [ M.alloc (| Value.Tuple [ Value.Integer 5 ] |) ]
+                              [ M.alloc (| Value.Tuple [ Value.Integer IntegerKind.U32 5 ] |) ]
                             |)
                           ]
                       |)
@@ -409,7 +415,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "new_debug",
                                 [ Ty.path "u32" ]
                               |),
-                              [ M.alloc (| Value.Integer 5 |) ]
+                              [ M.alloc (| Value.Integer IntegerKind.U32 5 |) ]
                             |)
                           ]
                       |)
@@ -423,7 +429,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Integer 1;
+                Value.Integer IntegerKind.I32 1;
                 M.read (| Value.String "hello" |);
                 M.read (| UnsupportedLiteral |);
                 Value.Bool true
@@ -561,7 +567,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "tuples::main" main.

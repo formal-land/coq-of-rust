@@ -102,7 +102,7 @@ Module dependencies.
             |),
             [ M.read (| module |); M.read (| dependencies |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_module : M.IsAssociatedFunction Self "module" module.
@@ -426,42 +426,43 @@ Module dependencies.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let d := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::cmp::PartialEq",
-                                                Ty.path
-                                                  "move_core_types::language_storage::ModuleId",
-                                                [
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let d := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
                                                   Ty.path
-                                                    "move_core_types::language_storage::ModuleId"
-                                                ],
-                                                "ne",
-                                                []
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::file_format::CompiledModule",
-                                                      "self_id",
-                                                      []
-                                                    |),
-                                                    [ M.read (| M.read (| d |) |) ]
-                                                  |)
-                                                |);
-                                                self_module
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                    "move_core_types::language_storage::ModuleId",
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::ModuleId"
+                                                  ],
+                                                  "ne",
+                                                  []
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::CompiledModule",
+                                                        "self_id",
+                                                        []
+                                                      |),
+                                                      [ M.read (| M.read (| d |) |) ]
+                                                    |)
+                                                  |);
+                                                  self_module
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |);
@@ -470,28 +471,29 @@ Module dependencies.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let d := M.copy (| γ |) in
-                                        Value.Tuple
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::CompiledModule",
-                                                "self_id",
-                                                []
-                                              |),
-                                              [ M.read (| d |) ]
-                                            |);
-                                            M.read (| d |)
-                                          ]))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let d := M.copy (| γ |) in
+                                          Value.Tuple
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "self_id",
+                                                  []
+                                                |),
+                                                [ M.read (| d |) ]
+                                              |);
+                                              M.read (| d |)
+                                            ]))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -508,20 +510,21 @@ Module dependencies.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.call_closure (|
+                              BinOp.lt (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "version",
                                     []
                                   |),
                                   [ M.read (| module |) ]
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.get_constant (|
                                     "move_binary_format::file_format_common::VERSION_5"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1586,43 +1589,46 @@ Module dependencies.
                                                           ltac:(M.monadic
                                                             match γ with
                                                             | [ α0 ] =>
-                                                              M.match_operator (|
-                                                                M.alloc (| α0 |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let s := M.copy (| γ |) in
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::collections::btree::set::BTreeSet")
+                                                              ltac:(M.monadic
+                                                                (M.match_operator (|
+                                                                  M.alloc (| α0 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let s := M.copy (| γ |) in
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::collections::btree::set::BTreeSet")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FunctionHandleIndex";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ],
+                                                                            "insert",
                                                                             []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::FunctionHandleIndex";
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          "insert",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| s |);
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (|
-                                                                                function_def
-                                                                              |),
-                                                                              "move_binary_format::file_format::FunctionDefinition",
-                                                                              "function"
+                                                                          |),
+                                                                          [
+                                                                            M.read (| s |);
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.read (|
+                                                                                  function_def
+                                                                                |),
+                                                                                "move_binary_format::file_format::FunctionDefinition",
+                                                                                "function"
+                                                                              |)
                                                                             |)
-                                                                          |)
-                                                                        ]
-                                                                      |)))
-                                                                ]
-                                                              |)
-                                                            | _ => M.impossible (||)
+                                                                          ]
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
                                                             end))
                                                     ]
                                                   |)
@@ -2065,15 +2071,16 @@ Module dependencies.
                                                         M.use
                                                           (M.alloc (|
                                                             LogicalOp.and (|
-                                                              BinOp.Pure.lt
-                                                                (M.read (|
+                                                              BinOp.lt (|
+                                                                M.read (|
                                                                   dep_file_format_version
-                                                                |))
-                                                                (M.read (|
+                                                                |),
+                                                                M.read (|
                                                                   M.get_constant (|
                                                                     "move_binary_format::file_format_common::VERSION_5"
                                                                   |)
-                                                                |)),
+                                                                |)
+                                                              |),
                                                               ltac:(M.monadic
                                                                 (M.read (| is_entry |)))
                                                             |)
@@ -2168,38 +2175,41 @@ Module dependencies.
                                                                   ltac:(M.monadic
                                                                     match γ with
                                                                     | [ α0 ] =>
-                                                                      M.match_operator (|
-                                                                        M.alloc (| α0 |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let s :=
-                                                                                M.copy (| γ |) in
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::collections::btree::set::BTreeSet")
+                                                                      ltac:(M.monadic
+                                                                        (M.match_operator (|
+                                                                          M.alloc (| α0 |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let s :=
+                                                                                  M.copy (| γ |) in
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::collections::btree::set::BTreeSet")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::FunctionHandleIndex";
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ],
+                                                                                    "insert",
                                                                                     []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_binary_format::file_format::FunctionHandleIndex";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ],
-                                                                                  "insert",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (| s |);
-                                                                                  M.read (|
-                                                                                    fhandle_idx
-                                                                                  |)
-                                                                                ]
-                                                                              |)))
-                                                                        ]
-                                                                      |)
-                                                                    | _ => M.impossible (||)
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (| s |);
+                                                                                    M.read (|
+                                                                                      fhandle_idx
+                                                                                    |)
+                                                                                  ]
+                                                                                |)))
+                                                                          ]
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
                                                                     end))
                                                             ]
                                                           |)
@@ -2219,7 +2229,7 @@ Module dependencies.
                 |)) in
             context
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2267,41 +2277,42 @@ Module dependencies.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let e := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::errors::PartialVMError",
-                                "finish",
-                                []
-                              |),
-                              [
-                                M.read (| e |);
-                                Value.StructTuple
-                                  "move_binary_format::errors::Location::Module"
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "self_id",
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
-                                    |)
-                                  ]
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let e := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
+                                  "finish",
+                                  []
+                                |),
+                                [
+                                  M.read (| e |);
+                                  Value.StructTuple
+                                    "move_binary_format::errors::Location::Module"
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "self_id",
+                                          []
+                                        |),
+                                        [ M.read (| module |) ]
+                                      |)
+                                    ]
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module :
@@ -2590,7 +2601,7 @@ Module dependencies.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_impl :
@@ -2810,8 +2821,8 @@ Module dependencies.
                                                           ]
                                                         |),
                                                         ltac:(M.monadic
-                                                          (UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          (UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -2843,7 +2854,8 @@ Module dependencies.
                                                                 |);
                                                                 module_id
                                                               ]
-                                                            |))))
+                                                            |)
+                                                          |)))
                                                       |)
                                                     |)) in
                                                 let _ :=
@@ -2890,7 +2902,7 @@ Module dependencies.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_imported_modules :
@@ -3505,8 +3517,8 @@ Module dependencies.
                                                           M.use
                                                             (M.alloc (|
                                                               LogicalOp.or (|
-                                                                UnOp.Pure.not
-                                                                  (M.call_closure (|
+                                                                UnOp.not (|
+                                                                  M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_bytecode_verifier::dependencies::compatible_struct_abilities",
                                                                       []
@@ -3529,10 +3541,11 @@ Module dependencies.
                                                                         |)
                                                                       |)
                                                                     ]
-                                                                  |)),
+                                                                  |)
+                                                                |),
                                                                 ltac:(M.monadic
-                                                                  (UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  (UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "move_bytecode_verifier::dependencies::compatible_struct_type_parameters",
                                                                         []
@@ -3593,7 +3606,8 @@ Module dependencies.
                                                                           ]
                                                                         |)
                                                                       ]
-                                                                    |))))
+                                                                    |)
+                                                                  |)))
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -3679,7 +3693,7 @@ Module dependencies.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_imported_structs :
@@ -4343,8 +4357,8 @@ Module dependencies.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.call_closure (|
+                                                                UnOp.not (|
+                                                                  M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_bytecode_verifier::dependencies::compatible_fun_type_parameters",
                                                                       []
@@ -4403,7 +4417,8 @@ Module dependencies.
                                                                         ]
                                                                       |)
                                                                     ]
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -4687,34 +4702,37 @@ Module dependencies.
                                                                   ltac:(M.monadic
                                                                     match γ with
                                                                     | [ α0 ] =>
-                                                                      M.match_operator (|
-                                                                        M.alloc (| α0 |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let e :=
-                                                                                M.copy (| γ |) in
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "move_binary_format::errors::PartialVMError",
-                                                                                  "at_index",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (| e |);
-                                                                                  Value.StructTuple
-                                                                                    "move_binary_format::IndexKind::FunctionHandle"
-                                                                                    [];
-                                                                                  M.rust_cast
-                                                                                    (M.read (|
-                                                                                      idx
-                                                                                    |))
-                                                                                ]
-                                                                              |)))
-                                                                        ]
-                                                                      |)
-                                                                    | _ => M.impossible (||)
+                                                                      ltac:(M.monadic
+                                                                        (M.match_operator (|
+                                                                          M.alloc (| α0 |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let e :=
+                                                                                  M.copy (| γ |) in
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError",
+                                                                                    "at_index",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (| e |);
+                                                                                    Value.StructTuple
+                                                                                      "move_binary_format::IndexKind::FunctionHandle"
+                                                                                      [];
+                                                                                    M.rust_cast
+                                                                                      (M.read (|
+                                                                                        idx
+                                                                                      |))
+                                                                                  ]
+                                                                                |)))
+                                                                          ]
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
                                                                     end))
                                                             ]
                                                           |)
@@ -5024,34 +5042,37 @@ Module dependencies.
                                                                   ltac:(M.monadic
                                                                     match γ with
                                                                     | [ α0 ] =>
-                                                                      M.match_operator (|
-                                                                        M.alloc (| α0 |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let e :=
-                                                                                M.copy (| γ |) in
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "move_binary_format::errors::PartialVMError",
-                                                                                  "at_index",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (| e |);
-                                                                                  Value.StructTuple
-                                                                                    "move_binary_format::IndexKind::FunctionHandle"
-                                                                                    [];
-                                                                                  M.rust_cast
-                                                                                    (M.read (|
-                                                                                      idx
-                                                                                    |))
-                                                                                ]
-                                                                              |)))
-                                                                        ]
-                                                                      |)
-                                                                    | _ => M.impossible (||)
+                                                                      ltac:(M.monadic
+                                                                        (M.match_operator (|
+                                                                          M.alloc (| α0 |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let e :=
+                                                                                  M.copy (| γ |) in
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError",
+                                                                                    "at_index",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (| e |);
+                                                                                    Value.StructTuple
+                                                                                      "move_binary_format::IndexKind::FunctionHandle"
+                                                                                      [];
+                                                                                    M.rust_cast
+                                                                                      (M.read (|
+                                                                                        idx
+                                                                                      |))
+                                                                                  ]
+                                                                                |)))
+                                                                          ]
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
                                                                     end))
                                                             ]
                                                           |)
@@ -5163,7 +5184,7 @@ Module dependencies.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_imported_functions :
@@ -5198,7 +5219,7 @@ Module dependencies.
           |),
           [ M.read (| local_struct_abilities_declaration |); M.read (| defined_struct_abilities |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compatible_struct_abilities :
@@ -5239,8 +5260,8 @@ Module dependencies.
         (let local_type_parameters_declaration := M.alloc (| local_type_parameters_declaration |) in
         let defined_type_parameters := M.alloc (| defined_type_parameters |) in
         LogicalOp.and (|
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -5250,8 +5271,8 @@ Module dependencies.
                 []
               |),
               [ M.read (| local_type_parameters_declaration |) ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -5261,7 +5282,8 @@ Module dependencies.
                 []
               |),
               [ M.read (| defined_type_parameters |) ]
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
@@ -5346,36 +5368,37 @@ Module dependencies.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let local_type_parameter_constraints_declaration :=
-                                  M.copy (| γ0_0 |) in
-                                let defined_type_parameter_constraints := M.copy (| γ0_1 |) in
-                                M.call_closure (|
-                                  M.get_function (|
-                                    "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.read (| local_type_parameter_constraints_declaration |)
-                                    |);
-                                    M.read (| M.read (| defined_type_parameter_constraints |) |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let local_type_parameter_constraints_declaration :=
+                                    M.copy (| γ0_0 |) in
+                                  let defined_type_parameter_constraints := M.copy (| γ0_1 |) in
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
+                                      []
+                                    |),
+                                    [
+                                      M.read (|
+                                        M.read (| local_type_parameter_constraints_declaration |)
+                                      |);
+                                      M.read (| M.read (| defined_type_parameter_constraints |) |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compatible_fun_type_parameters :
@@ -5416,8 +5439,8 @@ Module dependencies.
         (let local_type_parameters_declaration := M.alloc (| local_type_parameters_declaration |) in
         let defined_type_parameters := M.alloc (| defined_type_parameters |) in
         LogicalOp.and (|
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -5427,8 +5450,8 @@ Module dependencies.
                 []
               |),
               [ M.read (| local_type_parameters_declaration |) ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -5438,7 +5461,8 @@ Module dependencies.
                 []
               |),
               [ M.read (| defined_type_parameters |) ]
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
@@ -5523,58 +5547,59 @@ Module dependencies.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let local_type_parameter_declaration := M.copy (| γ0_0 |) in
-                                let defined_type_parameter := M.copy (| γ0_1 |) in
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "move_bytecode_verifier::dependencies::compatible_type_parameter_phantom_decl",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| local_type_parameter_declaration |);
-                                      M.read (| defined_type_parameter |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let local_type_parameter_declaration := M.copy (| γ0_0 |) in
+                                  let defined_type_parameter := M.copy (| γ0_1 |) in
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       M.get_function (|
-                                        "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
+                                        "move_bytecode_verifier::dependencies::compatible_type_parameter_phantom_decl",
                                         []
                                       |),
                                       [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| local_type_parameter_declaration |),
-                                            "move_binary_format::file_format::StructTypeParameter",
-                                            "constraints"
-                                          |)
-                                        |);
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| defined_type_parameter |),
-                                            "move_binary_format::file_format::StructTypeParameter",
-                                            "constraints"
-                                          |)
-                                        |)
+                                        M.read (| local_type_parameter_declaration |);
+                                        M.read (| defined_type_parameter |)
                                       ]
-                                    |)))
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        M.get_function (|
+                                          "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| local_type_parameter_declaration |),
+                                              "move_binary_format::file_format::StructTypeParameter",
+                                              "constraints"
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| defined_type_parameter |),
+                                              "move_binary_format::file_format::StructTypeParameter",
+                                              "constraints"
+                                            |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compatible_struct_type_parameters :
@@ -5615,7 +5640,7 @@ Module dependencies.
             M.read (| local_type_parameter_constraints_declaration |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compatible_type_parameter_constraints :
@@ -5643,14 +5668,15 @@ Module dependencies.
         (let local_type_parameter_declaration := M.alloc (| local_type_parameter_declaration |) in
         let defined_type_parameter := M.alloc (| defined_type_parameter |) in
         LogicalOp.or (|
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.not (|
+            M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| local_type_parameter_declaration |),
                 "move_binary_format::file_format::StructTypeParameter",
                 "is_phantom"
               |)
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.read (|
               M.SubPointer.get_struct_record_field (|
@@ -5660,7 +5686,7 @@ Module dependencies.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compatible_type_parameter_phantom_decl :
@@ -5708,8 +5734,8 @@ Module dependencies.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ne
-                                (M.call_closure (|
+                              BinOp.ne (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -5719,8 +5745,8 @@ Module dependencies.
                                     []
                                   |),
                                   [ M.read (| handle_sig |) ]
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -5730,7 +5756,8 @@ Module dependencies.
                                     []
                                   |),
                                   [ M.read (| def_sig |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5984,7 +6011,7 @@ Module dependencies.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compare_cross_module_signatures :
@@ -6231,10 +6258,11 @@ Module dependencies.
                             ltac:(M.monadic
                               match γ with
                               | [] =>
-                                M.alloc (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ =>
@@ -6539,21 +6567,22 @@ Module dependencies.
                             ltac:(M.monadic
                               match γ with
                               | [ ty1; ty2 ] =>
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "move_bytecode_verifier::dependencies::compare_types",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| context |);
-                                      M.read (| M.read (| ty1 |) |);
-                                      M.read (| M.read (| ty2 |) |);
-                                      M.read (| def_module |)
-                                    ]
-                                  |)
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "move_bytecode_verifier::dependencies::compare_types",
+                                        []
+                                      |),
+                                      [
+                                        M.read (| context |);
+                                        M.read (| M.read (| ty1 |) |);
+                                        M.read (| M.read (| ty2 |) |);
+                                        M.read (| def_module |)
+                                      ]
+                                    |)
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ =>
@@ -6807,32 +6836,33 @@ Module dependencies.
                             ltac:(M.monadic
                               match γ with
                               | [] =>
-                                M.alloc (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::errors::PartialVMError",
-                                          "new",
-                                          []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.StructTuple
+                                      "core::result::Result::Err"
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "move_binary_format::errors::PartialVMError",
+                                            "new",
                                             []
-                                        ]
-                                      |)
-                                    ]
-                                |)
-                              | _ => M.impossible (||)
+                                          |),
+                                          [
+                                            Value.StructTuple
+                                              "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                              []
+                                          ]
+                                        |)
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)))
                 ]
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compare_types :
@@ -7092,7 +7122,7 @@ Module dependencies.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_compare_structs :
@@ -7195,9 +7225,9 @@ Module dependencies.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.lt
-                                            (M.call_closure (|
+                                        UnOp.not (|
+                                          BinOp.lt (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -7213,12 +7243,14 @@ Module dependencies.
                                                   |)
                                                 |)
                                               ]
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.get_constant (|
                                                 "move_binary_format::file_format_common::VERSION_5"
                                               |)
-                                            |)))
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -7537,7 +7569,7 @@ Module dependencies.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_all_script_visibility_usage :
@@ -7882,7 +7914,7 @@ Module dependencies.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_script_visibility_usage :

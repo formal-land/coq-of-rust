@@ -48,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -165,7 +165,7 @@ Module Impl_core_default_Default_for_dns_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -191,7 +191,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -230,14 +230,15 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "dns::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "dns::AccountId", 0 |)
-          |))))
-    | _, _, _ => M.impossible
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -248,7 +249,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_dns_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (*
@@ -263,14 +264,15 @@ Module Impl_core_convert_From_array_32_u8_for_dns_AccountId.
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_dns_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
 
 Axiom Hash :
-  (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+  (Ty.path "dns::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {
@@ -287,7 +289,8 @@ Axiom Hash :
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("name",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId")
       ];
   } *)
@@ -299,7 +302,8 @@ Axiom Hash :
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("name",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
         ("old_address", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ]);
         ("new_address", Ty.path "dns::AccountId")
@@ -313,7 +317,8 @@ Axiom Hash :
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("name",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
         ("old_owner", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ]);
         ("new_owner", Ty.path "dns::AccountId")
@@ -362,7 +367,7 @@ Module Impl_dns_Env.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "dns::Env", "caller" |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -389,7 +394,7 @@ End Impl_dns_Env.
             (Ty.path "dns::Mapping")
             []
             [
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ];
               Ty.path "dns::AccountId"
             ]);
         ("name_to_owner",
@@ -397,7 +402,7 @@ End Impl_dns_Env.
             (Ty.path "dns::Mapping")
             []
             [
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ];
               Ty.path "dns::AccountId"
             ]);
         ("default_address", Ty.path "dns::AccountId")
@@ -416,14 +421,14 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       (M.call_closure (|
         M.get_trait_method (|
           "core::convert::Into",
-          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
           [ Ty.path "dns::AccountId" ],
           "into",
           []
         |),
-        [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
+        [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_zero_address : M.IsFunction "dns::zero_address" zero_address.
@@ -458,7 +463,10 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                     (Ty.path "dns::Mapping")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
                       Ty.path "dns::AccountId"
                     ],
                   "new",
@@ -475,7 +483,10 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                     (Ty.path "dns::Mapping")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
                       Ty.path "dns::AccountId"
                     ],
                   "insert",
@@ -486,7 +497,10 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       [],
                       "default",
                       []
@@ -505,7 +519,10 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                     (Ty.path "dns::Mapping")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
                       Ty.path "dns::AccountId"
                     ],
                   "new",
@@ -522,7 +539,10 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                     (Ty.path "dns::Mapping")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
                       Ty.path "dns::AccountId"
                     ],
                   "insert",
@@ -533,7 +553,10 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       [],
                       "default",
                       []
@@ -555,7 +578,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
               ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -629,9 +652,9 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -656,7 +679,7 @@ Module Impl_core_cmp_Eq_for_dns_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -699,7 +722,7 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (| Ty.path "dns::DomainNameService", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -723,7 +746,7 @@ Module Impl_dns_DomainNameService.
           |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -786,7 +809,7 @@ Module Impl_dns_DomainNameService.
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 32 ]
+                                        [ Value.Integer IntegerKind.Usize 32 ]
                                         [ Ty.path "u8" ];
                                       Ty.path "dns::AccountId"
                                     ],
@@ -827,7 +850,10 @@ Module Impl_dns_DomainNameService.
                         (Ty.path "dns::Mapping")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ];
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
@@ -872,7 +898,7 @@ Module Impl_dns_DomainNameService.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_register : M.IsAssociatedFunction Self "register" register.
@@ -903,7 +929,10 @@ Module Impl_dns_DomainNameService.
                   (Ty.path "dns::Mapping")
                   []
                   [
-                    Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ];
                     Ty.path "dns::AccountId"
                   ],
                 "get",
@@ -927,7 +956,7 @@ Module Impl_dns_DomainNameService.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_owner_or_default :
@@ -1036,7 +1065,10 @@ Module Impl_dns_DomainNameService.
                         (Ty.path "dns::Mapping")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ];
                           Ty.path "dns::AccountId"
                         ],
                       "get",
@@ -1060,7 +1092,10 @@ Module Impl_dns_DomainNameService.
                         (Ty.path "dns::Mapping")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ];
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
@@ -1110,7 +1145,7 @@ Module Impl_dns_DomainNameService.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_set_address : M.IsAssociatedFunction Self "set_address" set_address.
@@ -1219,7 +1254,10 @@ Module Impl_dns_DomainNameService.
                         (Ty.path "dns::Mapping")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ];
                           Ty.path "dns::AccountId"
                         ],
                       "get",
@@ -1243,7 +1281,10 @@ Module Impl_dns_DomainNameService.
                         (Ty.path "dns::Mapping")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ];
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
@@ -1293,7 +1334,7 @@ Module Impl_dns_DomainNameService.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -1324,7 +1365,10 @@ Module Impl_dns_DomainNameService.
                   (Ty.path "dns::Mapping")
                   []
                   [
-                    Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ];
                     Ty.path "dns::AccountId"
                   ],
                 "get",
@@ -1348,7 +1392,7 @@ Module Impl_dns_DomainNameService.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_address_or_default :
@@ -1373,7 +1417,7 @@ Module Impl_dns_DomainNameService.
           |),
           [ M.read (| self |); M.read (| name |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_address : M.IsAssociatedFunction Self "get_address" get_address.
@@ -1397,7 +1441,7 @@ Module Impl_dns_DomainNameService.
           |),
           [ M.read (| self |); M.read (| name |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_owner : M.IsAssociatedFunction Self "get_owner" get_owner.

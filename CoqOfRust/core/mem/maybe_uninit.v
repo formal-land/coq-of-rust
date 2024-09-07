@@ -35,7 +35,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -76,7 +76,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -116,7 +116,7 @@ Module mem.
                     [ M.read (| val |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -136,7 +136,7 @@ Module mem.
             (Value.StructRecord
               "core::mem::maybe_uninit::MaybeUninit"
               [ ("uninit", Value.Tuple []) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_uninit :
@@ -164,7 +164,7 @@ Module mem.
               |),
               N
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_uninit_array :
@@ -213,14 +213,14 @@ Module mem.
                         |),
                         [ u ]
                       |);
-                      Value.Integer 0;
-                      Value.Integer 1
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.Usize 1
                     ]
                   |)
                 |) in
               u
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_zeroed :
@@ -265,7 +265,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write :
@@ -285,7 +285,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr :
@@ -305,7 +305,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_ptr :
@@ -355,7 +355,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_assume_init :
@@ -407,7 +407,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_assume_init_read :
@@ -446,7 +446,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_assume_init_drop :
@@ -493,7 +493,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_assume_init_ref :
@@ -540,7 +540,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_assume_init_mut :
@@ -598,7 +598,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_array_assume_init :
@@ -626,7 +626,7 @@ Module mem.
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_assume_init_ref :
@@ -652,7 +652,7 @@ Module mem.
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_assume_init_mut :
@@ -687,7 +687,7 @@ Module mem.
                 |),
                 [ M.read (| this |) ]
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_as_ptr :
@@ -722,7 +722,7 @@ Module mem.
                 |),
                 [ M.read (| this |) ]
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_as_mut_ptr :
@@ -802,7 +802,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_from_slice :
@@ -897,10 +897,12 @@ Module mem.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.eq
-                                          (M.read (| M.read (| left_val |) |))
-                                          (M.read (| M.read (| right_val |) |)))
+                                      UnOp.not (|
+                                        BinOp.eq (|
+                                          M.read (| M.read (| left_val |) |),
+                                          M.read (| M.read (| right_val |) |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -991,7 +993,10 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::Guard"
-                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
+                    [
+                      ("slice", M.read (| this |));
+                      ("initialized", Value.Integer IntegerKind.Usize 0)
+                    ]
                 |) in
               let~ _ :=
                 M.use
@@ -1008,7 +1013,10 @@ Module mem.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 0);
+                              ("end_", M.read (| len |))
+                            ]
                         ]
                       |)
                     |),
@@ -1101,10 +1109,10 @@ Module mem.
                                             |) in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -1134,7 +1142,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_clone_from_slice :
@@ -1186,7 +1194,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fill :
@@ -1223,7 +1231,10 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::Guard"
-                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
+                    [
+                      ("slice", M.read (| this |));
+                      ("initialized", Value.Integer IntegerKind.Usize 0)
+                    ]
                 |) in
               let~ _ :=
                 M.use
@@ -1344,10 +1355,10 @@ Module mem.
                                             |) in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -1377,7 +1388,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fill_with :
@@ -1436,7 +1447,10 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::Guard"
-                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
+                    [
+                      ("slice", M.read (| this |));
+                      ("initialized", Value.Integer IntegerKind.Usize 0)
+                    ]
                 |) in
               let~ _ :=
                 M.use
@@ -1581,10 +1595,10 @@ Module mem.
                                             |) in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -1649,7 +1663,7 @@ Module mem.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fill_from :
@@ -1688,7 +1702,7 @@ Module mem.
                 M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_bytes :
@@ -1735,7 +1749,7 @@ Module mem.
                 M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_bytes_mut :
@@ -1801,7 +1815,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_as_bytes :
@@ -1867,7 +1881,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_as_bytes_mut :
@@ -1916,7 +1930,7 @@ Module mem.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_transpose :
@@ -1965,7 +1979,7 @@ Module mem.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_transpose :
@@ -2071,7 +2085,7 @@ Module mem.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2120,7 +2134,10 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::Guard"
-                    [ ("slice", M.read (| self |)); ("initialized", Value.Integer 0) ]
+                    [
+                      ("slice", M.read (| self |));
+                      ("initialized", Value.Integer IntegerKind.Usize 0)
+                    ]
                 |) in
               let~ _ :=
                 M.match_operator (|
@@ -2278,10 +2295,10 @@ Module mem.
                                                       |) in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)))
                                             ]
@@ -2317,7 +2334,7 @@ Module mem.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2375,7 +2392,7 @@ Module mem.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

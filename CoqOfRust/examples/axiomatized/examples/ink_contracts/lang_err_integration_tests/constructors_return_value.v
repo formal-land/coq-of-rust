@@ -42,7 +42,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -52,9 +52,9 @@ Module Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountI
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 

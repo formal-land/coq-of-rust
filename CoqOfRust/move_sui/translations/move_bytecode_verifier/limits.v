@@ -57,41 +57,43 @@ Module limits.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let e := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::errors::PartialVMError",
-                                  "finish",
-                                  []
-                                |),
-                                [
-                                  M.read (| e |);
-                                  Value.StructTuple
-                                    "move_binary_format::errors::Location::Module"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "self_id",
-                                          []
-                                        |),
-                                        [ M.read (| module |) ]
-                                      |)
-                                    ]
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let e := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    "finish",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| e |);
+                                    Value.StructTuple
+                                      "move_binary_format::errors::Location::Module"
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "self_id",
+                                            []
+                                          |),
+                                          [ M.read (| module |) ]
+                                        |)
+                                      ]
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module :
@@ -538,7 +540,7 @@ Module limits.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module_impl :
@@ -721,8 +723,8 @@ Module limits.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.gt
-                                                                  (M.call_closure (|
+                                                                BinOp.gt (|
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
@@ -743,8 +745,9 @@ Module limits.
                                                                         "type_parameters"
                                                                       |)
                                                                     ]
-                                                                  |))
-                                                                  (M.read (| limit |))
+                                                                  |),
+                                                                  M.read (| limit |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -808,7 +811,7 @@ Module limits.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_struct_handles :
@@ -989,8 +992,8 @@ Module limits.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.gt
-                                                                    (M.call_closure (|
+                                                                  BinOp.gt (|
+                                                                    M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1014,8 +1017,9 @@ Module limits.
                                                                           "type_parameters"
                                                                         |)
                                                                       ]
-                                                                    |))
-                                                                    (M.read (| limit |))
+                                                                    |),
+                                                                    M.read (| limit |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -1098,8 +1102,8 @@ Module limits.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.gt
-                                                                    (M.call_closure (|
+                                                                  BinOp.gt (|
+                                                                    M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1146,8 +1150,9 @@ Module limits.
                                                                           0
                                                                         |)
                                                                       ]
-                                                                    |))
-                                                                    (M.read (| limit |))
+                                                                    |),
+                                                                    M.read (| limit |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -1213,7 +1218,7 @@ Module limits.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_function_handles :
@@ -2038,7 +2043,7 @@ Module limits.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_type_nodes :
@@ -2106,7 +2111,7 @@ Module limits.
                               0
                             |) in
                           let max := M.alloc (| γ1_0 |) in
-                          let~ size := M.alloc (| Value.Integer 0 |) in
+                          let~ size := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                           let~ _ :=
                             M.use
                               (M.match_operator (|
@@ -2205,19 +2210,22 @@ Module limits.
                                                                   ltac:(M.monadic
                                                                     match γ with
                                                                     | [] =>
-                                                                      let β := size in
-                                                                      M.write (|
-                                                                        β,
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (M.read (|
-                                                                            M.get_constant (|
-                                                                              "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
+                                                                      ltac:(M.monadic
+                                                                        (let β := size in
+                                                                        M.write (|
+                                                                          β,
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (| β |),
+                                                                            M.read (|
+                                                                              M.get_constant (|
+                                                                                "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
+                                                                              |)
                                                                             |)
-                                                                          |))
-                                                                      |)
-                                                                    | _ => M.impossible (||)
+                                                                          |)
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
                                                                     end))
                                                             |)));
                                                         fun γ =>
@@ -2231,24 +2239,24 @@ Module limits.
                                                             let β := size in
                                                             M.write (|
                                                               β,
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| β |))
-                                                                (M.read (|
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| β |),
+                                                                M.read (|
                                                                   M.get_constant (|
                                                                     "move_bytecode_verifier::limits::verify_type_node::PARAM_SIZE_WEIGHT"
                                                                   |)
-                                                                |))
+                                                                |)
+                                                              |)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let β := size in
                                                             M.write (|
                                                               β,
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| β |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| β |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             |)))
                                                       ]
                                                     |)))
@@ -2266,9 +2274,10 @@ Module limits.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| size |))
-                                          (M.read (| M.read (| max |) |))
+                                        BinOp.gt (|
+                                          M.read (| size |),
+                                          M.read (| M.read (| max |) |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2309,7 +2318,7 @@ Module limits.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_type_node :
@@ -2406,8 +2415,8 @@ Module limits.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.call_closure (|
+                                        BinOp.gt (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -2420,8 +2429,9 @@ Module limits.
                                               []
                                             |),
                                             [ M.read (| defs |) ]
-                                          |))
-                                          (M.read (| max_function_definitions |))
+                                          |),
+                                          M.read (| max_function_definitions |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2505,8 +2515,8 @@ Module limits.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.call_closure (|
+                                        BinOp.gt (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -2519,8 +2529,9 @@ Module limits.
                                               []
                                             |),
                                             [ M.read (| defs |) ]
-                                          |))
-                                          (M.read (| max_struct_definitions |))
+                                          |),
+                                          M.read (| max_struct_definitions |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2684,8 +2695,8 @@ Module limits.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.Pure.gt
-                                                                          (M.call_closure (|
+                                                                        BinOp.gt (|
+                                                                          M.call_closure (|
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -2701,10 +2712,11 @@ Module limits.
                                                                               []
                                                                             |),
                                                                             [ M.read (| fields |) ]
-                                                                          |))
-                                                                          (M.read (|
+                                                                          |),
+                                                                          M.read (|
                                                                             max_fields_in_struct
-                                                                          |))
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -2755,7 +2767,7 @@ Module limits.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_definitions :
@@ -2999,33 +3011,37 @@ Module limits.
                                                                             ltac:(M.monadic
                                                                               match γ with
                                                                               | [ α0 ] =>
-                                                                                M.match_operator (|
-                                                                                  M.alloc (| α0 |),
-                                                                                  [
-                                                                                    fun γ =>
-                                                                                      ltac:(M.monadic
-                                                                                        (M.call_closure (|
-                                                                                          M.get_function (|
-                                                                                            "move_binary_format::errors::verification_error",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            Value.StructTuple
-                                                                                              "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
-                                                                                              [];
-                                                                                            Value.StructTuple
-                                                                                              "move_binary_format::IndexKind::ConstantPool"
-                                                                                              [];
-                                                                                            M.rust_cast
-                                                                                              (M.read (|
-                                                                                                idx
-                                                                                              |))
-                                                                                          ]
-                                                                                        |)))
-                                                                                  ]
-                                                                                |)
+                                                                                ltac:(M.monadic
+                                                                                  (M.match_operator (|
+                                                                                    M.alloc (|
+                                                                                      α0
+                                                                                    |),
+                                                                                    [
+                                                                                      fun γ =>
+                                                                                        ltac:(M.monadic
+                                                                                          (M.call_closure (|
+                                                                                            M.get_function (|
+                                                                                              "move_binary_format::errors::verification_error",
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              Value.StructTuple
+                                                                                                "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
+                                                                                                [];
+                                                                                              Value.StructTuple
+                                                                                                "move_binary_format::IndexKind::ConstantPool"
+                                                                                                [];
+                                                                                              M.rust_cast
+                                                                                                (M.read (|
+                                                                                                  idx
+                                                                                                |))
+                                                                                            ]
+                                                                                          |)))
+                                                                                    ]
+                                                                                  |)))
                                                                               | _ =>
-                                                                                M.impossible (||)
+                                                                                M.impossible
+                                                                                  "wrong number of arguments"
                                                                               end))
                                                                       ]
                                                                     |)
@@ -3129,8 +3145,8 @@ Module limits.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.gt
-                                                                                  (M.call_closure (|
+                                                                                BinOp.gt (|
+                                                                                  M.call_closure (|
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -3146,11 +3162,12 @@ Module limits.
                                                                                       []
                                                                                     |),
                                                                                     [ cons ]
-                                                                                  |))
-                                                                                  (M.rust_cast
+                                                                                  |),
+                                                                                  M.rust_cast
                                                                                     (M.read (|
                                                                                       lim
-                                                                                    |)))
+                                                                                    |))
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -3313,7 +3330,7 @@ Module limits.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_constants :
@@ -3494,8 +3511,8 @@ Module limits.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.gt
-                                                                  (M.call_closure (|
+                                                                BinOp.gt (|
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_core_types::identifier::IdentStr",
@@ -3515,11 +3532,12 @@ Module limits.
                                                                         [ M.read (| identifier |) ]
                                                                       |)
                                                                     ]
-                                                                  |))
-                                                                  (M.rust_cast
+                                                                  |),
+                                                                  M.rust_cast
                                                                     (M.read (|
                                                                       max_idenfitier_len
-                                                                    |)))
+                                                                    |))
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -3571,7 +3589,7 @@ Module limits.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_identifiers :

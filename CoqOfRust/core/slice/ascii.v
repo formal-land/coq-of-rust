@@ -20,7 +20,7 @@ Module slice.
               M.get_function (| "core::slice::ascii::is_ascii", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
@@ -79,7 +79,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
@@ -102,7 +102,7 @@ Module slice.
               let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ascii_unchecked :
@@ -120,23 +120,24 @@ Module slice.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
                     []
                   |),
                   [ M.read (| other |) ]
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -189,31 +190,32 @@ Module slice.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let a := M.copy (| γ0_0 |) in
-                                    let b := M.copy (| γ0_1 |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "u8",
-                                        "eq_ignore_ascii_case",
-                                        []
-                                      |),
-                                      [ M.read (| a |); M.read (| b |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                      let a := M.copy (| γ0_0 |) in
+                                      let b := M.copy (| γ0_1 |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "u8",
+                                          "eq_ignore_ascii_case",
+                                          []
+                                        |),
+                                        [ M.read (| a |); M.read (| b |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_eq_ignore_ascii_case :
@@ -308,7 +310,7 @@ Module slice.
                   ]
                 |))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_ascii_uppercase :
@@ -403,7 +405,7 @@ Module slice.
                   ]
                 |))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_ascii_lowercase :
@@ -447,7 +449,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_escape_ascii :
@@ -534,7 +536,7 @@ Module slice.
                 |) in
               M.alloc (| M.read (| bytes |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trim_ascii_start :
@@ -621,7 +623,7 @@ Module slice.
                 |) in
               M.alloc (| M.read (| bytes |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trim_ascii_end :
@@ -654,7 +656,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trim_ascii : M.IsAssociatedFunction Self "trim_ascii" trim_ascii.
@@ -670,7 +672,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::slice::ascii::EscapeByte" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -737,7 +739,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -787,7 +789,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -823,7 +825,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -867,7 +869,7 @@ Module slice.
                 M.read (| fold |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -912,7 +914,7 @@ Module slice.
                 M.read (| fold |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -935,7 +937,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -990,7 +992,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1358,16 +1360,17 @@ Module slice.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.gt
-                                                (M.call_closure (|
+                                              BinOp.gt (|
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| bytes |) ]
-                                                |))
-                                                (Value.Integer 0)
+                                                |),
+                                                Value.Integer IntegerKind.Usize 0
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -1455,26 +1458,29 @@ Module slice.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
-                                                                    let γ := M.read (| γ |) in
-                                                                    let b := M.copy (| γ |) in
-                                                                    UnOp.Pure.not
-                                                                      (M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Self,
-                                                                          "needs_escape.fmt",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| b |) ]
-                                                                      |))))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ := M.read (| γ |) in
+                                                                      let γ := M.read (| γ |) in
+                                                                      let b := M.copy (| γ |) in
+                                                                      UnOp.not (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Self,
+                                                                            "needs_escape.fmt",
+                                                                            []
+                                                                          |),
+                                                                          [ M.read (| b |) ]
+                                                                        |)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |)
@@ -1763,7 +1769,12 @@ Module slice.
                                                                 M.read (| bytes |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeFrom"
-                                                                  [ ("start", Value.Integer 1) ]
+                                                                  [
+                                                                    ("start",
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1)
+                                                                  ]
                                                               ]
                                                             |)
                                                           |) in
@@ -1953,7 +1964,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1997,7 +2008,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2019,14 +2030,15 @@ Module slice.
       | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.get_constant (| "core::slice::ascii::contains_nonascii::NONASCII_MASK" |)
               |))
-              (M.read (| v |)))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (M.read (| v |)),
+            Value.Integer IntegerKind.Usize 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_contains_nonascii :
@@ -2039,7 +2051,7 @@ Module slice.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-                [ Value.Integer 128 ]
+                [ Value.Integer IntegerKind.U8 128 ]
               |)
             |))).
     End contains_nonascii.
@@ -2084,15 +2096,16 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "u8",
                                                 "is_ascii",
                                                 []
                                               |),
                                               [ M.read (| last |) ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2130,7 +2143,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_is_ascii_simple :
@@ -2273,32 +2286,32 @@ Module slice.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   LogicalOp.or (|
-                                    BinOp.Pure.lt
-                                      (M.read (| len |))
-                                      (M.read (|
+                                    BinOp.lt (|
+                                      M.read (| len |),
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::ascii::is_ascii::USIZE_SIZE"
                                         |)
-                                      |)),
+                                      |)
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.lt
-                                        (M.read (| len |))
-                                        (M.read (| align_offset |))))
+                                      (BinOp.lt (| M.read (| len |), M.read (| align_offset |) |)))
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.lt
-                                      (M.read (|
+                                    (BinOp.lt (|
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::ascii::is_ascii::USIZE_SIZE"
                                         |)
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_function (|
                                           "core::mem::align_of",
                                           [ Ty.path "usize" ]
                                         |),
                                         []
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -2328,7 +2341,10 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| align_offset |)) (Value.Integer 0)
+                                  BinOp.eq (|
+                                    M.read (| align_offset |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2399,10 +2415,12 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.read (| offset_to_aligned |))
-                                              (M.read (| len |)))
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              M.read (| offset_to_aligned |),
+                                              M.read (| len |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2460,8 +2478,8 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                                 "is_aligned_to",
@@ -2477,7 +2495,8 @@ Module slice.
                                                   []
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2515,16 +2534,17 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| byte_pos |))
-                                      (BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| len |))
-                                        (M.read (|
+                                    BinOp.lt (|
+                                      M.read (| byte_pos |),
+                                      BinOp.Wrap.sub (|
+                                        M.read (| len |),
+                                        M.read (|
                                           M.get_constant (|
                                             "core::slice::ascii::is_ascii::USIZE_SIZE"
                                           |)
-                                        |)))
+                                        |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2552,17 +2572,19 @@ Module slice.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.le
-                                                            (BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| byte_pos |))
-                                                              (M.read (|
+                                                        UnOp.not (|
+                                                          BinOp.le (|
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| byte_pos |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "core::slice::ascii::is_ascii::USIZE_SIZE"
                                                                 |)
-                                                              |)))
-                                                            (M.read (| len |)))
+                                                              |)
+                                                            |),
+                                                            M.read (| len |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -2614,8 +2636,8 @@ Module slice.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.read (|
+                                                        UnOp.not (|
+                                                          M.read (|
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -2690,10 +2712,13 @@ Module slice.
                                                                           ltac:(M.monadic
                                                                             match γ with
                                                                             | [] =>
-                                                                              M.alloc (|
-                                                                                Value.Bool true
-                                                                              |)
-                                                                            | _ => M.impossible (||)
+                                                                              ltac:(M.monadic
+                                                                                (M.alloc (|
+                                                                                  Value.Bool true
+                                                                                |)))
+                                                                            | _ =>
+                                                                              M.impossible
+                                                                                "wrong number of arguments"
                                                                             end))
                                                                     |)));
                                                                 fun γ =>
@@ -2703,7 +2728,8 @@ Module slice.
                                                                     |)))
                                                               ]
                                                             |)
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -2780,14 +2806,14 @@ Module slice.
                                 let β := byte_pos in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| β |))
-                                    (M.read (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    M.read (|
                                       M.get_constant (|
                                         "core::slice::ascii::is_ascii::USIZE_SIZE"
                                       |)
-                                    |))
+                                    |)
+                                  |)
                                 |) in
                               let~ _ :=
                                 M.write (|
@@ -2798,7 +2824,7 @@ Module slice.
                                       "add",
                                       []
                                     |),
-                                    [ M.read (| word_ptr |); Value.Integer 1 ]
+                                    [ M.read (| word_ptr |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -2836,23 +2862,26 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (LogicalOp.and (|
-                                              BinOp.Pure.le
-                                                (M.read (| byte_pos |))
-                                                (M.read (| len |)),
+                                          UnOp.not (|
+                                            LogicalOp.and (|
+                                              BinOp.le (|
+                                                M.read (| byte_pos |),
+                                                M.read (| len |)
+                                              |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.le
-                                                  (BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| len |))
-                                                    (M.read (| byte_pos |)))
-                                                  (M.read (|
+                                                (BinOp.le (|
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| len |),
+                                                    M.read (| byte_pos |)
+                                                  |),
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "core::slice::ascii::is_ascii::USIZE_SIZE"
                                                     |)
-                                                  |))))
-                                            |))
+                                                  |)
+                                                |)))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2897,27 +2926,28 @@ Module slice.
                             |),
                             [
                               M.read (| start |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| len |))
-                                (M.read (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                M.read (|
                                   M.get_constant (| "core::slice::ascii::is_ascii::USIZE_SIZE" |)
-                                |))
+                                |)
+                              |)
                             ]
                           |))
                       ]
                     |)
                   |) in
                 M.alloc (|
-                  UnOp.Pure.not
-                    (M.call_closure (|
+                  UnOp.not (|
+                    M.call_closure (|
                       M.get_function (| "core::slice::ascii::contains_nonascii", [] |),
                       [ M.read (| last_word |) ]
-                    |))
+                    |)
+                  |)
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_is_ascii : M.IsFunction "core::slice::ascii::is_ascii" is_ascii.

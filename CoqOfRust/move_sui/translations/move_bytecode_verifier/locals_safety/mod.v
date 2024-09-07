@@ -132,7 +132,7 @@ Module locals_safety.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify : M.IsFunction "move_bytecode_verifier::locals_safety::verify" verify.
@@ -427,65 +427,67 @@ Module locals_safety.
                                       ltac:(M.monadic
                                         match γ with
                                         | [] =>
-                                          let γ :=
-                                            M.alloc (|
-                                              UnOp.Pure.not
-                                                (M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::file_format::AbilitySet",
-                                                    "has_drop",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                        "local_abilities",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| state |);
-                                                        M.read (| M.read (| idx |) |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |))
-                                            |) in
-                                          let _ :=
-                                            M.is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.return_ (|
-                                                  Value.StructTuple
-                                                    "core::result::Result::Err"
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.alloc (|
+                                                UnOp.not (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet",
+                                                      "has_drop",
+                                                      []
+                                                    |),
                                                     [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                          "error",
+                                                          "local_abilities",
                                                           []
                                                         |),
                                                         [
                                                           M.read (| state |);
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
-                                                            [];
-                                                          M.read (| offset |)
+                                                          M.read (| M.read (| idx |) |)
                                                         ]
                                                       |)
                                                     ]
+                                                  |)
+                                                |)
+                                              |) in
+                                            let _ :=
+                                              M.is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            M.alloc (|
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    Value.StructTuple
+                                                      "core::result::Result::Err"
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                            "error",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| state |);
+                                                            Value.StructTuple
+                                                              "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
+                                                              [];
+                                                            M.read (| offset |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          |)
-                                        | _ => M.impossible (||)
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 |)));
                             fun γ =>
@@ -553,34 +555,35 @@ Module locals_safety.
                                       ltac:(M.monadic
                                         match γ with
                                         | [] =>
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.return_ (|
-                                                  Value.StructTuple
-                                                    "core::result::Result::Err"
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                          "error",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (| state |);
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
-                                                            [];
-                                                          M.read (| offset |)
-                                                        ]
-                                                      |)
-                                                    ]
+                                          ltac:(M.monadic
+                                            (M.alloc (|
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    Value.StructTuple
+                                                      "core::result::Result::Err"
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                            "error",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| state |);
+                                                            Value.StructTuple
+                                                              "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
+                                                              [];
+                                                            M.read (| offset |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          |)
-                                        | _ => M.impossible (||)
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 |)));
                             fun γ =>
@@ -653,34 +656,35 @@ Module locals_safety.
                                       ltac:(M.monadic
                                         match γ with
                                         | [] =>
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.return_ (|
-                                                  Value.StructTuple
-                                                    "core::result::Result::Err"
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                          "error",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (| state |);
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
-                                                            [];
-                                                          M.read (| offset |)
-                                                        ]
-                                                      |)
-                                                    ]
+                                          ltac:(M.monadic
+                                            (M.alloc (|
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    Value.StructTuple
+                                                      "core::result::Result::Err"
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                            "error",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| state |);
+                                                            Value.StructTuple
+                                                              "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
+                                                              [];
+                                                            M.read (| offset |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          |)
-                                        | _ => M.impossible (||)
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 |)));
                             fun γ =>
@@ -726,87 +730,89 @@ Module locals_safety.
                               ltac:(M.monadic
                                 match γ with
                                 | [ idx ] =>
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                          "local_state",
-                                          []
-                                        |),
-                                        [ M.read (| state |); M.read (| M.read (| idx |) |) ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.find_or_pattern (|
-                                            γ,
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let _ :=
-                                                    M.is_struct_tuple (|
-                                                      γ,
-                                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
-                                                    |) in
-                                                  Value.Tuple []));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let _ :=
-                                                    M.is_struct_tuple (|
-                                                      γ,
-                                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
-                                                    |) in
-                                                  Value.Tuple []))
-                                            ],
-                                            M.closure
-                                              (fun γ =>
-                                                ltac:(M.monadic
-                                                  match γ with
-                                                  | [] =>
-                                                    M.alloc (|
-                                                      M.never_to_any (|
-                                                        M.read (|
-                                                          M.return_ (|
-                                                            Value.StructTuple
-                                                              "core::result::Result::Err"
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                                    "error",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (| state |);
-                                                                    Value.StructTuple
-                                                                      "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
-                                                                      [];
-                                                                    M.read (| offset |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  | _ => M.impossible (||)
-                                                  end))
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                            "local_state",
+                                            []
+                                          |),
+                                          [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.find_or_pattern (|
                                               γ,
-                                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
+                                                      |) in
+                                                    Value.Tuple []));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
+                                                      |) in
+                                                    Value.Tuple []))
+                                              ],
+                                              M.closure
+                                                (fun γ =>
+                                                  ltac:(M.monadic
+                                                    match γ with
+                                                    | [] =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                Value.StructTuple
+                                                                  "core::result::Result::Err"
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                                        "error",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (| state |);
+                                                                        Value.StructTuple
+                                                                          "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
+                                                                          [];
+                                                                        M.read (| offset |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)))
+                                                    | _ => M.impossible "wrong number of arguments"
+                                                    end))
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -962,9 +968,9 @@ Module locals_safety.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.eq
-                                            (M.call_closure (|
+                                        UnOp.not (|
+                                          BinOp.eq (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -978,8 +984,8 @@ Module locals_safety.
                                                 []
                                               |),
                                               [ M.read (| local_states |) ]
-                                            |))
-                                            (M.call_closure (|
+                                            |),
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -993,7 +999,9 @@ Module locals_safety.
                                                 []
                                               |),
                                               [ M.read (| all_local_abilities |) ]
-                                            |)))
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1205,62 +1213,66 @@ Module locals_safety.
                                                               ltac:(M.monadic
                                                                 match γ with
                                                                 | [] =>
-                                                                  let γ :=
-                                                                    M.alloc (|
-                                                                      UnOp.Pure.not
-                                                                        (M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::AbilitySet",
-                                                                            "has_drop",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              M.read (|
-                                                                                local_abilities
-                                                                              |)
-                                                                            |)
-                                                                          ]
-                                                                        |))
-                                                                    |) in
-                                                                  let _ :=
-                                                                    M.is_constant_or_break_match (|
-                                                                      M.read (| γ |),
-                                                                      Value.Bool true
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.read (|
-                                                                        M.return_ (|
-                                                                          Value.StructTuple
-                                                                            "core::result::Result::Err"
+                                                                  ltac:(M.monadic
+                                                                    (let γ :=
+                                                                      M.alloc (|
+                                                                        UnOp.not (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::AbilitySet",
+                                                                              "has_drop",
+                                                                              []
+                                                                            |),
                                                                             [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                                                  "error",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    state
-                                                                                  |);
-                                                                                  Value.StructTuple
-                                                                                    "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
-                                                                                    [];
-                                                                                  M.read (|
-                                                                                    offset
-                                                                                  |)
-                                                                                ]
+                                                                              M.read (|
+                                                                                M.read (|
+                                                                                  local_abilities
+                                                                                |)
                                                                               |)
                                                                             ]
+                                                                          |)
+                                                                        |)
+                                                                      |) in
+                                                                    let _ :=
+                                                                      M.is_constant_or_break_match (|
+                                                                        M.read (| γ |),
+                                                                        Value.Bool true
+                                                                      |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            Value.StructTuple
+                                                                              "core::result::Result::Err"
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                                                    "error",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      state
+                                                                                    |);
+                                                                                    Value.StructTuple
+                                                                                      "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
+                                                                                      [];
+                                                                                    M.read (|
+                                                                                      offset
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                          |)
                                                                         |)
                                                                       |)
-                                                                    |)
-                                                                  |)
-                                                                | _ => M.impossible (||)
+                                                                    |)))
+                                                                | _ =>
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
                                                                 end))
                                                         |)));
                                                     fun γ =>
@@ -1959,8 +1971,8 @@ Module locals_safety.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Tuple [] |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)))
                   ]
@@ -1968,7 +1980,7 @@ Module locals_safety.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_execute_inner :
@@ -2021,7 +2033,7 @@ Module locals_safety.
             |),
             [ M.read (| state |); M.read (| bytecode |); M.read (| index |); M.read (| meter |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

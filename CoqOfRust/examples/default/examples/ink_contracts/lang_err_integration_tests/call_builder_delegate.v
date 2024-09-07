@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom Hash :
   (Ty.path "call_builder_delegate::Hash") =
-    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum LangError
@@ -46,7 +46,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -73,7 +73,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
         Value.StructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
           [ ("value", M.read (| value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -105,7 +105,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
         Value.StructTuple "core::option::Option::None" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
@@ -129,8 +129,8 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
-        Value.Integer 0))
-    | _, _, _ => M.impossible
+        Value.Integer IntegerKind.I32 0))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.

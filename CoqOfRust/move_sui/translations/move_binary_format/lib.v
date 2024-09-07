@@ -124,7 +124,7 @@ Module Impl_core_clone_Clone_for_move_binary_format_IndexKind.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -302,7 +302,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -327,7 +327,7 @@ Module Impl_core_cmp_Eq_for_move_binary_format_IndexKind.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -367,7 +367,7 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -416,7 +416,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -469,9 +469,9 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -526,7 +526,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -594,7 +594,7 @@ Module Impl_move_binary_format_IndexKind.
               Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
             ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_variants : M.IsAssociatedFunction Self "variants" variants.
@@ -798,7 +798,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -852,7 +852,7 @@ Module Impl_core_clone_Clone_for_move_binary_format_SignatureTokenKind.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -913,7 +913,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -938,7 +938,7 @@ Module Impl_core_cmp_Eq_for_move_binary_format_SignatureTokenKind.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -988,7 +988,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1041,9 +1041,9 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1098,7 +1098,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1174,7 +1174,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

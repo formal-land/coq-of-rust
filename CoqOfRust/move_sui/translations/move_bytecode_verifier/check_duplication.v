@@ -56,41 +56,43 @@ Module check_duplication.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let e := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::errors::PartialVMError",
-                                  "finish",
-                                  []
-                                |),
-                                [
-                                  M.read (| e |);
-                                  Value.StructTuple
-                                    "move_binary_format::errors::Location::Module"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "self_id",
-                                          []
-                                        |),
-                                        [ M.read (| module |) ]
-                                      |)
-                                    ]
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let e := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    "finish",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| e |);
+                                    Value.StructTuple
+                                      "move_binary_format::errors::Location::Module"
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "self_id",
+                                            []
+                                          |),
+                                          [ M.read (| module |) ]
+                                        |)
+                                      ]
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module :
@@ -1276,7 +1278,7 @@ Module check_duplication.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module_impl :
@@ -1357,7 +1359,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_identifiers :
@@ -1444,7 +1446,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_address_identifiers :
@@ -1525,7 +1527,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_constants :
@@ -1606,7 +1608,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_signatures :
@@ -1687,7 +1689,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_module_handles :
@@ -1794,32 +1796,33 @@ Module check_duplication.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
-                                        Value.Tuple
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| x |),
-                                                "move_binary_format::file_format::StructHandle",
-                                                "module"
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let x := M.copy (| γ |) in
+                                          Value.Tuple
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| x |),
+                                                  "move_binary_format::file_format::StructHandle",
+                                                  "module"
+                                                |)
+                                              |);
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| x |),
+                                                  "move_binary_format::file_format::StructHandle",
+                                                  "name"
+                                                |)
                                               |)
-                                            |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| x |),
-                                                "move_binary_format::file_format::StructHandle",
-                                                "name"
-                                              |)
-                                            |)
-                                          ]))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                            ]))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -1862,7 +1865,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_struct_handles :
@@ -1951,7 +1954,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_function_instantiations :
@@ -2058,32 +2061,33 @@ Module check_duplication.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
-                                        Value.Tuple
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| x |),
-                                                "move_binary_format::file_format::FunctionHandle",
-                                                "module"
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let x := M.copy (| γ |) in
+                                          Value.Tuple
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| x |),
+                                                  "move_binary_format::file_format::FunctionHandle",
+                                                  "module"
+                                                |)
+                                              |);
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| x |),
+                                                  "move_binary_format::file_format::FunctionHandle",
+                                                  "name"
+                                                |)
                                               |)
-                                            |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| x |),
-                                                "move_binary_format::file_format::FunctionHandle",
-                                                "name"
-                                              |)
-                                            |)
-                                          ]))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                            ]))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -2126,7 +2130,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_function_handles :
@@ -2224,7 +2228,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_field_handles :
@@ -2328,7 +2332,7 @@ Module check_duplication.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_struct_instantiations :
@@ -2446,7 +2450,7 @@ Module check_duplication.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_field_instantiations :
@@ -2638,22 +2642,23 @@ Module check_duplication.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let x := M.copy (| γ |) in
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| x |),
-                                                          "move_binary_format::file_format::StructDefinition",
-                                                          "struct_handle"
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let x := M.copy (| γ |) in
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| x |),
+                                                            "move_binary_format::file_format::StructDefinition",
+                                                            "struct_handle"
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -3034,23 +3039,26 @@ Module check_duplication.
                                                                   ltac:(M.monadic
                                                                     match γ with
                                                                     | [ α0 ] =>
-                                                                      M.match_operator (|
-                                                                        M.alloc (| α0 |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let x :=
-                                                                                M.copy (| γ |) in
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| x |),
-                                                                                  "move_binary_format::file_format::FieldDefinition",
-                                                                                  "name"
-                                                                                |)
-                                                                              |)))
-                                                                        ]
-                                                                      |)
-                                                                    | _ => M.impossible (||)
+                                                                      ltac:(M.monadic
+                                                                        (M.match_operator (|
+                                                                          M.alloc (| α0 |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let x :=
+                                                                                  M.copy (| γ |) in
+                                                                                M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (| x |),
+                                                                                    "move_binary_format::file_format::FieldDefinition",
+                                                                                    "name"
+                                                                                  |)
+                                                                                |)))
+                                                                          ]
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
                                                                     end))
                                                             ]
                                                           |)
@@ -3175,77 +3183,78 @@ Module check_duplication.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::cmp::PartialEq",
-                                                      Ty.path
-                                                        "move_binary_format::file_format::ModuleHandleIndex",
-                                                      [
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::cmp::PartialEq",
                                                         Ty.path
-                                                          "move_binary_format::file_format::ModuleHandleIndex"
-                                                      ],
-                                                      "ne",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::CompiledModule",
-                                                            "struct_handle_at",
-                                                            []
+                                                          "move_binary_format::file_format::ModuleHandleIndex",
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::ModuleHandleIndex"
+                                                        ],
+                                                        "ne",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::CompiledModule",
+                                                              "struct_handle_at",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                  "module"
+                                                                |)
+                                                              |);
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| x |),
+                                                                  "move_binary_format::file_format::StructDefinition",
+                                                                  "struct_handle"
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |),
-                                                          [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                "module"
+                                                          "move_binary_format::file_format::StructHandle",
+                                                          "module"
+                                                        |);
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::CompiledModule",
+                                                              "self_handle_idx",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                  "module"
+                                                                |)
                                                               |)
-                                                            |);
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| x |),
-                                                                "move_binary_format::file_format::StructDefinition",
-                                                                "struct_handle"
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |),
-                                                        "move_binary_format::file_format::StructHandle",
-                                                        "module"
-                                                      |);
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::CompiledModule",
-                                                            "self_handle_idx",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                "module"
-                                                              |)
-                                                            |)
-                                                          ]
+                                                            ]
+                                                          |)
                                                         |)
-                                                      |)
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -3387,22 +3396,23 @@ Module check_duplication.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| x |),
-                                                "move_binary_format::file_format::StructDefinition",
-                                                "struct_handle"
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| x |),
+                                                  "move_binary_format::file_format::StructDefinition",
+                                                  "struct_handle"
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -3433,7 +3443,7 @@ Module check_duplication.
                                     Value.StructRecord
                                       "core::ops::range::Range"
                                       [
-                                        ("start", Value.Integer 0);
+                                        ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -3474,111 +3484,113 @@ Module check_duplication.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.read (|
-                                                    let~ y :=
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::StructHandleIndex",
-                                                            "new",
-                                                            []
-                                                          |),
-                                                          [ M.rust_cast (M.read (| x |)) ]
-                                                        |)
-                                                      |) in
-                                                    M.alloc (|
-                                                      LogicalOp.and (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::cmp::PartialEq",
-                                                            Ty.path
-                                                              "move_binary_format::file_format::ModuleHandleIndex",
-                                                            [
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.read (|
+                                                      let~ y :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
                                                               Ty.path
-                                                                "move_binary_format::file_format::ModuleHandleIndex"
-                                                            ],
-                                                            "eq",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::CompiledModule",
-                                                                  "struct_handle_at",
-                                                                  []
+                                                                "move_binary_format::file_format::StructHandleIndex",
+                                                              "new",
+                                                              []
+                                                            |),
+                                                            [ M.rust_cast (M.read (| x |)) ]
+                                                          |)
+                                                        |) in
+                                                      M.alloc (|
+                                                        LogicalOp.and (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::cmp::PartialEq",
+                                                              Ty.path
+                                                                "move_binary_format::file_format::ModuleHandleIndex",
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::ModuleHandleIndex"
+                                                              ],
+                                                              "eq",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                    "struct_handle_at",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| self |),
+                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                        "module"
+                                                                      |)
+                                                                    |);
+                                                                    M.read (| y |)
+                                                                  ]
                                                                 |),
-                                                                [
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                      "module"
+                                                                "move_binary_format::file_format::StructHandle",
+                                                                "module"
+                                                              |);
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                    "self_handle_idx",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| self |),
+                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                        "module"
+                                                                      |)
                                                                     |)
-                                                                  |);
-                                                                  M.read (| y |)
-                                                                ]
-                                                              |),
-                                                              "move_binary_format::file_format::StructHandle",
-                                                              "module"
-                                                            |);
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::CompiledModule",
-                                                                  "self_handle_idx",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                      "module"
-                                                                    |)
-                                                                  |)
-                                                                ]
+                                                                  ]
+                                                                |)
                                                               |)
-                                                            |)
-                                                          ]
-                                                        |),
-                                                        ltac:(M.monadic
-                                                          (UnOp.Pure.not
-                                                            (M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "std::collections::hash::set::HashSet")
-                                                                  []
+                                                            ]
+                                                          |),
+                                                          ltac:(M.monadic
+                                                            (UnOp.not (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "std::collections::hash::set::HashSet")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::StructHandleIndex";
+                                                                      Ty.path
+                                                                        "std::hash::random::RandomState"
+                                                                    ],
+                                                                  "contains",
                                                                   [
                                                                     Ty.path
-                                                                      "move_binary_format::file_format::StructHandleIndex";
-                                                                    Ty.path
-                                                                      "std::hash::random::RandomState"
-                                                                  ],
-                                                                "contains",
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::StructHandleIndex"
-                                                                ]
-                                                              |),
-                                                              [ implemented_struct_handles; y ]
-                                                            |))))
+                                                                      "move_binary_format::file_format::StructHandleIndex"
+                                                                  ]
+                                                                |),
+                                                                [ implemented_struct_handles; y ]
+                                                              |)
+                                                            |)))
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -3623,7 +3635,7 @@ Module check_duplication.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_struct_definitions :
@@ -3809,22 +3821,23 @@ Module check_duplication.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let x := M.copy (| γ |) in
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| x |),
-                                                          "move_binary_format::file_format::FunctionDefinition",
-                                                          "function"
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let x := M.copy (| γ |) in
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| x |),
+                                                            "move_binary_format::file_format::FunctionDefinition",
+                                                            "function"
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -4190,77 +4203,78 @@ Module check_duplication.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::cmp::PartialEq",
-                                                      Ty.path
-                                                        "move_binary_format::file_format::ModuleHandleIndex",
-                                                      [
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::cmp::PartialEq",
                                                         Ty.path
-                                                          "move_binary_format::file_format::ModuleHandleIndex"
-                                                      ],
-                                                      "ne",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::CompiledModule",
-                                                            "function_handle_at",
-                                                            []
+                                                          "move_binary_format::file_format::ModuleHandleIndex",
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::ModuleHandleIndex"
+                                                        ],
+                                                        "ne",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::CompiledModule",
+                                                              "function_handle_at",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                  "module"
+                                                                |)
+                                                              |);
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| x |),
+                                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                                  "function"
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |),
-                                                          [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                "module"
+                                                          "move_binary_format::file_format::FunctionHandle",
+                                                          "module"
+                                                        |);
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::CompiledModule",
+                                                              "self_handle_idx",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                  "module"
+                                                                |)
                                                               |)
-                                                            |);
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| x |),
-                                                                "move_binary_format::file_format::FunctionDefinition",
-                                                                "function"
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |),
-                                                        "move_binary_format::file_format::FunctionHandle",
-                                                        "module"
-                                                      |);
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::CompiledModule",
-                                                            "self_handle_idx",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                "module"
-                                                              |)
-                                                            |)
-                                                          ]
+                                                            ]
+                                                          |)
                                                         |)
-                                                      |)
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -4404,22 +4418,23 @@ Module check_duplication.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| x |),
-                                                "move_binary_format::file_format::FunctionDefinition",
-                                                "function"
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| x |),
+                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                  "function"
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -4450,7 +4465,7 @@ Module check_duplication.
                                     Value.StructRecord
                                       "core::ops::range::Range"
                                       [
-                                        ("start", Value.Integer 0);
+                                        ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -4491,111 +4506,113 @@ Module check_duplication.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.read (|
-                                                    let~ y :=
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::FunctionHandleIndex",
-                                                            "new",
-                                                            []
-                                                          |),
-                                                          [ M.rust_cast (M.read (| x |)) ]
-                                                        |)
-                                                      |) in
-                                                    M.alloc (|
-                                                      LogicalOp.and (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::cmp::PartialEq",
-                                                            Ty.path
-                                                              "move_binary_format::file_format::ModuleHandleIndex",
-                                                            [
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.read (|
+                                                      let~ y :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
                                                               Ty.path
-                                                                "move_binary_format::file_format::ModuleHandleIndex"
-                                                            ],
-                                                            "eq",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::CompiledModule",
-                                                                  "function_handle_at",
-                                                                  []
+                                                                "move_binary_format::file_format::FunctionHandleIndex",
+                                                              "new",
+                                                              []
+                                                            |),
+                                                            [ M.rust_cast (M.read (| x |)) ]
+                                                          |)
+                                                        |) in
+                                                      M.alloc (|
+                                                        LogicalOp.and (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::cmp::PartialEq",
+                                                              Ty.path
+                                                                "move_binary_format::file_format::ModuleHandleIndex",
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::ModuleHandleIndex"
+                                                              ],
+                                                              "eq",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                    "function_handle_at",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| self |),
+                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                        "module"
+                                                                      |)
+                                                                    |);
+                                                                    M.read (| y |)
+                                                                  ]
                                                                 |),
-                                                                [
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                      "module"
+                                                                "move_binary_format::file_format::FunctionHandle",
+                                                                "module"
+                                                              |);
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                    "self_handle_idx",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| self |),
+                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                        "module"
+                                                                      |)
                                                                     |)
-                                                                  |);
-                                                                  M.read (| y |)
-                                                                ]
-                                                              |),
-                                                              "move_binary_format::file_format::FunctionHandle",
-                                                              "module"
-                                                            |);
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::CompiledModule",
-                                                                  "self_handle_idx",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                      "module"
-                                                                    |)
-                                                                  |)
-                                                                ]
+                                                                  ]
+                                                                |)
                                                               |)
-                                                            |)
-                                                          ]
-                                                        |),
-                                                        ltac:(M.monadic
-                                                          (UnOp.Pure.not
-                                                            (M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "std::collections::hash::set::HashSet")
-                                                                  []
+                                                            ]
+                                                          |),
+                                                          ltac:(M.monadic
+                                                            (UnOp.not (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "std::collections::hash::set::HashSet")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::FunctionHandleIndex";
+                                                                      Ty.path
+                                                                        "std::hash::random::RandomState"
+                                                                    ],
+                                                                  "contains",
                                                                   [
                                                                     Ty.path
-                                                                      "move_binary_format::file_format::FunctionHandleIndex";
-                                                                    Ty.path
-                                                                      "std::hash::random::RandomState"
-                                                                  ],
-                                                                "contains",
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::FunctionHandleIndex"
-                                                                ]
-                                                              |),
-                                                              [ implemented_function_handles; y ]
-                                                            |))))
+                                                                      "move_binary_format::file_format::FunctionHandleIndex"
+                                                                  ]
+                                                                |),
+                                                                [ implemented_function_handles; y ]
+                                                              |)
+                                                            |)))
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -4640,7 +4657,7 @@ Module check_duplication.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_function_defintions :
@@ -4777,8 +4794,8 @@ Module check_duplication.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.call_closure (|
+                                                        UnOp.not (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -4793,7 +4810,8 @@ Module check_duplication.
                                                               []
                                                             |),
                                                             [ uniq; M.read (| x |) ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -4824,7 +4842,7 @@ Module check_duplication.
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_first_duplicate_element :

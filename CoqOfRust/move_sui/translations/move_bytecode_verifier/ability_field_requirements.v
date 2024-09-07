@@ -39,41 +39,42 @@ Module ability_field_requirements.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let e := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::errors::PartialVMError",
-                                "finish",
-                                []
-                              |),
-                              [
-                                M.read (| e |);
-                                Value.StructTuple
-                                  "move_binary_format::errors::Location::Module"
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "self_id",
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
-                                    |)
-                                  ]
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let e := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
+                                  "finish",
+                                  []
+                                |),
+                                [
+                                  M.read (| e |);
+                                  Value.StructTuple
+                                    "move_binary_format::errors::Location::Module"
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "self_id",
+                                          []
+                                        |),
+                                        [ M.read (| module |) ]
+                                      |)
+                                    ]
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module :
@@ -379,24 +380,26 @@ Module ability_field_requirements.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let a := M.copy (| γ |) in
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::Ability",
-                                                                        "requires",
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| a |) ]
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let a := M.copy (| γ |) in
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::Ability",
+                                                                          "requires",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| a |) ]
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |);
@@ -410,41 +413,43 @@ Module ability_field_requirements.
                                                     ltac:(M.monadic
                                                       match γ with
                                                       | [ α0; α1 ] =>
-                                                        M.match_operator (|
-                                                          M.alloc (| α0 |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let acc := M.copy (| γ |) in
-                                                                M.match_operator (|
-                                                                  M.alloc (| α1 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let required :=
-                                                                          M.copy (| γ |) in
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::bit::BitOr",
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::AbilitySet",
-                                                                            [
+                                                        ltac:(M.monadic
+                                                          (M.match_operator (|
+                                                            M.alloc (| α0 |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let acc := M.copy (| γ |) in
+                                                                  M.match_operator (|
+                                                                    M.alloc (| α1 |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let required :=
+                                                                            M.copy (| γ |) in
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::bit::BitOr",
                                                                               Ty.path
-                                                                                "move_binary_format::file_format::Ability"
-                                                                            ],
-                                                                            "bitor",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (| acc |);
-                                                                            M.read (| required |)
-                                                                          ]
-                                                                        |)))
-                                                                  ]
-                                                                |)))
-                                                          ]
-                                                        |)
-                                                      | _ => M.impossible (||)
+                                                                                "move_binary_format::file_format::AbilitySet",
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::Ability"
+                                                                              ],
+                                                                              "bitor",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.read (| acc |);
+                                                                              M.read (| required |)
+                                                                            ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               ]
                                             |)
@@ -571,19 +576,21 @@ Module ability_field_requirements.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (M.read (|
-                                                                      M.get_constant (|
-                                                                        "move_binary_format::file_format::ALL"
-                                                                      |)
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.read (|
+                                                                        M.get_constant (|
+                                                                          "move_binary_format::file_format::ALL"
+                                                                        |)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |)
@@ -808,8 +815,8 @@ Module ability_field_requirements.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              UnOp.Pure.not
-                                                                                (M.call_closure (|
+                                                                              UnOp.not (|
+                                                                                M.call_closure (|
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::file_format::AbilitySet",
@@ -824,7 +831,8 @@ Module ability_field_requirements.
                                                                                       field_abilities
                                                                                     |)
                                                                                   ]
-                                                                                |))
+                                                                                |)
+                                                                              |)
                                                                             |)) in
                                                                         let _ :=
                                                                           M.is_constant_or_break_match (|
@@ -883,7 +891,7 @@ Module ability_field_requirements.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_impl :

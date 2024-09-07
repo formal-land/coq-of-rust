@@ -37,7 +37,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -82,7 +82,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -126,7 +126,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -170,7 +170,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -215,7 +215,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -272,7 +272,7 @@ Module db.
                     M.read (| number |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -332,7 +332,7 @@ Module db.
                     M.read (| number |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -391,7 +391,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| number |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -461,7 +461,7 @@ Module db.
                   M.read (| number |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

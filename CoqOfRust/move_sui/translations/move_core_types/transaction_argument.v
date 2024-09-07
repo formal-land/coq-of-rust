@@ -318,7 +318,7 @@ Module transaction_argument.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -564,7 +564,7 @@ Module transaction_argument.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -656,7 +656,7 @@ Module transaction_argument.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -712,7 +712,7 @@ Module transaction_argument.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1056,7 +1056,7 @@ Module transaction_argument.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1104,7 +1104,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 0;
+                            Value.Integer IntegerKind.U32 0;
                             M.read (| Value.String "U8" |);
                             M.read (| __field0 |)
                           ]
@@ -1131,7 +1131,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.U32 1;
                             M.read (| Value.String "U64" |);
                             M.read (| __field0 |)
                           ]
@@ -1158,7 +1158,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 2;
+                            Value.Integer IntegerKind.U32 2;
                             M.read (| Value.String "U128" |);
                             M.read (| __field0 |)
                           ]
@@ -1185,7 +1185,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 3;
+                            Value.Integer IntegerKind.U32 3;
                             M.read (| Value.String "Address" |);
                             M.read (| __field0 |)
                           ]
@@ -1215,7 +1215,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 4;
+                            Value.Integer IntegerKind.U32 4;
                             M.read (| Value.String "U8Vector" |);
                             M.alloc (|
                               Value.StructRecord
@@ -1249,7 +1249,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 5;
+                            Value.Integer IntegerKind.U32 5;
                             M.read (| Value.String "Bool" |);
                             M.read (| __field0 |)
                           ]
@@ -1276,7 +1276,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 6;
+                            Value.Integer IntegerKind.U32 6;
                             M.read (| Value.String "U16" |);
                             M.read (| __field0 |)
                           ]
@@ -1303,7 +1303,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 7;
+                            Value.Integer IntegerKind.U32 7;
                             M.read (| Value.String "U32" |);
                             M.read (| __field0 |)
                           ]
@@ -1330,7 +1330,7 @@ Module transaction_argument.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TransactionArgument" |);
-                            Value.Integer 8;
+                            Value.Integer IntegerKind.U32 8;
                             M.read (| Value.String "U256" |);
                             M.read (| __field0 |)
                           ]
@@ -1339,7 +1339,7 @@ Module transaction_argument.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1383,7 +1383,7 @@ Module transaction_argument.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1421,7 +1421,7 @@ Module transaction_argument.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1958,7 +1958,7 @@ Module transaction_argument.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2130,7 +2130,7 @@ Module transaction_argument.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2396,129 +2396,133 @@ Module transaction_argument.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let mv := M.copy (| γ |) in
-                                                                    M.read (|
-                                                                      M.match_operator (|
-                                                                        M.alloc (|
-                                                                          Value.Tuple []
-                                                                        |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let γ := mv in
-                                                                              let γ0_0 :=
-                                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                                  γ,
-                                                                                  "move_core_types::runtime_value::MoveValue::U8",
-                                                                                  0
-                                                                                |) in
-                                                                              let byte :=
-                                                                                M.copy (| γ0_0 |) in
-                                                                              M.alloc (|
-                                                                                Value.StructTuple
-                                                                                  "core::result::Result::Ok"
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      byte
-                                                                                    |)
-                                                                                  ]
-                                                                              |)));
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (M.alloc (|
-                                                                                Value.StructTuple
-                                                                                  "core::result::Result::Err"
-                                                                                  [
-                                                                                    M.call_closure (|
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "anyhow::Error",
-                                                                                        "msg",
-                                                                                        [
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let mv := M.copy (| γ |) in
+                                                                      M.read (|
+                                                                        M.match_operator (|
+                                                                          M.alloc (|
+                                                                            Value.Tuple []
+                                                                          |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let γ := mv in
+                                                                                let γ0_0 :=
+                                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                                    γ,
+                                                                                    "move_core_types::runtime_value::MoveValue::U8",
+                                                                                    0
+                                                                                  |) in
+                                                                                let byte :=
+                                                                                  M.copy (|
+                                                                                    γ0_0
+                                                                                  |) in
+                                                                                M.alloc (|
+                                                                                  Value.StructTuple
+                                                                                    "core::result::Result::Ok"
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        byte
+                                                                                      |)
+                                                                                    ]
+                                                                                |)));
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (M.alloc (|
+                                                                                  Value.StructTuple
+                                                                                    "core::result::Result::Err"
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
                                                                                           Ty.path
-                                                                                            "alloc::string::String"
-                                                                                        ]
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_function (|
-                                                                                            "core::hint::must_use",
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "alloc::string::String"
-                                                                                            ]
-                                                                                          |),
+                                                                                            "anyhow::Error",
+                                                                                          "msg",
                                                                                           [
-                                                                                            M.read (|
-                                                                                              let~
-                                                                                                    res :=
-                                                                                                M.alloc (|
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_function (|
-                                                                                                      "alloc::fmt::format",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      M.call_closure (|
-                                                                                                        M.get_associated_function (|
-                                                                                                          Ty.path
-                                                                                                            "core::fmt::Arguments",
-                                                                                                          "new_v1",
-                                                                                                          []
-                                                                                                        |),
-                                                                                                        [
-                                                                                                          M.alloc (|
-                                                                                                            Value.Array
-                                                                                                              [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "unexpected value in bytes: "
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                          |);
-                                                                                                          M.alloc (|
-                                                                                                            Value.Array
-                                                                                                              [
-                                                                                                                M.call_closure (|
-                                                                                                                  M.get_associated_function (|
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::rt::Argument",
-                                                                                                                    "new_debug",
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "move_core_types::runtime_value::MoveValue"
-                                                                                                                    ]
-                                                                                                                  |),
-                                                                                                                  [
-                                                                                                                    mv
-                                                                                                                  ]
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                |) in
-                                                                                              res
-                                                                                            |)
+                                                                                            Ty.path
+                                                                                              "alloc::string::String"
                                                                                           ]
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  ]
-                                                                              |)))
-                                                                        ]
-                                                                      |)
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                                        |),
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_function (|
+                                                                                              "core::hint::must_use",
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                let~
+                                                                                                      res :=
+                                                                                                  M.alloc (|
+                                                                                                    M.call_closure (|
+                                                                                                      M.get_function (|
+                                                                                                        "alloc::fmt::format",
+                                                                                                        []
+                                                                                                      |),
+                                                                                                      [
+                                                                                                        M.call_closure (|
+                                                                                                          M.get_associated_function (|
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::Arguments",
+                                                                                                            "new_v1",
+                                                                                                            []
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.read (|
+                                                                                                                    Value.String
+                                                                                                                      "unexpected value in bytes: "
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |);
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.call_closure (|
+                                                                                                                    M.get_associated_function (|
+                                                                                                                      Ty.path
+                                                                                                                        "core::fmt::rt::Argument",
+                                                                                                                      "new_debug",
+                                                                                                                      [
+                                                                                                                        Ty.path
+                                                                                                                          "move_core_types::runtime_value::MoveValue"
+                                                                                                                      ]
+                                                                                                                    |),
+                                                                                                                    [
+                                                                                                                      mv
+                                                                                                                    ]
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                    |)
+                                                                                                  |) in
+                                                                                                res
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                |)))
+                                                                          ]
+                                                                        |)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |)
@@ -2614,86 +2618,87 @@ Module transaction_argument.
                                   ltac:(M.monadic
                                     match γ with
                                     | [] =>
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "anyhow::Error",
-                                                      "msg",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::hint::must_use",
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            let~ res :=
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "alloc::fmt::format",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Arguments",
-                                                                        "new_v1",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "invalid transaction argument: "
-                                                                              |)
-                                                                            ]
-                                                                        |);
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_debug",
-                                                                                  [
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple
+                                                  "core::result::Result::Err"
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "anyhow::Error",
+                                                        "msg",
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::hint::must_use",
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              let~ res :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "alloc::fmt::format",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments",
+                                                                          "new_v1",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    "invalid transaction argument: "
+                                                                                |)
+                                                                              ]
+                                                                          |);
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
                                                                                     Ty.path
-                                                                                      "move_core_types::runtime_value::MoveValue"
-                                                                                  ]
-                                                                                |),
-                                                                                [ val ]
-                                                                              |)
-                                                                            ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |) in
-                                                            res
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                ]
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_debug",
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_core_types::runtime_value::MoveValue"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [ val ]
+                                                                                |)
+                                                                              ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |) in
+                                                              res
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             |)
                                           |)
-                                        |)
-                                      |)
-                                    | _ => M.impossible (||)
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             |)));
                         fun γ =>
@@ -2743,7 +2748,7 @@ Module transaction_argument.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2861,75 +2866,78 @@ Module transaction_argument.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let arg := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                      ],
-                                    "expect",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_core_types::runtime_value::MoveValue",
-                                        "simple_serialize",
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let arg := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::convert::From",
-                                              Ty.path "move_core_types::runtime_value::MoveValue",
-                                              [
-                                                Ty.path
-                                                  "move_core_types::transaction_argument::TransactionArgument"
-                                              ],
-                                              "from",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::clone::Clone",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                        ],
+                                      "expect",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_core_types::runtime_value::MoveValue",
+                                          "simple_serialize",
+                                          []
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "move_core_types::runtime_value::MoveValue",
+                                                [
                                                   Ty.path
-                                                    "move_core_types::transaction_argument::TransactionArgument",
-                                                  [],
-                                                  "clone",
-                                                  []
-                                                |),
-                                                [ M.read (| arg |) ]
-                                              |)
-                                            ]
+                                                    "move_core_types::transaction_argument::TransactionArgument"
+                                                ],
+                                                "from",
+                                                []
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::clone::Clone",
+                                                    Ty.path
+                                                      "move_core_types::transaction_argument::TransactionArgument",
+                                                    [],
+                                                    "clone",
+                                                    []
+                                                  |),
+                                                  [ M.read (| arg |) ]
+                                                |)
+                                              ]
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.read (| Value.String "transaction arguments must serialize" |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                        ]
+                                      |);
+                                      M.read (|
+                                        Value.String "transaction arguments must serialize"
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_convert_txn_args :
@@ -2981,7 +2989,7 @@ Module transaction_argument.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3022,7 +3030,7 @@ Module transaction_argument.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3052,7 +3060,7 @@ Module transaction_argument.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3114,7 +3122,7 @@ Module transaction_argument.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3245,7 +3253,7 @@ Module transaction_argument.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from : M.IsAssociatedFunction Self "from" from.
@@ -3346,29 +3354,30 @@ Module transaction_argument.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let byte_buf := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "serde_bytes::bytebuf::ByteBuf",
-                                      "into_vec",
-                                      []
-                                    |),
-                                    [ M.read (| byte_buf |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let byte_buf := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "serde_bytes::bytebuf::ByteBuf",
+                                        "into_vec",
+                                        []
+                                      |),
+                                      [ M.read (| byte_buf |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_vec : M.IsAssociatedFunction Self "into_vec" into_vec.

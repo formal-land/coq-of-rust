@@ -32,7 +32,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&mut, Box)] *)
@@ -58,7 +58,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&mut, Box)] *)
@@ -80,7 +80,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -122,7 +122,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&mut, Box)] *)
@@ -148,7 +148,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&mut, Box)] *)
@@ -170,7 +170,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -211,7 +211,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -237,7 +237,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -259,7 +259,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -300,7 +300,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -326,7 +326,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -348,7 +348,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -390,7 +390,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -416,7 +416,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -438,7 +438,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -492,7 +492,7 @@ Module db.
                     M.read (| address |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -530,7 +530,7 @@ Module db.
                     M.read (| code_hash |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -565,7 +565,7 @@ Module db.
                     M.read (| index |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -622,7 +622,7 @@ Module db.
                     M.read (| address |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -663,7 +663,7 @@ Module db.
                     M.read (| code_hash |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -701,7 +701,7 @@ Module db.
                     M.read (| index |)
                   ]
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -757,7 +757,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| address |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -787,7 +787,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -813,7 +813,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -880,7 +880,7 @@ Module db.
                   M.read (| address |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -930,7 +930,7 @@ Module db.
                   M.read (| code_hash |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -977,7 +977,7 @@ Module db.
                   M.read (| index |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

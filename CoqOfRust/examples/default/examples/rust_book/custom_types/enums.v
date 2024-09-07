@@ -265,7 +265,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_inspect : M.IsFunction "enums::inspect" inspect.
@@ -314,7 +314,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "enums::WebEvent::Click"
-              [ ("x", Value.Integer 20); ("y", Value.Integer 80) ]
+              [ ("x", Value.Integer IntegerKind.I64 20); ("y", Value.Integer IntegerKind.I64 80) ]
           |) in
         let~ load := M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
         let~ unload := M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
@@ -340,7 +340,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "enums::main" main.

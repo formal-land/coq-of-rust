@@ -46,7 +46,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -92,7 +92,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -125,39 +125,41 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::ops::index_range::IndexRange",
                       "end"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::ops::index_range::IndexRange",
                       "end"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -187,7 +189,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -256,7 +258,7 @@ Module ops.
                   [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -274,8 +276,8 @@ Module ops.
             (let end_ := M.alloc (| end_ |) in
             Value.StructRecord
               "core::ops::index_range::IndexRange"
-              [ ("start", Value.Integer 0); ("end_", M.read (| end_ |)) ]))
-        | _, _, _ => M.impossible
+              [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| end_ |)) ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_zero_to : M.IsAssociatedFunction Self "zero_to" zero_to.
@@ -297,7 +299,7 @@ Module ops.
                 "start"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_start : M.IsAssociatedFunction Self "start" start.
@@ -319,7 +321,7 @@ Module ops.
                 "end"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_end_ : M.IsAssociatedFunction Self "end_" end_.
@@ -354,7 +356,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -393,22 +395,24 @@ Module ops.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.lt
-                                            (M.read (|
+                                        UnOp.not (|
+                                          BinOp.lt (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "start"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "end"
                                               |)
-                                            |)))
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -451,12 +455,12 @@ Module ops.
                   |),
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
-                    [ M.read (| value |); Value.Integer 1 ]
+                    [ M.read (| value |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
               value
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_next_unchecked :
@@ -496,22 +500,24 @@ Module ops.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.lt
-                                            (M.read (|
+                                        UnOp.not (|
+                                          BinOp.lt (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "start"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "end"
                                               |)
-                                            |)))
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -549,7 +555,7 @@ Module ops.
                           "end"
                         |)
                       |);
-                      Value.Integer 1
+                      Value.Integer IntegerKind.Usize 1
                     ]
                   |)
                 |) in
@@ -564,7 +570,7 @@ Module ops.
                 |) in
               value
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_next_back_unchecked :
@@ -601,9 +607,9 @@ Module ops.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (M.read (| n |))
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.read (| n |),
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
@@ -615,7 +621,8 @@ Module ops.
                                       []
                                     |),
                                     [ self ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -671,7 +678,7 @@ Module ops.
                 |) in
               prefix
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take_prefix : M.IsAssociatedFunction Self "take_prefix" take_prefix.
@@ -707,9 +714,9 @@ Module ops.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (M.read (| n |))
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.read (| n |),
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
@@ -721,7 +728,8 @@ Module ops.
                                       []
                                     |),
                                     [ self ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -777,7 +785,7 @@ Module ops.
                 |) in
               suffix
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take_suffix : M.IsAssociatedFunction Self "take_suffix" take_suffix.
@@ -813,8 +821,8 @@ Module ops.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
@@ -826,8 +834,9 @@ Module ops.
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -850,7 +859,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -884,7 +893,7 @@ Module ops.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -946,17 +955,17 @@ Module ops.
                         []
                       |),
                       [
-                        BinOp.Wrap.sub
-                          Integer.Usize
-                          (M.read (| n |))
-                          (M.call_closure (|
+                        BinOp.Wrap.sub (|
+                          M.read (| n |),
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
                               []
                             |),
                             [ taken ]
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
@@ -965,7 +974,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1009,8 +1018,8 @@ Module ops.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
@@ -1022,8 +1031,9 @@ Module ops.
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1046,7 +1056,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1108,17 +1118,17 @@ Module ops.
                         []
                       |),
                       [
-                        BinOp.Wrap.sub
-                          Integer.Usize
-                          (M.read (| n |))
-                          (M.call_closure (|
+                        BinOp.Wrap.sub (|
+                          M.read (| n |),
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
                               []
                             |),
                             [ taken ]
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
@@ -1127,7 +1137,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1163,7 +1173,7 @@ Module ops.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

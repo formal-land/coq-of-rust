@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition used_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_used_function : M.IsFunction "dead_code::used_function" used_function.
@@ -14,7 +14,7 @@ Axiom Function_used_function : M.IsFunction "dead_code::used_function" used_func
 Definition unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_unused_function : M.IsFunction "dead_code::unused_function" unused_function.
@@ -23,7 +23,7 @@ Axiom Function_unused_function : M.IsFunction "dead_code::unused_function" unuse
 Definition noisy_unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_noisy_unused_function :
@@ -45,7 +45,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "dead_code::main" main.

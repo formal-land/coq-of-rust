@@ -73,7 +73,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -119,7 +119,7 @@ Module fmt.
                 ("precision", M.read (| precision |));
                 ("width", M.read (| width |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -177,7 +177,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -230,9 +230,9 @@ Module fmt.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -257,7 +257,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -321,7 +321,7 @@ Module fmt.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -394,7 +394,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -492,7 +492,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -537,7 +537,7 @@ Module fmt.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -631,7 +631,7 @@ Module fmt.
                       ("_lifetime", Value.StructTuple "core::marker::PhantomData" [])
                     ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -654,7 +654,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_display : M.IsAssociatedFunction Self "new_display" new_display.
@@ -677,7 +677,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_debug : M.IsAssociatedFunction Self "new_debug" new_debug.
@@ -700,7 +700,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_octal : M.IsAssociatedFunction Self "new_octal" new_octal.
@@ -724,7 +724,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_lower_hex :
@@ -749,7 +749,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_upper_hex :
@@ -773,7 +773,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Pointer", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_pointer : M.IsAssociatedFunction Self "new_pointer" new_pointer.
@@ -796,7 +796,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_binary : M.IsAssociatedFunction Self "new_binary" new_binary.
@@ -820,7 +820,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_lower_exp :
@@ -845,7 +845,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_upper_exp :
@@ -869,7 +869,7 @@ Module fmt.
                     "core::fmt::rt::ArgumentType::Count"
                     [ M.read (| M.read (| x |) |) ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_usize : M.IsAssociatedFunction Self "from_usize" from_usize.
@@ -945,7 +945,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fmt : M.IsAssociatedFunction Self "fmt" fmt.
@@ -991,7 +991,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
@@ -1004,7 +1004,7 @@ Module fmt.
       Definition none (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] => ltac:(M.monadic (Value.Array []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_none : M.IsAssociatedFunction Self "none" none.
@@ -1031,7 +1031,7 @@ Module fmt.
         | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord "core::fmt::rt::UnsafeArg" [ ("_private", Value.Tuple []) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.

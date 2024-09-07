@@ -33,7 +33,7 @@ Module verifier.
             M.read (| module |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_unmetered :
@@ -184,9 +184,8 @@ Module verifier.
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Wrap.div
-                                      Integer.Usize
-                                      (M.rust_cast
+                                    BinOp.Wrap.div (|
+                                      M.rust_cast
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "core::time::Duration",
@@ -205,8 +204,9 @@ Module verifier.
                                               |)
                                             |)
                                           ]
-                                        |)))
-                                      (M.read (| UnsupportedLiteral |))
+                                        |)),
+                                      M.read (| UnsupportedLiteral |)
+                                    |)
                                   |)
                                 ]
                               |);
@@ -323,9 +323,8 @@ Module verifier.
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Wrap.div
-                                      Integer.Usize
-                                      (M.call_closure (|
+                                    BinOp.Wrap.div (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -335,8 +334,9 @@ Module verifier.
                                           []
                                         |),
                                         [ bytes ]
-                                      |))
-                                      (Value.Integer 1000)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1000
+                                    |)
                                   |)
                                 ]
                               |)
@@ -352,10 +352,10 @@ Module verifier.
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.U32 0;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                   Value.StructTuple "core::fmt::rt::Count::Implied" []
                                 ]
@@ -367,11 +367,13 @@ Module verifier.
                                   []
                                 |),
                                 [
-                                  Value.Integer 1;
+                                  Value.Integer IntegerKind.Usize 1;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 0;
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 3 ];
+                                  Value.Integer IntegerKind.U32 0;
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 3 ];
                                   Value.StructTuple "core::fmt::rt::Count::Implied" []
                                 ]
                               |);
@@ -382,10 +384,10 @@ Module verifier.
                                   []
                                 |),
                                 [
-                                  Value.Integer 2;
+                                  Value.Integer IntegerKind.Usize 2;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.U32 0;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                   Value.StructTuple "core::fmt::rt::Count::Implied" []
                                 ]
@@ -397,10 +399,10 @@ Module verifier.
                                   []
                                 |),
                                 [
-                                  Value.Integer 3;
+                                  Value.Integer IntegerKind.Usize 3;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.U32 0;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                   Value.StructTuple "core::fmt::rt::Count::Implied" []
                                 ]
@@ -430,9 +432,9 @@ Module verifier.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.le
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -442,12 +444,14 @@ Module verifier.
                                   []
                                 |),
                                 [ bytes ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.get_constant (|
                                   "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
                                 |)
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -520,7 +524,7 @@ Module verifier.
             |) in
           result
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_with_config_for_test :
@@ -530,7 +534,7 @@ Module verifier.
   
   Module verify_module_with_config_for_test.
     Definition value_MAX_MODULE_SIZE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 65355 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65355 |))).
   End verify_module_with_config_for_test.
   
   (*
@@ -616,29 +620,30 @@ Module verifier.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let e := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError",
-                                                "finish",
-                                                []
-                                              |),
-                                              [
-                                                M.read (| e |);
-                                                Value.StructTuple
-                                                  "move_binary_format::errors::Location::Undefined"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let e := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
+                                                  "finish",
                                                   []
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                |),
+                                                [
+                                                  M.read (| e |);
+                                                  Value.StructTuple
+                                                    "move_binary_format::errors::Location::Undefined"
+                                                    []
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -1493,7 +1498,7 @@ Module verifier.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_with_config_metered :
@@ -1530,7 +1535,7 @@ Module verifier.
             M.alloc (| Value.StructTuple "move_bytecode_verifier_meter::dummy::DummyMeter" [] |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_with_config_unmetered :

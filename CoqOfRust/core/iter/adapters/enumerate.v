@@ -55,7 +55,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -104,7 +104,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -133,8 +133,8 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::enumerate::Enumerate"
-                [ ("iter", M.read (| iter |)); ("count", Value.Integer 0) ]))
-          | _, _, _ => M.impossible
+                [ ("iter", M.read (| iter |)); ("count", Value.Integer IntegerKind.Usize 0) ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -264,7 +264,7 @@ Module iter.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                        BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -273,7 +273,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -303,7 +303,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -408,16 +408,16 @@ Module iter.
                       |) in
                     let~ i :=
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (|
+                        BinOp.Wrap.add (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::enumerate::Enumerate",
                               "count"
                             |)
-                          |))
-                          (M.read (| n |))
+                          |),
+                          M.read (| n |)
+                        |)
                       |) in
                     let~ _ :=
                       M.write (|
@@ -426,7 +426,7 @@ Module iter.
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |),
-                        BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
+                        BinOp.Wrap.add (| M.read (| i |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -435,7 +435,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -467,7 +467,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -529,7 +529,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -593,7 +593,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -664,10 +664,9 @@ Module iter.
                               |) in
                             let rem := M.copy (| γ0_0 |) in
                             M.alloc (|
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| n |))
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.read (| n |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::num::nonzero::NonZero")
@@ -677,7 +676,8 @@ Module iter.
                                     []
                                   |),
                                   [ M.read (| rem |) ]
-                                |))
+                                |)
+                              |)
                             |)))
                       ]
                     |)
@@ -689,13 +689,10 @@ Module iter.
                       "core::iter::adapters::enumerate::Enumerate",
                       "count"
                     |) in
-                  M.write (|
-                    β,
-                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| advanced |))
-                  |) in
+                  M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| advanced |) |) |) in
                 remaining
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -739,21 +736,21 @@ Module iter.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::enumerate::Enumerate",
                             "count"
                           |)
-                        |))
-                        (M.read (| idx |));
+                        |),
+                        M.read (| idx |)
+                      |);
                       M.read (| value |)
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -904,23 +901,23 @@ Module iter.
                         [
                           Value.Tuple
                             [
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (M.read (|
+                              BinOp.Wrap.add (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
-                                |))
-                                (M.read (| len |));
+                                |),
+                                M.read (| len |)
+                              |);
                               M.read (| a |)
                             ]
                         ]
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1049,23 +1046,23 @@ Module iter.
                         [
                           Value.Tuple
                             [
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (M.read (|
+                              BinOp.Wrap.add (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
-                                |))
-                                (M.read (| len |));
+                                |),
+                                M.read (| len |)
+                              |);
                               M.read (| a |)
                             ]
                         ]
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1102,16 +1099,15 @@ Module iter.
               M.read (|
                 let~ count :=
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.read (|
+                    BinOp.Wrap.add (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
-                      |))
-                      (M.call_closure (|
+                      |),
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
@@ -1126,7 +1122,8 @@ Module iter.
                             "iter"
                           |)
                         ]
-                      |))
+                      |)
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1152,7 +1149,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1187,16 +1184,15 @@ Module iter.
               M.read (|
                 let~ count :=
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.read (|
+                    BinOp.Wrap.add (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
-                      |))
-                      (M.call_closure (|
+                      |),
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
@@ -1211,7 +1207,8 @@ Module iter.
                             "iter"
                           |)
                         ]
-                      |))
+                      |)
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1239,7 +1236,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1278,7 +1275,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1328,7 +1325,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1358,7 +1355,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1478,7 +1475,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1560,7 +1557,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

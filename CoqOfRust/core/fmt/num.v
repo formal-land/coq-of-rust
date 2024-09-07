@@ -12,8 +12,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I8 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -23,7 +23,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -33,7 +33,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -43,7 +43,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -53,7 +53,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -77,8 +77,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I16 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -88,7 +88,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -98,7 +98,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -108,7 +108,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -118,7 +118,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,8 +142,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I32 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -153,7 +153,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -163,7 +163,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -173,7 +173,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -183,7 +183,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -207,8 +207,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I64 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -218,7 +218,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -228,7 +228,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -238,7 +238,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -248,7 +248,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -272,8 +272,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I128 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -283,7 +283,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -293,7 +293,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -303,7 +303,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -313,7 +313,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -337,8 +337,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.Isize 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -348,7 +348,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -358,7 +358,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -368,7 +368,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -378,7 +378,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -402,8 +402,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U8 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -413,7 +413,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (| M.use u |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -423,7 +423,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.use (M.read (| self |)) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -433,7 +433,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -443,7 +443,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -467,8 +467,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U16 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -478,7 +478,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -488,7 +488,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -498,7 +498,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -508,7 +508,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -532,8 +532,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U32 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -543,7 +543,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -553,7 +553,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -563,7 +563,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -573,7 +573,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -597,8 +597,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U64 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -608,7 +608,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -618,7 +618,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -628,7 +628,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.use (M.read (| self |)) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -638,7 +638,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -662,8 +662,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U128 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -673,7 +673,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -683,7 +683,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -693,7 +693,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -703,7 +703,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.use (M.read (| self |)) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -727,8 +727,8 @@ Module fmt.
       (*           fn zero() -> Self { 0 } *)
       Definition zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-        | _, _, _ => M.impossible
+        | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.Usize 0))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn from_u8(u: u8) -> Self { u as Self } *)
@@ -738,7 +738,7 @@ Module fmt.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.rust_cast (M.read (| u |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u8(&self) -> u8 { *self as u8 } *)
@@ -748,7 +748,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u64(&self) -> u64 { *self as u64 } *)
@@ -758,7 +758,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*           fn to_u128(&self) -> u128 { *self as u128 } *)
@@ -768,7 +768,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.read (| self |) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -824,7 +824,7 @@ Module fmt.
                       |),
                       []
                     |),
-                    Value.Integer 128
+                    Value.Integer IntegerKind.Usize 128
                   |)
                 |) in
               let~ curr :=
@@ -1048,10 +1048,10 @@ Module fmt.
                                                   let β := curr in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.sub
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.match_operator (|
@@ -1295,10 +1295,10 @@ Module fmt.
                                                   let β := curr in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.sub
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.match_operator (|
@@ -1351,7 +1351,7 @@ Module fmt.
                       "core::ops::index::Index",
                       Ty.apply
                         (Ty.path "array")
-                        [ Value.Integer 128 ]
+                        [ Value.Integer IntegerKind.Usize 128 ]
                         [
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1426,7 +1426,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_fmt_int :
@@ -1451,7 +1451,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::fmt::num::Binary" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1484,7 +1484,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1513,7 +1513,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::fmt::num::Octal" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1546,7 +1546,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1575,7 +1575,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::fmt::num::LowerHex" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1608,7 +1608,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1637,7 +1637,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::fmt::num::UpperHex" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1670,7 +1670,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1686,7 +1686,8 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+      Definition value_BASE : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
@@ -1713,7 +1714,7 @@ Module fmt.
                     ltac:(M.monadic
                       (let x := M.copy (| γ |) in
                       M.alloc (|
-                        BinOp.Wrap.add Integer.U8 (M.read (| UnsupportedLiteral |)) (M.read (| x |))
+                        BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| x |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1748,14 +1749,14 @@ Module fmt.
                                           |),
                                           [
                                             M.alloc (|
-                                              BinOp.Wrap.sub
-                                                Integer.U8
-                                                (M.read (|
+                                              BinOp.Wrap.sub (|
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::fmt::num::GenericRadix::BASE"
                                                   |)
-                                                |))
-                                                (Value.Integer 1)
+                                                |),
+                                                Value.Integer IntegerKind.U8 1
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -1778,7 +1779,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1799,7 +1800,8 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 8 |))).
+      Definition value_BASE : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 8 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
@@ -1826,7 +1828,7 @@ Module fmt.
                     ltac:(M.monadic
                       (let x := M.copy (| γ |) in
                       M.alloc (|
-                        BinOp.Wrap.add Integer.U8 (M.read (| UnsupportedLiteral |)) (M.read (| x |))
+                        BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| x |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1861,14 +1863,14 @@ Module fmt.
                                           |),
                                           [
                                             M.alloc (|
-                                              BinOp.Wrap.sub
-                                                Integer.U8
-                                                (M.read (|
+                                              BinOp.Wrap.sub (|
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::fmt::num::GenericRadix::BASE"
                                                   |)
-                                                |))
-                                                (Value.Integer 1)
+                                                |),
+                                                Value.Integer IntegerKind.U8 1
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -1891,7 +1893,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1912,7 +1914,8 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+      Definition value_BASE : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 16 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
@@ -1939,16 +1942,16 @@ Module fmt.
                     ltac:(M.monadic
                       (let x := M.copy (| γ |) in
                       M.alloc (|
-                        BinOp.Wrap.add Integer.U8 (M.read (| UnsupportedLiteral |)) (M.read (| x |))
+                        BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| x |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let x := M.copy (| γ |) in
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.U8
-                          (M.read (| UnsupportedLiteral |))
-                          (BinOp.Wrap.sub Integer.U8 (M.read (| x |)) (Value.Integer 10))
+                        BinOp.Wrap.add (|
+                          M.read (| UnsupportedLiteral |),
+                          BinOp.Wrap.sub (| M.read (| x |), Value.Integer IntegerKind.U8 10 |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1983,14 +1986,14 @@ Module fmt.
                                           |),
                                           [
                                             M.alloc (|
-                                              BinOp.Wrap.sub
-                                                Integer.U8
-                                                (M.read (|
+                                              BinOp.Wrap.sub (|
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::fmt::num::GenericRadix::BASE"
                                                   |)
-                                                |))
-                                                (Value.Integer 1)
+                                                |),
+                                                Value.Integer IntegerKind.U8 1
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -2013,7 +2016,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2034,7 +2037,8 @@ Module fmt.
       
       (*             const BASE: u8 = $base; *)
       (* Ty.path "u8" *)
-      Definition value_BASE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+      Definition value_BASE : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 16 |))).
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
@@ -2061,16 +2065,16 @@ Module fmt.
                     ltac:(M.monadic
                       (let x := M.copy (| γ |) in
                       M.alloc (|
-                        BinOp.Wrap.add Integer.U8 (M.read (| UnsupportedLiteral |)) (M.read (| x |))
+                        BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| x |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let x := M.copy (| γ |) in
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.U8
-                          (M.read (| UnsupportedLiteral |))
-                          (BinOp.Wrap.sub Integer.U8 (M.read (| x |)) (Value.Integer 10))
+                        BinOp.Wrap.add (|
+                          M.read (| UnsupportedLiteral |),
+                          BinOp.Wrap.sub (| M.read (| x |), Value.Integer IntegerKind.U8 10 |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2105,14 +2109,14 @@ Module fmt.
                                           |),
                                           [
                                             M.alloc (|
-                                              BinOp.Wrap.sub
-                                                Integer.U8
-                                                (M.read (|
+                                              BinOp.Wrap.sub (|
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::fmt::num::GenericRadix::BASE"
                                                   |)
-                                                |))
-                                                (Value.Integer 1)
+                                                |),
+                                                Value.Integer IntegerKind.U8 1
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -2135,7 +2139,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2179,7 +2183,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2218,7 +2222,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2257,7 +2261,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2296,7 +2300,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2335,7 +2339,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2374,7 +2378,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2413,7 +2417,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2452,7 +2456,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2491,7 +2495,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2530,7 +2534,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2569,7 +2573,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2608,7 +2612,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2647,7 +2651,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2686,7 +2690,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2725,7 +2729,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2764,7 +2768,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2803,7 +2807,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2842,7 +2846,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2881,7 +2885,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2920,7 +2924,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2959,7 +2963,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2998,7 +3002,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3037,7 +3041,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3076,7 +3080,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3115,7 +3119,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3154,7 +3158,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3193,7 +3197,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3232,7 +3236,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3271,7 +3275,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3310,7 +3314,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3349,7 +3353,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3388,7 +3392,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3427,7 +3431,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3466,7 +3470,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3505,7 +3509,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3544,7 +3548,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3583,7 +3587,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3622,7 +3626,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3661,7 +3665,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3700,7 +3704,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3739,7 +3743,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3778,7 +3782,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3817,7 +3821,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3856,7 +3860,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3895,7 +3899,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3934,7 +3938,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3973,7 +3977,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4012,7 +4016,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4129,7 +4133,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4246,7 +4250,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4363,7 +4367,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4480,7 +4484,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4597,7 +4601,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4714,7 +4718,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4831,7 +4835,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4948,7 +4952,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5065,7 +5069,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5182,7 +5186,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5299,7 +5303,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5416,7 +5420,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5519,7 +5523,7 @@ Module fmt.
                       |),
                       []
                     |),
-                    Value.Integer 39
+                    Value.Integer IntegerKind.Usize 39
                   |)
                 |) in
               let~ curr :=
@@ -5577,13 +5581,15 @@ Module fmt.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.ge
-                                    (M.call_closure (|
+                                UnOp.not (|
+                                  BinOp.ge (|
+                                    M.call_closure (|
                                       M.get_function (| "core::mem::size_of", [ Ty.path "u64" ] |),
                                       []
-                                    |))
-                                    (Value.Integer 2))
+                                    |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5614,7 +5620,10 @@ Module fmt.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge (M.read (| n |)) (Value.Integer 10000)
+                                    BinOp.ge (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.U64 10000
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5624,40 +5633,48 @@ Module fmt.
                               let~ rem :=
                                 M.alloc (|
                                   M.rust_cast
-                                    (BinOp.Wrap.rem
-                                      Integer.U64
-                                      (M.read (| n |))
-                                      (Value.Integer 10000))
+                                    (BinOp.Wrap.rem (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.U64 10000
+                                    |))
                                 |) in
                               let~ _ :=
                                 let β := n in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.div Integer.U64 (M.read (| β |)) (Value.Integer 10000)
+                                  BinOp.Wrap.div (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.U64 10000
+                                  |)
                                 |) in
                               let~ d1 :=
                                 M.alloc (|
-                                  BinOp.Wrap.shl
-                                    (BinOp.Wrap.div
-                                      Integer.Usize
-                                      (M.read (| rem |))
-                                      (Value.Integer 100))
-                                    (Value.Integer 1)
+                                  BinOp.Wrap.shl (|
+                                    BinOp.Wrap.div (|
+                                      M.read (| rem |),
+                                      Value.Integer IntegerKind.Usize 100
+                                    |),
+                                    Value.Integer IntegerKind.I32 1
+                                  |)
                                 |) in
                               let~ d2 :=
                                 M.alloc (|
-                                  BinOp.Wrap.shl
-                                    (BinOp.Wrap.rem
-                                      Integer.Usize
-                                      (M.read (| rem |))
-                                      (Value.Integer 100))
-                                    (Value.Integer 1)
+                                  BinOp.Wrap.shl (|
+                                    BinOp.Wrap.rem (|
+                                      M.read (| rem |),
+                                      Value.Integer IntegerKind.Usize 100
+                                    |),
+                                    Value.Integer IntegerKind.I32 1
+                                  |)
                                 |) in
                               let~ _ :=
                                 let β := curr in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 4)
+                                  BinOp.Wrap.sub (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 4
+                                  |)
                                 |) in
                               let~ _ :=
                                 M.alloc (|
@@ -5683,7 +5700,7 @@ Module fmt.
                                         |),
                                         [ M.read (| buf_ptr |); M.read (| curr |) ]
                                       |);
-                                      Value.Integer 2
+                                      Value.Integer IntegerKind.Usize 2
                                     ]
                                   |)
                                 |) in
@@ -5711,13 +5728,13 @@ Module fmt.
                                         |),
                                         [
                                           M.read (| buf_ptr |);
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| curr |))
-                                            (Value.Integer 2)
+                                          BinOp.Wrap.add (|
+                                            M.read (| curr |),
+                                            Value.Integer IntegerKind.Usize 2
+                                          |)
                                         ]
                                       |);
-                                      Value.Integer 2
+                                      Value.Integer IntegerKind.Usize 2
                                     ]
                                   |)
                                 |) in
@@ -5747,26 +5764,35 @@ Module fmt.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (Value.Integer 100) |)) in
+                              (M.alloc (|
+                                BinOp.ge (| M.read (| n |), Value.Integer IntegerKind.Usize 100 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ d1 :=
                             M.alloc (|
-                              BinOp.Wrap.shl
-                                (BinOp.Wrap.rem Integer.Usize (M.read (| n |)) (Value.Integer 100))
-                                (Value.Integer 1)
+                              BinOp.Wrap.shl (|
+                                BinOp.Wrap.rem (|
+                                  M.read (| n |),
+                                  Value.Integer IntegerKind.Usize 100
+                                |),
+                                Value.Integer IntegerKind.I32 1
+                              |)
                             |) in
                           let~ _ :=
                             let β := n in
                             M.write (|
                               β,
-                              BinOp.Wrap.div Integer.Usize (M.read (| β |)) (Value.Integer 100)
+                              BinOp.Wrap.div (|
+                                M.read (| β |),
+                                Value.Integer IntegerKind.Usize 100
+                              |)
                             |) in
                           let~ _ :=
                             let β := curr in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 2)
+                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
                             |) in
                           let~ _ :=
                             M.alloc (|
@@ -5792,7 +5818,7 @@ Module fmt.
                                     |),
                                     [ M.read (| buf_ptr |); M.read (| curr |) ]
                                   |);
-                                  Value.Integer 2
+                                  Value.Integer IntegerKind.Usize 2
                                 ]
                               |)
                             |) in
@@ -5806,14 +5832,17 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.lt (M.read (| n |)) (Value.Integer 10) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| n |), Value.Integer IntegerKind.Usize 10 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := curr in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                           |) in
                         let~ _ :=
                           M.write (|
@@ -5825,21 +5854,23 @@ Module fmt.
                               |),
                               [ M.read (| buf_ptr |); M.read (| curr |) ]
                             |),
-                            BinOp.Wrap.add
-                              Integer.U8
-                              (M.rust_cast (M.read (| n |)))
-                              (M.read (| UnsupportedLiteral |))
+                            BinOp.Wrap.add (|
+                              M.rust_cast (M.read (| n |)),
+                              M.read (| UnsupportedLiteral |)
+                            |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let~ d1 :=
-                          M.alloc (| BinOp.Wrap.shl (M.read (| n |)) (Value.Integer 1) |) in
+                          M.alloc (|
+                            BinOp.Wrap.shl (| M.read (| n |), Value.Integer IntegerKind.I32 1 |)
+                          |) in
                         let~ _ :=
                           let β := curr in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 2)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
                           |) in
                         let~ _ :=
                           M.alloc (|
@@ -5865,7 +5896,7 @@ Module fmt.
                                   |),
                                   [ M.read (| buf_ptr |); M.read (| curr |) ]
                                 |);
-                                Value.Integer 2
+                                Value.Integer IntegerKind.Usize 2
                               ]
                             |)
                           |) in
@@ -5890,9 +5921,8 @@ Module fmt.
                               |),
                               [ M.read (| buf_ptr |); M.read (| curr |) ]
                             |));
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -5907,8 +5937,9 @@ Module fmt.
                                 []
                               |),
                               [ buf ]
-                            |))
-                            (M.read (| curr |))
+                            |),
+                            M.read (| curr |)
+                          |)
                         ]
                       |)
                     ]
@@ -5930,7 +5961,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_fmt_u64 : M.IsFunction "core::fmt::num::imp::fmt_u64" fmt_u64.
@@ -5958,7 +5989,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I8 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -5987,8 +6020,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i8",
@@ -5997,8 +6030,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6012,7 +6046,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6046,7 +6080,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U8 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6075,8 +6111,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u8",
@@ -6085,8 +6121,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6100,7 +6137,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6134,7 +6171,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I16 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6163,8 +6202,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i16",
@@ -6173,8 +6212,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6188,7 +6228,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6222,7 +6262,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U16 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6251,8 +6293,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u16",
@@ -6261,8 +6303,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6276,7 +6319,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6310,7 +6353,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I32 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6339,8 +6384,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i32",
@@ -6349,8 +6394,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6364,7 +6410,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6398,7 +6444,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U32 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6427,8 +6475,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u32",
@@ -6437,8 +6485,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6452,7 +6501,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6486,7 +6535,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I64 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6515,8 +6566,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i64",
@@ -6525,8 +6576,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6540,7 +6592,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6574,7 +6626,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U64 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6603,8 +6657,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u64",
@@ -6613,8 +6667,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6628,7 +6683,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6662,7 +6717,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Usize 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6691,8 +6748,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "usize",
@@ -6701,8 +6758,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6716,7 +6774,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6750,7 +6808,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Isize 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -6779,8 +6839,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "isize",
@@ -6789,8 +6849,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -6804,7 +6865,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6960,7 +7021,7 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                let~ exponent := M.alloc (| Value.Integer 0 |) in
+                let~ exponent := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
@@ -6973,14 +7034,18 @@ Module fmt.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.and (|
-                                      BinOp.Pure.eq
-                                        (BinOp.Wrap.rem
-                                          Integer.U64
-                                          (M.read (| n |))
-                                          (Value.Integer 10))
-                                        (Value.Integer 0),
+                                      BinOp.eq (|
+                                        BinOp.Wrap.rem (|
+                                          M.read (| n |),
+                                          Value.Integer IntegerKind.U64 10
+                                        |),
+                                        Value.Integer IntegerKind.U64 0
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.ge (M.read (| n |)) (Value.Integer 10)))
+                                        (BinOp.ge (|
+                                          M.read (| n |),
+                                          Value.Integer IntegerKind.U64 10
+                                        |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -6992,13 +7057,19 @@ Module fmt.
                                 let β := n in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.div Integer.U64 (M.read (| β |)) (Value.Integer 10)
+                                  BinOp.Wrap.div (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.U64 10
+                                  |)
                                 |) in
                               let~ _ :=
                                 let β := exponent in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -7040,7 +7111,7 @@ Module fmt.
                             |) in
                           let fmt_prec := M.copy (| γ0_0 |) in
                           let~ tmp := M.copy (| n |) in
-                          let~ prec := M.alloc (| Value.Integer 0 |) in
+                          let~ prec := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                           let~ _ :=
                             M.loop (|
                               ltac:(M.monadic
@@ -7052,7 +7123,10 @@ Module fmt.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.ge (M.read (| tmp |)) (Value.Integer 10)
+                                              BinOp.ge (|
+                                                M.read (| tmp |),
+                                                Value.Integer IntegerKind.U64 10
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -7063,19 +7137,19 @@ Module fmt.
                                           let β := tmp in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.div
-                                              Integer.U64
-                                              (M.read (| β |))
-                                              (Value.Integer 10)
+                                            BinOp.Wrap.div (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.U64 10
+                                            |)
                                           |) in
                                         let~ _ :=
                                           let β := prec in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ =>
@@ -7118,7 +7192,11 @@ Module fmt.
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                          M.alloc (| Value.Tuple [ Value.Integer 0; Value.Integer 0 ] |)))
+                          M.alloc (|
+                            Value.Tuple
+                              [ Value.Integer IntegerKind.Usize 0; Value.Integer IntegerKind.Usize 0
+                              ]
+                          |)))
                     ]
                   |),
                   [
@@ -7147,7 +7225,7 @@ Module fmt.
                                     Value.StructRecord
                                       "core::ops::range::Range"
                                       [
-                                        ("start", Value.Integer 1);
+                                        ("start", Value.Integer IntegerKind.Usize 1);
                                         ("end_", M.read (| subtracted_precision |))
                                       ]
                                   ]
@@ -7199,19 +7277,19 @@ Module fmt.
                                                     let β := n in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.div
-                                                        Integer.U64
-                                                        (M.read (| β |))
-                                                        (Value.Integer 10)
+                                                      BinOp.Wrap.div (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.U64 10
+                                                      |)
                                                     |) in
                                                   let~ _ :=
                                                     let β := exponent in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)))
                                             ]
@@ -7229,9 +7307,10 @@ Module fmt.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne
-                                          (M.read (| subtracted_precision |))
-                                          (Value.Integer 0)
+                                        BinOp.ne (|
+                                          M.read (| subtracted_precision |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -7240,22 +7319,28 @@ Module fmt.
                                     |) in
                                   let~ rem :=
                                     M.alloc (|
-                                      BinOp.Wrap.rem Integer.U64 (M.read (| n |)) (Value.Integer 10)
+                                      BinOp.Wrap.rem (|
+                                        M.read (| n |),
+                                        Value.Integer IntegerKind.U64 10
+                                      |)
                                     |) in
                                   let~ _ :=
                                     let β := n in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.div Integer.U64 (M.read (| β |)) (Value.Integer 10)
+                                      BinOp.Wrap.div (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.U64 10
+                                      |)
                                     |) in
                                   let~ _ :=
                                     let β := exponent in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     |) in
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -7266,26 +7351,30 @@ Module fmt.
                                             M.use
                                               (M.alloc (|
                                                 LogicalOp.or (|
-                                                  BinOp.Pure.gt
-                                                    (M.read (| rem |))
-                                                    (Value.Integer 5),
+                                                  BinOp.gt (|
+                                                    M.read (| rem |),
+                                                    Value.Integer IntegerKind.U64 5
+                                                  |),
                                                   ltac:(M.monadic
                                                     (LogicalOp.and (|
-                                                      BinOp.Pure.eq
-                                                        (M.read (| rem |))
-                                                        (Value.Integer 5),
+                                                      BinOp.eq (|
+                                                        M.read (| rem |),
+                                                        Value.Integer IntegerKind.U64 5
+                                                      |),
                                                       ltac:(M.monadic
                                                         (LogicalOp.or (|
-                                                          BinOp.Pure.ne
-                                                            (BinOp.Wrap.rem
-                                                              Integer.U64
-                                                              (M.read (| n |))
-                                                              (Value.Integer 2))
-                                                            (Value.Integer 0),
+                                                          BinOp.ne (|
+                                                            BinOp.Wrap.rem (|
+                                                              M.read (| n |),
+                                                              Value.Integer IntegerKind.U64 2
+                                                            |),
+                                                            Value.Integer IntegerKind.U64 0
+                                                          |),
                                                           ltac:(M.monadic
-                                                            (BinOp.Pure.gt
-                                                              (M.read (| subtracted_precision |))
-                                                              (Value.Integer 1)))
+                                                            (BinOp.gt (|
+                                                              M.read (| subtracted_precision |),
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            |)))
                                                         |)))
                                                     |)))
                                                 |)
@@ -7299,10 +7388,10 @@ Module fmt.
                                             let β := n in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.U64
-                                                (M.read (| β |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                Value.Integer IntegerKind.U64 1
+                                              |)
                                             |) in
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
@@ -7312,28 +7401,29 @@ Module fmt.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.Pure.gt
-                                                          (M.call_closure (|
+                                                        BinOp.gt (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path "u64",
                                                               "ilog10",
                                                               []
                                                             |),
                                                             [ M.read (| n |) ]
-                                                          |))
-                                                          (M.call_closure (|
+                                                          |),
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path "u64",
                                                               "ilog10",
                                                               []
                                                             |),
                                                             [
-                                                              BinOp.Wrap.sub
-                                                                Integer.U64
-                                                                (M.read (| n |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.sub (|
+                                                                M.read (| n |),
+                                                                Value.Integer IntegerKind.U64 1
+                                                              |)
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -7344,19 +7434,19 @@ Module fmt.
                                                     let β := n in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.div
-                                                        Integer.U64
-                                                        (M.read (| β |))
-                                                        (Value.Integer 10)
+                                                      BinOp.Wrap.div (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.U64 10
+                                                      |)
                                                     |) in
                                                   let~ _ :=
                                                     let β := exponent in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -7405,7 +7495,7 @@ Module fmt.
                               |),
                               []
                             |),
-                            Value.Integer 40
+                            Value.Integer IntegerKind.Usize 40
                           |)
                         |) in
                       let~ curr :=
@@ -7467,7 +7557,10 @@ Module fmt.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.ge (M.read (| n |)) (Value.Integer 100)
+                                          BinOp.ge (|
+                                            M.read (| n |),
+                                            Value.Integer IntegerKind.U64 100
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -7476,22 +7569,23 @@ Module fmt.
                                       |) in
                                     let~ d1 :=
                                       M.alloc (|
-                                        BinOp.Wrap.shl
-                                          (M.rust_cast
-                                            (BinOp.Wrap.rem
-                                              Integer.U64
-                                              (M.read (| n |))
-                                              (Value.Integer 100)))
-                                          (Value.Integer 1)
+                                        BinOp.Wrap.shl (|
+                                          M.rust_cast
+                                            (BinOp.Wrap.rem (|
+                                              M.read (| n |),
+                                              Value.Integer IntegerKind.U64 100
+                                            |)),
+                                          Value.Integer IntegerKind.I32 1
+                                        |)
                                       |) in
                                     let~ _ :=
                                       let β := curr in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| β |))
-                                          (Value.Integer 2)
+                                        BinOp.Wrap.sub (|
+                                          M.read (| β |),
+                                          Value.Integer IntegerKind.Usize 2
+                                        |)
                                       |) in
                                     let~ _ :=
                                       let~ _ :=
@@ -7518,7 +7612,7 @@ Module fmt.
                                                 |),
                                                 [ M.read (| buf_ptr |); M.read (| curr |) ]
                                               |);
-                                              Value.Integer 2
+                                              Value.Integer IntegerKind.Usize 2
                                             ]
                                           |)
                                         |) in
@@ -7527,19 +7621,19 @@ Module fmt.
                                       let β := n in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.div
-                                          Integer.U64
-                                          (M.read (| β |))
-                                          (Value.Integer 100)
+                                        BinOp.Wrap.div (|
+                                          M.read (| β |),
+                                          Value.Integer IntegerKind.U64 100
+                                        |)
                                       |) in
                                     let~ _ :=
                                       let β := exponent in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (| β |))
-                                          (Value.Integer 2)
+                                        BinOp.Wrap.add (|
+                                          M.read (| β |),
+                                          Value.Integer IntegerKind.Usize 2
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
@@ -7568,7 +7662,10 @@ Module fmt.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.ge (M.read (| n |)) (Value.Integer 10)
+                                      BinOp.ge (|
+                                        M.read (| n |),
+                                        Value.Integer IntegerKind.Isize 10
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -7579,7 +7676,10 @@ Module fmt.
                                   let β := curr in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.sub (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let~ _ :=
@@ -7592,26 +7692,32 @@ Module fmt.
                                         |),
                                         [ M.read (| buf_ptr |); M.read (| curr |) ]
                                       |),
-                                      BinOp.Wrap.add
-                                        Integer.U8
-                                        (BinOp.Wrap.rem
-                                          Integer.U8
-                                          (M.rust_cast (M.read (| n |)))
-                                          (Value.Integer 10))
-                                        (M.read (| UnsupportedLiteral |))
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.rem (|
+                                          M.rust_cast (M.read (| n |)),
+                                          Value.Integer IntegerKind.U8 10
+                                        |),
+                                        M.read (| UnsupportedLiteral |)
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |) in
                                 let~ _ :=
                                   let β := n in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.div Integer.Isize (M.read (| β |)) (Value.Integer 10)
+                                    BinOp.Wrap.div (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Isize 10
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let β := exponent in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -7627,13 +7733,15 @@ Module fmt.
                                   M.use
                                     (M.alloc (|
                                       LogicalOp.or (|
-                                        BinOp.Pure.ne
-                                          (M.read (| exponent |))
-                                          (M.read (| trailing_zeros |)),
+                                        BinOp.ne (|
+                                          M.read (| exponent |),
+                                          M.read (| trailing_zeros |)
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.ne
-                                            (M.read (| added_precision |))
-                                            (Value.Integer 0)))
+                                          (BinOp.ne (|
+                                            M.read (| added_precision |),
+                                            Value.Integer IntegerKind.Usize 0
+                                          |)))
                                       |)
                                     |)) in
                                 let _ :=
@@ -7645,7 +7753,10 @@ Module fmt.
                                   let β := curr in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.sub (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 let~ _ :=
                                   M.write (|
@@ -7669,7 +7780,7 @@ Module fmt.
                             let β := curr in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                             |) in
                           let~ _ :=
                             M.write (|
@@ -7681,16 +7792,15 @@ Module fmt.
                                 |),
                                 [ M.read (| buf_ptr |); M.read (| curr |) ]
                               |),
-                              BinOp.Wrap.add
-                                Integer.U8
-                                (M.rust_cast (M.read (| n |)))
-                                (M.read (| UnsupportedLiteral |))
+                              BinOp.Wrap.add (|
+                                M.rust_cast (M.read (| n |)),
+                                M.read (| UnsupportedLiteral |)
+                              |)
                             |) in
                           let~ len :=
                             M.alloc (|
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -7705,8 +7815,9 @@ Module fmt.
                                     []
                                   |),
                                   [ buf ]
-                                |))
-                                (M.read (| M.use curr |))
+                                |),
+                                M.read (| M.use curr |)
+                              |)
                             |) in
                           M.alloc (|
                             M.call_closure (|
@@ -7744,7 +7855,7 @@ Module fmt.
                               |),
                               []
                             |),
-                            Value.Integer 3
+                            Value.Integer IntegerKind.Usize 3
                           |)
                         |) in
                       let~ exp_ptr :=
@@ -7771,7 +7882,7 @@ Module fmt.
                                   "add",
                                   []
                                 |),
-                                [ M.read (| exp_ptr |); Value.Integer 0 ]
+                                [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
                               |),
                               M.read (|
                                 M.match_operator (|
@@ -7801,7 +7912,10 @@ Module fmt.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| exponent |)) (Value.Integer 10)
+                                            BinOp.lt (|
+                                              M.read (| exponent |),
+                                              Value.Integer IntegerKind.Usize 10
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -7816,19 +7930,25 @@ Module fmt.
                                               "add",
                                               []
                                             |),
-                                            [ M.read (| exp_ptr |); Value.Integer 1 ]
+                                            [
+                                              M.read (| exp_ptr |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
                                           |),
-                                          BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.rust_cast (M.read (| exponent |)))
-                                            (M.read (| UnsupportedLiteral |))
+                                          BinOp.Wrap.add (|
+                                            M.rust_cast (M.read (| exponent |)),
+                                            M.read (| UnsupportedLiteral |)
+                                          |)
                                         |) in
-                                      M.alloc (| Value.Integer 2 |)));
+                                      M.alloc (| Value.Integer IntegerKind.Usize 2 |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let~ off :=
                                         M.alloc (|
-                                          BinOp.Wrap.shl (M.read (| exponent |)) (Value.Integer 1)
+                                          BinOp.Wrap.shl (|
+                                            M.read (| exponent |),
+                                            Value.Integer IntegerKind.I32 1
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.alloc (|
@@ -7852,13 +7972,16 @@ Module fmt.
                                                   "add",
                                                   []
                                                 |),
-                                                [ M.read (| exp_ptr |); Value.Integer 1 ]
+                                                [
+                                                  M.read (| exp_ptr |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |);
-                                              Value.Integer 2
+                                              Value.Integer IntegerKind.Usize 2
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Integer 3 |)))
+                                      M.alloc (| Value.Integer IntegerKind.Usize 3 |)))
                                 ]
                               |)
                             |) in
@@ -7901,7 +8024,7 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
-                                      (M.alloc (| UnOp.Pure.not (M.read (| is_nonnegative |)) |)) in
+                                      (M.alloc (| UnOp.not (| M.read (| is_nonnegative |) |) |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ |),
@@ -7964,7 +8087,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_exp_u64 : M.IsFunction "core::fmt::num::imp::exp_u64" exp_u64.
@@ -7992,7 +8115,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I8 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8021,8 +8146,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i8",
@@ -8031,8 +8156,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8047,7 +8173,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8081,7 +8207,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U8 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8110,8 +8238,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u8",
@@ -8120,8 +8248,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8136,7 +8265,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8170,7 +8299,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I16 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8199,8 +8330,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i16",
@@ -8209,8 +8340,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8225,7 +8357,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8259,7 +8391,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U16 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8288,8 +8422,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u16",
@@ -8298,8 +8432,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8314,7 +8449,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8348,7 +8483,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I32 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8377,8 +8514,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i32",
@@ -8387,8 +8524,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8403,7 +8541,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8437,7 +8575,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U32 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8466,8 +8606,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u32",
@@ -8476,8 +8616,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8492,7 +8633,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8526,7 +8667,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I64 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8555,8 +8698,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i64",
@@ -8565,8 +8708,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8581,7 +8725,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8615,7 +8759,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U64 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8644,8 +8790,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u64",
@@ -8654,8 +8800,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8670,7 +8817,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8704,7 +8851,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Usize 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8733,8 +8882,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "usize",
@@ -8743,8 +8892,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8759,7 +8909,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8793,7 +8943,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Isize 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8822,8 +8974,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "isize",
@@ -8832,8 +8984,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8848,7 +9001,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8882,7 +9035,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I8 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8911,8 +9066,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i8",
@@ -8921,8 +9076,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -8936,7 +9092,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8970,7 +9126,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U8 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -8999,8 +9157,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u8",
@@ -9009,8 +9167,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9024,7 +9183,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9058,7 +9217,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I16 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9087,8 +9248,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i16",
@@ -9097,8 +9258,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9112,7 +9274,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9146,7 +9308,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U16 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9175,8 +9339,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u16",
@@ -9185,8 +9349,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9200,7 +9365,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9234,7 +9399,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I32 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9263,8 +9430,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i32",
@@ -9273,8 +9440,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9288,7 +9456,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9322,7 +9490,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U32 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9351,8 +9521,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u32",
@@ -9361,8 +9531,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9376,7 +9547,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9410,7 +9581,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I64 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9439,8 +9612,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i64",
@@ -9449,8 +9622,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9464,7 +9638,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9498,7 +9672,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U64 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9527,8 +9703,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u64",
@@ -9537,8 +9713,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9552,7 +9729,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9586,7 +9763,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Usize 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9615,8 +9794,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "usize",
@@ -9625,8 +9804,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9640,7 +9820,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9674,7 +9854,9 @@ Module fmt.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ is_nonnegative :=
-                  M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                  M.alloc (|
+                    BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.Isize 0 |)
+                  |) in
                 let~ n :=
                   M.copy (|
                     M.match_operator (|
@@ -9703,8 +9885,8 @@ Module fmt.
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "isize",
@@ -9713,8 +9895,9 @@ Module fmt.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |));
-                                  Value.Integer 1
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U64 1
                                 ]
                               |)
                             |)))
@@ -9728,7 +9911,7 @@ Module fmt.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9885,7 +10068,7 @@ Module fmt.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              let~ exponent := M.alloc (| Value.Integer 0 |) in
+              let~ exponent := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ :=
                 M.loop (|
                   ltac:(M.monadic
@@ -9898,14 +10081,18 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.and (|
-                                    BinOp.Pure.eq
-                                      (BinOp.Wrap.rem
-                                        Integer.U128
-                                        (M.read (| n |))
-                                        (Value.Integer 10))
-                                      (Value.Integer 0),
+                                    BinOp.eq (|
+                                      BinOp.Wrap.rem (|
+                                        M.read (| n |),
+                                        Value.Integer IntegerKind.U128 10
+                                      |),
+                                      Value.Integer IntegerKind.U128 0
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.ge (M.read (| n |)) (Value.Integer 10)))
+                                      (BinOp.ge (|
+                                        M.read (| n |),
+                                        Value.Integer IntegerKind.U128 10
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -9914,13 +10101,19 @@ Module fmt.
                               let β := n in
                               M.write (|
                                 β,
-                                BinOp.Wrap.div Integer.U128 (M.read (| β |)) (Value.Integer 10)
+                                BinOp.Wrap.div (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.U128 10
+                                |)
                               |) in
                             let~ _ :=
                               let β := exponent in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -9960,7 +10153,7 @@ Module fmt.
                           |) in
                         let fmt_prec := M.copy (| γ0_0 |) in
                         let~ tmp := M.copy (| n |) in
-                        let~ prec := M.alloc (| Value.Integer 0 |) in
+                        let~ prec := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                         let~ _ :=
                           M.loop (|
                             ltac:(M.monadic
@@ -9972,7 +10165,10 @@ Module fmt.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge (M.read (| tmp |)) (Value.Integer 10)
+                                            BinOp.ge (|
+                                              M.read (| tmp |),
+                                              Value.Integer IntegerKind.U128 10
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -9983,19 +10179,19 @@ Module fmt.
                                         let β := tmp in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.div
-                                            Integer.U128
-                                            (M.read (| β |))
-                                            (Value.Integer 10)
+                                          BinOp.Wrap.div (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.U128 10
+                                          |)
                                         |) in
                                       let~ _ :=
                                         let β := prec in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| β |))
-                                            (Value.Integer 1)
+                                          BinOp.Wrap.add (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -10038,7 +10234,10 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        M.alloc (| Value.Tuple [ Value.Integer 0; Value.Integer 0 ] |)))
+                        M.alloc (|
+                          Value.Tuple
+                            [ Value.Integer IntegerKind.Usize 0; Value.Integer IntegerKind.Usize 0 ]
+                        |)))
                   ]
                 |),
                 [
@@ -10067,7 +10266,7 @@ Module fmt.
                                   Value.StructRecord
                                     "core::ops::range::Range"
                                     [
-                                      ("start", Value.Integer 1);
+                                      ("start", Value.Integer IntegerKind.Usize 1);
                                       ("end_", M.read (| subtracted_precision |))
                                     ]
                                 ]
@@ -10119,19 +10318,19 @@ Module fmt.
                                                   let β := n in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.div
-                                                      Integer.U128
-                                                      (M.read (| β |))
-                                                      (Value.Integer 10)
+                                                    BinOp.Wrap.div (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.U128 10
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   let β := exponent in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)))
                                           ]
@@ -10149,9 +10348,10 @@ Module fmt.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.ne
-                                        (M.read (| subtracted_precision |))
-                                        (Value.Integer 0)
+                                      BinOp.ne (|
+                                        M.read (| subtracted_precision |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -10160,19 +10360,28 @@ Module fmt.
                                   |) in
                                 let~ rem :=
                                   M.alloc (|
-                                    BinOp.Wrap.rem Integer.U128 (M.read (| n |)) (Value.Integer 10)
+                                    BinOp.Wrap.rem (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.U128 10
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let β := n in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.div Integer.U128 (M.read (| β |)) (Value.Integer 10)
+                                    BinOp.Wrap.div (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.U128 10
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let β := exponent in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -10183,24 +10392,30 @@ Module fmt.
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.or (|
-                                                BinOp.Pure.gt (M.read (| rem |)) (Value.Integer 5),
+                                                BinOp.gt (|
+                                                  M.read (| rem |),
+                                                  Value.Integer IntegerKind.U128 5
+                                                |),
                                                 ltac:(M.monadic
                                                   (LogicalOp.and (|
-                                                    BinOp.Pure.eq
-                                                      (M.read (| rem |))
-                                                      (Value.Integer 5),
+                                                    BinOp.eq (|
+                                                      M.read (| rem |),
+                                                      Value.Integer IntegerKind.U128 5
+                                                    |),
                                                     ltac:(M.monadic
                                                       (LogicalOp.or (|
-                                                        BinOp.Pure.ne
-                                                          (BinOp.Wrap.rem
-                                                            Integer.U128
-                                                            (M.read (| n |))
-                                                            (Value.Integer 2))
-                                                          (Value.Integer 0),
+                                                        BinOp.ne (|
+                                                          BinOp.Wrap.rem (|
+                                                            M.read (| n |),
+                                                            Value.Integer IntegerKind.U128 2
+                                                          |),
+                                                          Value.Integer IntegerKind.U128 0
+                                                        |),
                                                         ltac:(M.monadic
-                                                          (BinOp.Pure.gt
-                                                            (M.read (| subtracted_precision |))
-                                                            (Value.Integer 1)))
+                                                          (BinOp.gt (|
+                                                            M.read (| subtracted_precision |),
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          |)))
                                                       |)))
                                                   |)))
                                               |)
@@ -10214,10 +10429,10 @@ Module fmt.
                                           let β := n in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.U128
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.U128 1
+                                            |)
                                           |) in
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
@@ -10227,28 +10442,29 @@ Module fmt.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.gt
-                                                        (M.call_closure (|
+                                                      BinOp.gt (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path "u128",
                                                             "ilog10",
                                                             []
                                                           |),
                                                           [ M.read (| n |) ]
-                                                        |))
-                                                        (M.call_closure (|
+                                                        |),
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path "u128",
                                                             "ilog10",
                                                             []
                                                           |),
                                                           [
-                                                            BinOp.Wrap.sub
-                                                              Integer.U128
-                                                              (M.read (| n |))
-                                                              (Value.Integer 1)
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| n |),
+                                                              Value.Integer IntegerKind.U128 1
+                                                            |)
                                                           ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -10259,19 +10475,19 @@ Module fmt.
                                                   let β := n in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.div
-                                                      Integer.U128
-                                                      (M.read (| β |))
-                                                      (Value.Integer 10)
+                                                    BinOp.Wrap.div (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.U128 10
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   let β := exponent in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10319,7 +10535,7 @@ Module fmt.
                             |),
                             []
                           |),
-                          Value.Integer 40
+                          Value.Integer IntegerKind.Usize 40
                         |)
                       |) in
                     let~ curr :=
@@ -10381,7 +10597,10 @@ Module fmt.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ge (M.read (| n |)) (Value.Integer 100)
+                                        BinOp.ge (|
+                                          M.read (| n |),
+                                          Value.Integer IntegerKind.U128 100
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -10390,22 +10609,23 @@ Module fmt.
                                     |) in
                                   let~ d1 :=
                                     M.alloc (|
-                                      BinOp.Wrap.shl
-                                        (M.rust_cast
-                                          (BinOp.Wrap.rem
-                                            Integer.U128
-                                            (M.read (| n |))
-                                            (Value.Integer 100)))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.shl (|
+                                        M.rust_cast
+                                          (BinOp.Wrap.rem (|
+                                            M.read (| n |),
+                                            Value.Integer IntegerKind.U128 100
+                                          |)),
+                                        Value.Integer IntegerKind.I32 1
+                                      |)
                                     |) in
                                   let~ _ :=
                                     let β := curr in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 2)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 2
+                                      |)
                                     |) in
                                   let~ _ :=
                                     let~ _ :=
@@ -10432,7 +10652,7 @@ Module fmt.
                                               |),
                                               [ M.read (| buf_ptr |); M.read (| curr |) ]
                                             |);
-                                            Value.Integer 2
+                                            Value.Integer IntegerKind.Usize 2
                                           ]
                                         |)
                                       |) in
@@ -10441,19 +10661,19 @@ Module fmt.
                                     let β := n in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.div
-                                        Integer.U128
-                                        (M.read (| β |))
-                                        (Value.Integer 100)
+                                      BinOp.Wrap.div (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.U128 100
+                                      |)
                                     |) in
                                   let~ _ :=
                                     let β := exponent in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 2)
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 2
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ =>
@@ -10482,7 +10702,10 @@ Module fmt.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge (M.read (| n |)) (Value.Integer 10)
+                                    BinOp.ge (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.Isize 10
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -10493,7 +10716,10 @@ Module fmt.
                                 let β := curr in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.sub (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               let~ _ :=
                                 let~ _ :=
@@ -10506,26 +10732,32 @@ Module fmt.
                                       |),
                                       [ M.read (| buf_ptr |); M.read (| curr |) ]
                                     |),
-                                    BinOp.Wrap.add
-                                      Integer.U8
-                                      (BinOp.Wrap.rem
-                                        Integer.U8
-                                        (M.rust_cast (M.read (| n |)))
-                                        (Value.Integer 10))
-                                      (M.read (| UnsupportedLiteral |))
+                                    BinOp.Wrap.add (|
+                                      BinOp.Wrap.rem (|
+                                        M.rust_cast (M.read (| n |)),
+                                        Value.Integer IntegerKind.U8 10
+                                      |),
+                                      M.read (| UnsupportedLiteral |)
+                                    |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |) in
                               let~ _ :=
                                 let β := n in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.div Integer.Isize (M.read (| β |)) (Value.Integer 10)
+                                  BinOp.Wrap.div (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Isize 10
+                                  |)
                                 |) in
                               let~ _ :=
                                 let β := exponent in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10541,13 +10773,15 @@ Module fmt.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ne
-                                        (M.read (| exponent |))
-                                        (M.read (| trailing_zeros |)),
+                                      BinOp.ne (|
+                                        M.read (| exponent |),
+                                        M.read (| trailing_zeros |)
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.ne
-                                          (M.read (| added_precision |))
-                                          (Value.Integer 0)))
+                                        (BinOp.ne (|
+                                          M.read (| added_precision |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -10559,7 +10793,10 @@ Module fmt.
                                 let β := curr in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.sub (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               let~ _ :=
                                 M.write (|
@@ -10583,7 +10820,7 @@ Module fmt.
                           let β := curr in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                           |) in
                         let~ _ :=
                           M.write (|
@@ -10595,16 +10832,15 @@ Module fmt.
                               |),
                               [ M.read (| buf_ptr |); M.read (| curr |) ]
                             |),
-                            BinOp.Wrap.add
-                              Integer.U8
-                              (M.rust_cast (M.read (| n |)))
-                              (M.read (| UnsupportedLiteral |))
+                            BinOp.Wrap.add (|
+                              M.rust_cast (M.read (| n |)),
+                              M.read (| UnsupportedLiteral |)
+                            |)
                           |) in
                         let~ len :=
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.call_closure (|
+                            BinOp.Wrap.sub (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -10619,8 +10855,9 @@ Module fmt.
                                   []
                                 |),
                                 [ buf ]
-                              |))
-                              (M.read (| M.use curr |))
+                              |),
+                              M.read (| M.use curr |)
+                            |)
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -10658,7 +10895,7 @@ Module fmt.
                             |),
                             []
                           |),
-                          Value.Integer 3
+                          Value.Integer IntegerKind.Usize 3
                         |)
                       |) in
                     let~ exp_ptr :=
@@ -10685,7 +10922,7 @@ Module fmt.
                                 "add",
                                 []
                               |),
-                              [ M.read (| exp_ptr |); Value.Integer 0 ]
+                              [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
                             |),
                             M.read (|
                               M.match_operator (|
@@ -10715,7 +10952,10 @@ Module fmt.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt (M.read (| exponent |)) (Value.Integer 10)
+                                          BinOp.lt (|
+                                            M.read (| exponent |),
+                                            Value.Integer IntegerKind.Usize 10
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -10730,19 +10970,23 @@ Module fmt.
                                             "add",
                                             []
                                           |),
-                                          [ M.read (| exp_ptr |); Value.Integer 1 ]
+                                          [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 1
+                                          ]
                                         |),
-                                        BinOp.Wrap.add
-                                          Integer.U8
-                                          (M.rust_cast (M.read (| exponent |)))
-                                          (M.read (| UnsupportedLiteral |))
+                                        BinOp.Wrap.add (|
+                                          M.rust_cast (M.read (| exponent |)),
+                                          M.read (| UnsupportedLiteral |)
+                                        |)
                                       |) in
-                                    M.alloc (| Value.Integer 2 |)));
+                                    M.alloc (| Value.Integer IntegerKind.Usize 2 |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let~ off :=
                                       M.alloc (|
-                                        BinOp.Wrap.shl (M.read (| exponent |)) (Value.Integer 1)
+                                        BinOp.Wrap.shl (|
+                                          M.read (| exponent |),
+                                          Value.Integer IntegerKind.I32 1
+                                        |)
                                       |) in
                                     let~ _ :=
                                       M.alloc (|
@@ -10766,13 +11010,16 @@ Module fmt.
                                                 "add",
                                                 []
                                               |),
-                                              [ M.read (| exp_ptr |); Value.Integer 1 ]
+                                              [
+                                                M.read (| exp_ptr |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |);
-                                            Value.Integer 2
+                                            Value.Integer IntegerKind.Usize 2
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Integer 3 |)))
+                                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)))
                               ]
                             |)
                           |) in
@@ -10815,7 +11062,7 @@ Module fmt.
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.alloc (| UnOp.Pure.not (M.read (| is_nonnegative |)) |)) in
+                                    (M.alloc (| UnOp.not (| M.read (| is_nonnegative |) |) |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
@@ -10878,7 +11125,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_exp_u128 : M.IsFunction "core::fmt::num::exp_u128" exp_u128.
@@ -10906,7 +11153,9 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.read (|
               let~ is_nonnegative :=
-                M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                M.alloc (|
+                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I128 0 |)
+                |) in
               let~ n :=
                 M.copy (|
                   M.match_operator (|
@@ -10935,8 +11184,8 @@ Module fmt.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
                               [
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "i128",
@@ -10945,8 +11194,9 @@ Module fmt.
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |));
-                                Value.Integer 1
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U128 1
                               ]
                             |)
                           |)))
@@ -10960,7 +11210,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10994,7 +11244,9 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.read (|
               let~ is_nonnegative :=
-                M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                M.alloc (|
+                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U128 0 |)
+                |) in
               let~ n :=
                 M.copy (|
                   M.match_operator (|
@@ -11023,8 +11275,8 @@ Module fmt.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
                               [
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "u128",
@@ -11033,8 +11285,9 @@ Module fmt.
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |));
-                                Value.Integer 1
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U128 1
                               ]
                             |)
                           |)))
@@ -11048,7 +11301,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11082,7 +11335,9 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.read (|
               let~ is_nonnegative :=
-                M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                M.alloc (|
+                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I128 0 |)
+                |) in
               let~ n :=
                 M.copy (|
                   M.match_operator (|
@@ -11111,8 +11366,8 @@ Module fmt.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
                               [
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "i128",
@@ -11121,8 +11376,9 @@ Module fmt.
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |));
-                                Value.Integer 1
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U128 1
                               ]
                             |)
                           |)))
@@ -11136,7 +11392,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11170,7 +11426,9 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.read (|
               let~ is_nonnegative :=
-                M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                M.alloc (|
+                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.U128 0 |)
+                |) in
               let~ n :=
                 M.copy (|
                   M.match_operator (|
@@ -11199,8 +11457,8 @@ Module fmt.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
                               [
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "u128",
@@ -11209,8 +11467,9 @@ Module fmt.
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |));
-                                Value.Integer 1
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U128 1
                               ]
                             |)
                           |)))
@@ -11224,7 +11483,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11362,8 +11621,12 @@ Module fmt.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.gt (M.read (| M.read (| curr |) |)) (Value.Integer 19))
+                            UnOp.not (|
+                              BinOp.gt (|
+                                M.read (| M.read (| curr |) |),
+                                Value.Integer IntegerKind.Usize 19
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -11386,128 +11649,137 @@ Module fmt.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ge
-                              (M.read (| n |))
-                              (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                            BinOp.ge (|
+                              M.read (| n |),
+                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ to_parse :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.U64
-                            (M.read (| n |))
-                            (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                          BinOp.Wrap.rem (|
+                            M.read (| n |),
+                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                          |)
                         |) in
                       let~ _ :=
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Wrap.div
-                            Integer.U64
-                            (M.read (| β |))
-                            (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                          BinOp.Wrap.div (|
+                            M.read (| β |),
+                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                          |)
                         |) in
                       let~ d1 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d2 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d3 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d4 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d5 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d6 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d7 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d8 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ _ :=
                         let β := M.read (| curr |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 16)
+                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 16 |)
                         |) in
                       let~ _ :=
                         M.alloc (|
@@ -11533,13 +11805,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 0)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11567,13 +11839,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 2)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11601,13 +11873,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 4)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 4
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11635,13 +11907,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 6)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 6
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11669,13 +11941,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 8)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 8
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11703,13 +11975,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 10)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 10
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11737,13 +12009,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 12)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 12
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11771,13 +12043,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 14)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 14
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11794,80 +12066,85 @@ Module fmt.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ge
-                              (M.read (| n |))
-                              (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                            BinOp.ge (|
+                              M.read (| n |),
+                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ to_parse :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.U64
-                            (M.read (| n |))
-                            (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                          BinOp.Wrap.rem (|
+                            M.read (| n |),
+                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                          |)
                         |) in
                       let~ _ :=
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Wrap.div
-                            Integer.U64
-                            (M.read (| β |))
-                            (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                          BinOp.Wrap.div (|
+                            M.read (| β |),
+                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                          |)
                         |) in
                       let~ d1 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d2 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d3 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d4 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem
-                              Integer.U64
-                              (BinOp.Wrap.div
-                                Integer.U64
-                                (M.read (| to_parse |))
-                                (M.rust_cast (M.read (| UnsupportedLiteral |))))
-                              (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              BinOp.Wrap.div (|
+                                M.read (| to_parse |),
+                                M.rust_cast (M.read (| UnsupportedLiteral |))
+                              |),
+                              Value.Integer IntegerKind.U64 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ _ :=
                         let β := M.read (| curr |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 8)
+                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 8 |)
                         |) in
                       let~ _ :=
                         M.alloc (|
@@ -11893,13 +12170,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 0)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11927,13 +12204,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 2)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11961,13 +12238,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 4)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 4
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -11995,13 +12272,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 6)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 6
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -12019,44 +12296,53 @@ Module fmt.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ge
-                              (M.read (| n |))
-                              (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                            BinOp.ge (|
+                              M.read (| n |),
+                              M.rust_cast (M.read (| UnsupportedLiteral |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ to_parse :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.U32
-                            (M.read (| n |))
-                            (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                          BinOp.Wrap.rem (|
+                            M.read (| n |),
+                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                          |)
                         |) in
                       let~ _ :=
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Wrap.div
-                            Integer.U32
-                            (M.read (| β |))
-                            (M.rust_cast (M.read (| UnsupportedLiteral |)))
+                          BinOp.Wrap.div (|
+                            M.read (| β |),
+                            M.rust_cast (M.read (| UnsupportedLiteral |))
+                          |)
                         |) in
                       let~ d1 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.div Integer.U32 (M.read (| to_parse |)) (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.div (|
+                              M.read (| to_parse |),
+                              Value.Integer IntegerKind.U32 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ d2 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem Integer.U32 (M.read (| to_parse |)) (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (|
+                              M.read (| to_parse |),
+                              Value.Integer IntegerKind.U32 100
+                            |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ _ :=
                         let β := M.read (| curr |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 4)
+                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 4 |)
                         |) in
                       let~ _ :=
                         M.alloc (|
@@ -12082,13 +12368,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 0)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -12116,13 +12402,13 @@ Module fmt.
                                 |),
                                 [
                                   M.read (| buf_ptr |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| M.read (| curr |) |))
-                                    (Value.Integer 2)
+                                  BinOp.Wrap.add (|
+                                    M.read (| M.read (| curr |) |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
                                 ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -12138,25 +12424,29 @@ Module fmt.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (Value.Integer 100) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| n |), Value.Integer IntegerKind.U16 100 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ d1 :=
                         M.alloc (|
-                          BinOp.Wrap.shl
-                            (BinOp.Wrap.rem Integer.U16 (M.read (| n |)) (Value.Integer 100))
-                            (Value.Integer 1)
+                          BinOp.Wrap.shl (|
+                            BinOp.Wrap.rem (| M.read (| n |), Value.Integer IntegerKind.U16 100 |),
+                            Value.Integer IntegerKind.I32 1
+                          |)
                         |) in
                       let~ _ :=
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Wrap.div Integer.U16 (M.read (| β |)) (Value.Integer 100)
+                          BinOp.Wrap.div (| M.read (| β |), Value.Integer IntegerKind.U16 100 |)
                         |) in
                       let~ _ :=
                         let β := M.read (| curr |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 2)
+                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
                         |) in
                       let~ _ :=
                         M.alloc (|
@@ -12182,7 +12472,7 @@ Module fmt.
                                 |),
                                 [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -12196,13 +12486,16 @@ Module fmt.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use (M.alloc (| BinOp.Pure.lt (M.read (| n |)) (Value.Integer 10) |)) in
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (| M.read (| n |), Value.Integer IntegerKind.U16 10 |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       let β := M.read (| curr |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     let~ _ :=
                       M.write (|
@@ -12214,20 +12507,23 @@ Module fmt.
                           |),
                           [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
                         |),
-                        BinOp.Wrap.add
-                          Integer.U8
-                          (M.rust_cast (M.read (| n |)))
-                          (M.read (| UnsupportedLiteral |))
+                        BinOp.Wrap.add (|
+                          M.rust_cast (M.read (| n |)),
+                          M.read (| UnsupportedLiteral |)
+                        |)
                       |) in
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ d1 := M.alloc (| BinOp.Wrap.shl (M.read (| n |)) (Value.Integer 1) |) in
+                    (let~ d1 :=
+                      M.alloc (|
+                        BinOp.Wrap.shl (| M.read (| n |), Value.Integer IntegerKind.I32 1 |)
+                      |) in
                     let~ _ :=
                       let β := M.read (| curr |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 2)
+                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
                       |) in
                     let~ _ :=
                       M.alloc (|
@@ -12253,7 +12549,7 @@ Module fmt.
                               |),
                               [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
                             |);
-                            Value.Integer 2
+                            Value.Integer IntegerKind.Usize 2
                           ]
                         |)
                       |) in
@@ -12261,7 +12557,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_parse_u64_into : M.IsFunction "core::fmt::num::parse_u64_into" parse_u64_into.
@@ -12284,7 +12580,7 @@ Module fmt.
               M.get_function (| "core::fmt::num::fmt_u128", [] |),
               [ M.read (| M.read (| self |) |); Value.Bool true; M.read (| f |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12318,7 +12614,9 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.read (|
               let~ is_nonnegative :=
-                M.alloc (| BinOp.Pure.ge (M.read (| M.read (| self |) |)) (Value.Integer 0) |) in
+                M.alloc (|
+                  BinOp.ge (| M.read (| M.read (| self |) |), Value.Integer IntegerKind.I128 0 |)
+                |) in
               let~ n :=
                 M.copy (|
                   M.match_operator (|
@@ -12347,8 +12645,8 @@ Module fmt.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
                               [
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "i128",
@@ -12357,8 +12655,9 @@ Module fmt.
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |));
-                                Value.Integer 1
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U128 1
                               ]
                             |)
                           |)))
@@ -12372,7 +12671,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12454,7 +12753,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 39
+                  Value.Integer IntegerKind.Usize 39
                 |)
               |) in
             let~ curr :=
@@ -12506,7 +12805,7 @@ Module fmt.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0)
+                                    BinOp.ne (| M.read (| n |), Value.Integer IntegerKind.U128 0 |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -12515,9 +12814,8 @@ Module fmt.
                                 |) in
                               let~ target :=
                                 M.alloc (|
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                  BinOp.Wrap.sub (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
@@ -12532,8 +12830,9 @@ Module fmt.
                                         []
                                       |),
                                       [ buf ]
-                                    |))
-                                    (Value.Integer 19)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 19
+                                  |)
                                 |) in
                               let~ _ :=
                                 let~ _ :=
@@ -12566,10 +12865,7 @@ Module fmt.
                                           ]
                                         |);
                                         M.read (| UnsupportedLiteral |);
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| curr |))
-                                          (M.read (| target |))
+                                        BinOp.Wrap.sub (| M.read (| curr |), M.read (| target |) |)
                                       ]
                                     |)
                                   |) in
@@ -12607,7 +12903,10 @@ Module fmt.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0)
+                                                    BinOp.ne (|
+                                                      M.read (| n |),
+                                                      Value.Integer IntegerKind.U128 0
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -12616,9 +12915,8 @@ Module fmt.
                                                 |) in
                                               let~ target :=
                                                 M.alloc (|
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.call_closure (|
+                                                  BinOp.Wrap.sub (|
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -12634,8 +12932,9 @@ Module fmt.
                                                         []
                                                       |),
                                                       [ buf ]
-                                                    |))
-                                                    (Value.Integer 38)
+                                                    |),
+                                                    Value.Integer IntegerKind.Usize 38
+                                                  |)
                                                 |) in
                                               let~ buf_ptr :=
                                                 M.alloc (|
@@ -12673,20 +12972,20 @@ Module fmt.
                                                         ]
                                                       |);
                                                       M.read (| UnsupportedLiteral |);
-                                                      BinOp.Wrap.sub
-                                                        Integer.Usize
-                                                        (M.read (| curr |))
-                                                        (M.read (| target |))
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| curr |),
+                                                        M.read (| target |)
+                                                      |)
                                                     ]
                                                   |)
                                                 |) in
                                               let~ _ :=
                                                 M.write (|
                                                   curr,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| target |))
-                                                    (Value.Integer 1)
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| target |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
                                                 |) in
                                               let~ _ :=
                                                 M.write (|
@@ -12698,10 +12997,10 @@ Module fmt.
                                                     |),
                                                     [ M.read (| buf_ptr |); M.read (| curr |) ]
                                                   |),
-                                                  BinOp.Wrap.add
-                                                    Integer.U8
-                                                    (M.rust_cast (M.read (| n |)))
-                                                    (M.read (| UnsupportedLiteral |))
+                                                  BinOp.Wrap.add (|
+                                                    M.rust_cast (M.read (| n |)),
+                                                    M.read (| UnsupportedLiteral |)
+                                                  |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -12746,9 +13045,8 @@ Module fmt.
                                       M.read (| curr |)
                                     ]
                                   |));
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.call_closure (|
+                                BinOp.Wrap.sub (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -12763,8 +13061,9 @@ Module fmt.
                                       []
                                     |),
                                     [ buf ]
-                                  |))
-                                  (M.read (| curr |))
+                                  |),
+                                  M.read (| curr |)
+                                |)
                               ]
                             |)
                           ]
@@ -12788,7 +13087,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_fmt_u128 : M.IsFunction "core::fmt::num::fmt_u128" fmt_u128.
@@ -12824,26 +13123,35 @@ Module fmt.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| n |))
-                                (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 83))
+                              BinOp.lt (|
+                                M.read (| n |),
+                                BinOp.Wrap.shl (|
+                                  Value.Integer IntegerKind.U128 1,
+                                  Value.Integer IntegerKind.I32 83
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.rust_cast
-                            (BinOp.Wrap.div
-                              Integer.U64
-                              (M.rust_cast (BinOp.Wrap.shr (M.read (| n |)) (Value.Integer 19)))
-                              (BinOp.Wrap.shr
-                                (M.read (| M.get_constant (| "core::fmt::num::udiv_1e19::DIV" |) |))
-                                (Value.Integer 19)))
+                            (BinOp.Wrap.div (|
+                              M.rust_cast
+                                (BinOp.Wrap.shr (|
+                                  M.read (| n |),
+                                  Value.Integer IntegerKind.I32 19
+                                |)),
+                              BinOp.Wrap.shr (|
+                                M.read (| M.get_constant (| "core::fmt::num::udiv_1e19::DIV" |) |),
+                                Value.Integer IntegerKind.I32 19
+                              |)
+                            |))
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          BinOp.Wrap.shr
-                            (M.call_closure (|
+                          BinOp.Wrap.shr (|
+                            M.call_closure (|
                               M.get_function (| "core::fmt::num::u128_mulhi", [] |),
                               [
                                 M.read (| n |);
@@ -12851,8 +13159,9 @@ Module fmt.
                                   M.get_constant (| "core::fmt::num::udiv_1e19::FACTOR" |)
                                 |)
                               ]
-                            |))
-                            (Value.Integer 62)
+                            |),
+                            Value.Integer IntegerKind.I32 62
+                          |)
                         |)))
                   ]
                 |)
@@ -12860,18 +13169,18 @@ Module fmt.
             let~ rem :=
               M.alloc (|
                 M.rust_cast
-                  (BinOp.Wrap.sub
-                    Integer.U128
-                    (M.read (| n |))
-                    (BinOp.Wrap.mul
-                      Integer.U128
-                      (M.read (| quot |))
-                      (M.rust_cast
-                        (M.read (| M.get_constant (| "core::fmt::num::udiv_1e19::DIV" |) |)))))
+                  (BinOp.Wrap.sub (|
+                    M.read (| n |),
+                    BinOp.Wrap.mul (|
+                      M.read (| quot |),
+                      M.rust_cast
+                        (M.read (| M.get_constant (| "core::fmt::num::udiv_1e19::DIV" |) |))
+                    |)
+                  |))
               |) in
             M.alloc (| Value.Tuple [ M.read (| quot |); M.read (| rem |) ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_udiv_1e19 : M.IsFunction "core::fmt::num::udiv_1e19" udiv_1e19.
@@ -12882,7 +13191,8 @@ Module fmt.
       
       Definition value_FACTOR : Value.t :=
         M.run
-          ltac:(M.monadic (M.alloc (| Value.Integer 156927543384667019095894735580191660403 |))).
+          ltac:(M.monadic
+            (M.alloc (| Value.Integer IntegerKind.U128 156927543384667019095894735580191660403 |))).
     End udiv_1e19.
     
     (*
@@ -12912,57 +13222,64 @@ Module fmt.
           M.read (|
             let~ x_lo := M.alloc (| M.rust_cast (M.read (| x |)) |) in
             let~ x_hi :=
-              M.alloc (| M.rust_cast (BinOp.Wrap.shr (M.read (| x |)) (Value.Integer 64)) |) in
+              M.alloc (|
+                M.rust_cast (BinOp.Wrap.shr (| M.read (| x |), Value.Integer IntegerKind.I32 64 |))
+              |) in
             let~ y_lo := M.alloc (| M.rust_cast (M.read (| y |)) |) in
             let~ y_hi :=
-              M.alloc (| M.rust_cast (BinOp.Wrap.shr (M.read (| y |)) (Value.Integer 64)) |) in
+              M.alloc (|
+                M.rust_cast (BinOp.Wrap.shr (| M.read (| y |), Value.Integer IntegerKind.I32 64 |))
+              |) in
             let~ carry :=
               M.alloc (|
-                BinOp.Wrap.shr
-                  (BinOp.Wrap.mul
-                    Integer.U128
-                    (M.rust_cast (M.read (| x_lo |)))
-                    (M.rust_cast (M.read (| y_lo |))))
-                  (Value.Integer 64)
+                BinOp.Wrap.shr (|
+                  BinOp.Wrap.mul (|
+                    M.rust_cast (M.read (| x_lo |)),
+                    M.rust_cast (M.read (| y_lo |))
+                  |),
+                  Value.Integer IntegerKind.I32 64
+                |)
               |) in
             let~ m :=
               M.alloc (|
-                BinOp.Wrap.add
-                  Integer.U128
-                  (BinOp.Wrap.mul
-                    Integer.U128
-                    (M.rust_cast (M.read (| x_lo |)))
-                    (M.rust_cast (M.read (| y_hi |))))
-                  (M.read (| carry |))
+                BinOp.Wrap.add (|
+                  BinOp.Wrap.mul (|
+                    M.rust_cast (M.read (| x_lo |)),
+                    M.rust_cast (M.read (| y_hi |))
+                  |),
+                  M.read (| carry |)
+                |)
               |) in
-            let~ high1 := M.alloc (| BinOp.Wrap.shr (M.read (| m |)) (Value.Integer 64) |) in
+            let~ high1 :=
+              M.alloc (| BinOp.Wrap.shr (| M.read (| m |), Value.Integer IntegerKind.I32 64 |) |) in
             let~ m_lo := M.alloc (| M.rust_cast (M.read (| m |)) |) in
             let~ high2 :=
               M.alloc (|
-                BinOp.Wrap.shr
-                  (BinOp.Wrap.add
-                    Integer.U128
-                    (BinOp.Wrap.mul
-                      Integer.U128
-                      (M.rust_cast (M.read (| x_hi |)))
-                      (M.rust_cast (M.read (| y_lo |))))
-                    (M.rust_cast (M.read (| m_lo |))))
-                  (Value.Integer 64)
+                BinOp.Wrap.shr (|
+                  BinOp.Wrap.add (|
+                    BinOp.Wrap.mul (|
+                      M.rust_cast (M.read (| x_hi |)),
+                      M.rust_cast (M.read (| y_lo |))
+                    |),
+                    M.rust_cast (M.read (| m_lo |))
+                  |),
+                  Value.Integer IntegerKind.I32 64
+                |)
               |) in
             M.alloc (|
-              BinOp.Wrap.add
-                Integer.U128
-                (BinOp.Wrap.add
-                  Integer.U128
-                  (BinOp.Wrap.mul
-                    Integer.U128
-                    (M.rust_cast (M.read (| x_hi |)))
-                    (M.rust_cast (M.read (| y_hi |))))
-                  (M.read (| high1 |)))
-                (M.read (| high2 |))
+              BinOp.Wrap.add (|
+                BinOp.Wrap.add (|
+                  BinOp.Wrap.mul (|
+                    M.rust_cast (M.read (| x_hi |)),
+                    M.rust_cast (M.read (| y_hi |))
+                  |),
+                  M.read (| high1 |)
+                |),
+                M.read (| high2 |)
+              |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u128_mulhi : M.IsFunction "core::fmt::num::u128_mulhi" u128_mulhi.

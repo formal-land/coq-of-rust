@@ -10,7 +10,7 @@ Module utilities.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                [ Value.Integer 32 ]
+                [ Value.Integer IntegerKind.Usize 32 ]
                 [],
               "new",
               []
@@ -33,16 +33,16 @@ Module utilities.
         M.call_closure (|
           M.get_associated_function (| Ty.path "u64", "saturating_sub", [] |),
           [
-            BinOp.Wrap.add
-              Integer.U64
-              (M.read (| parent_excess_blob_gas |))
-              (M.read (| parent_blob_gas_used |));
+            BinOp.Wrap.add (|
+              M.read (| parent_excess_blob_gas |),
+              M.read (| parent_blob_gas_used |)
+            |);
             M.read (|
               M.get_constant (| "revm_primitives::constants::TARGET_BLOB_GAS_PER_BLOCK" |)
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_calc_excess_blob_gas :
@@ -72,7 +72,7 @@ Module utilities.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_calc_blob_gasprice :
@@ -108,7 +108,9 @@ Module utilities.
         M.read (|
           let~ _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [ denominator; M.alloc (| Value.Integer 0 |) ] |),
+              M.alloc (|
+                Value.Tuple [ denominator; M.alloc (| Value.Integer IntegerKind.U64 0 |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -124,9 +126,10 @@ Module utilities.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |))
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -182,12 +185,10 @@ Module utilities.
           let~ factor := M.alloc (| M.rust_cast (M.read (| factor |)) |) in
           let~ numerator := M.alloc (| M.rust_cast (M.read (| numerator |)) |) in
           let~ denominator := M.alloc (| M.rust_cast (M.read (| denominator |)) |) in
-          let~ i := M.alloc (| Value.Integer 1 |) in
-          let~ output := M.alloc (| Value.Integer 0 |) in
+          let~ i := M.alloc (| Value.Integer IntegerKind.U128 1 |) in
+          let~ output := M.alloc (| Value.Integer IntegerKind.U128 0 |) in
           let~ numerator_accum :=
-            M.alloc (|
-              BinOp.Wrap.mul Integer.U128 (M.read (| factor |)) (M.read (| denominator |))
-            |) in
+            M.alloc (| BinOp.Wrap.mul (| M.read (| factor |), M.read (| denominator |) |) |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -199,7 +200,10 @@ Module utilities.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| numerator_accum |)) (Value.Integer 0)
+                              BinOp.gt (|
+                                M.read (| numerator_accum |),
+                                Value.Integer IntegerKind.U128 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -207,30 +211,24 @@ Module utilities.
                           let β := output in
                           M.write (|
                             β,
-                            BinOp.Wrap.add
-                              Integer.U128
-                              (M.read (| β |))
-                              (M.read (| numerator_accum |))
+                            BinOp.Wrap.add (| M.read (| β |), M.read (| numerator_accum |) |)
                           |) in
                         let~ _ :=
                           M.write (|
                             numerator_accum,
-                            BinOp.Wrap.div
-                              Integer.U128
-                              (BinOp.Wrap.mul
-                                Integer.U128
-                                (M.read (| numerator_accum |))
-                                (M.read (| numerator |)))
-                              (BinOp.Wrap.mul
-                                Integer.U128
-                                (M.read (| denominator |))
-                                (M.read (| i |)))
+                            BinOp.Wrap.div (|
+                              BinOp.Wrap.mul (|
+                                M.read (| numerator_accum |),
+                                M.read (| numerator |)
+                              |),
+                              BinOp.Wrap.mul (| M.read (| denominator |), M.read (| i |) |)
+                            |)
                           |) in
                         let~ _ :=
                           let β := i in
                           M.write (|
                             β,
-                            BinOp.Wrap.add Integer.U128 (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U128 1 |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -247,9 +245,9 @@ Module utilities.
                   ]
                 |)))
             |) in
-          M.alloc (| BinOp.Wrap.div Integer.U128 (M.read (| output |)) (M.read (| denominator |)) |)
+          M.alloc (| BinOp.Wrap.div (| M.read (| output |), M.read (| denominator |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_fake_exponential :
