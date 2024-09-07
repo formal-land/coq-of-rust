@@ -1,16 +1,14 @@
 import json
 import links as l
 
-input_file = "alloc/raw_vec.json"
-
-with open(input_file) as f:
-    input = json.load(f)
+crate = "alloc"
+raw_vec = json.load(open("alloc/raw_vec.json"))
 
 print(l.get_header([
     "links.core.ptr.unique",
 ]))
-print(l.pp_type_struct_tuple(0, l.find_top_level_item_by_name(input, "Cap")))
+print(l.pp_top_level_item(*l.find_top_level_item_by_name(crate, raw_vec, "Cap")))
 print()
-print(l.pp_type_struct_struct(0, l.find_top_level_item_by_name(input, "RawVecInner")))
+print(l.pp_top_level_item(*l.find_top_level_item_by_name(crate, raw_vec, "RawVecInner")))
 print()
-print(l.pp_type_struct_struct(0, l.find_top_level_item_by_name(input, "RawVec")))
+print(l.pp_top_level_item(*l.find_top_level_item_by_name(crate, raw_vec, "RawVec")))

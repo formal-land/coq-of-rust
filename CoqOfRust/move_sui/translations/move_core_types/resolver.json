@@ -1,0 +1,2778 @@
+[
+  {
+    "file_name": "crates/move-core-types/src/resolver.rs",
+    "item": {
+      "type": "Module",
+      "name": "resolver",
+      "body": [
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "Trait",
+            "name": "LinkageResolver",
+            "path": [
+              "move_core_types",
+              "resolver",
+              "LinkageResolver"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "Error",
+                {
+                  "Type": []
+                }
+              ],
+              [
+                "link_context",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "self",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              }
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "move_core_types",
+                            "account_address",
+                            "AccountAddress"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "self",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "self"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.read"
+                              },
+                              "args": [
+                                {
+                                  "GetConst": [
+                                    "move_core_types",
+                                    "account_address",
+                                    "ZERO"
+                                  ]
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              [
+                "relocate",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "self",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              }
+                            ]
+                          },
+                          null
+                        ],
+                        [
+                          "module_id",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "language_storage",
+                                    "ModuleId"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "result",
+                            "Result"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "move_core_types",
+                                "language_storage",
+                                "ModuleId"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          {
+                            "type": "Associated"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "self",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "self"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "module_id",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "module_id"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "StructTuple": {
+                                  "path": [
+                                    "core",
+                                    "result",
+                                    "Result",
+                                    "Ok"
+                                  ],
+                                  "fields": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetTraitMethod": {
+                                            "trait_name": [
+                                              "core",
+                                              "clone",
+                                              "Clone"
+                                            ],
+                                            "self_ty": {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "move_core_types",
+                                                  "language_storage",
+                                                  "ModuleId"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            },
+                                            "trait_tys": [],
+                                            "method_name": "clone",
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "module_id"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              [
+                "defining_module",
+                {
+                  "DefinitionWithDefault": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "self",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              }
+                            ]
+                          },
+                          null
+                        ],
+                        [
+                          "module_id",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "language_storage",
+                                    "ModuleId"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          null
+                        ],
+                        [
+                          "_struct",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "identifier",
+                                    "IdentStr"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "result",
+                            "Result"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "move_core_types",
+                                "language_storage",
+                                "ModuleId"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          {
+                            "type": "Associated"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "self",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "self"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "module_id",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "module_id"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "_struct",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "_struct"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "StructTuple": {
+                                      "path": [
+                                        "core",
+                                        "result",
+                                        "Result",
+                                        "Ok"
+                                      ],
+                                      "fields": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "clone",
+                                                  "Clone"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "move_core_types",
+                                                      "language_storage",
+                                                      "ModuleId"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                },
+                                                "trait_tys": [],
+                                                "method_name": "clone",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "module_id"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "Trait",
+            "name": "ModuleResolver",
+            "path": [
+              "move_core_types",
+              "resolver",
+              "ModuleResolver"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "Error",
+                {
+                  "Type": []
+                }
+              ],
+              [
+                "get_module",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "move_core_types",
+                                  "language_storage",
+                                  "ModuleId"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": []
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "result",
+                            "Result"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "option",
+                                "Option"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "alloc",
+                                    "vec",
+                                    "Vec"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Path",
+                                    "path": [
+                                      "u8"
+                                    ]
+                                  },
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "alloc",
+                                        "alloc",
+                                        "Global"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Associated"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "Trait",
+            "name": "ResourceResolver",
+            "path": [
+              "move_core_types",
+              "resolver",
+              "ResourceResolver"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "Error",
+                {
+                  "Type": []
+                }
+              ],
+              [
+                "get_resource",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "move_core_types",
+                                  "account_address",
+                                  "AccountAddress"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": []
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "move_core_types",
+                                  "language_storage",
+                                  "StructTag"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": []
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "result",
+                            "Result"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "option",
+                                "Option"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "alloc",
+                                    "vec",
+                                    "Vec"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Path",
+                                    "path": [
+                                      "u8"
+                                    ]
+                                  },
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "alloc",
+                                        "alloc",
+                                        "Global"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Associated"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "Trait",
+            "name": "MoveResolver",
+            "path": [
+              "move_core_types",
+              "resolver",
+              "MoveResolver"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "Err",
+                {
+                  "Type": []
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "E",
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "fmt",
+                    "Debug"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "E"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "move_core_types",
+                    "resolver",
+                    "LinkageResolver"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "move_core_types",
+                    "resolver",
+                    "ModuleResolver"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "move_core_types",
+                    "resolver",
+                    "ResourceResolver"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "move_core_types",
+              "resolver",
+              "MoveResolver"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "Err",
+                "snippet": [
+                  "    type Err = E;"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Type": {
+                      "ty": {
+                        "type": "Var",
+                        "name": "E"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "move_core_types",
+                    "resolver",
+                    "ResourceResolver"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "move_core_types",
+              "resolver",
+              "ResourceResolver"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "Error",
+                "snippet": [
+                  "    type Error = T::Error;"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Type": {
+                      "ty": {
+                        "type": "Associated"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "get_resource",
+                "snippet": [
+                  "    fn get_resource(",
+                  "        &self,",
+                  "        address: &AccountAddress,",
+                  "        tag: &StructTag,",
+                  "    ) -> Result<Option<Vec<u8>>, Self::Error> {",
+                  "        (**self).get_resource(address, tag)",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "address",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "account_address",
+                                        "AccountAddress"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "tag",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "language_storage",
+                                        "StructTag"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "option",
+                                    "Option"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "alloc",
+                                        "vec",
+                                        "Vec"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Path",
+                                        "path": [
+                                          "u8"
+                                        ]
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "alloc",
+                                            "Global"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Associated"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "address",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "address"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Let": {
+                                      "name": "tag",
+                                      "is_user": false,
+                                      "init": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.alloc"
+                                          },
+                                          "args": [
+                                            {
+                                              "LocalVar": "tag"
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      },
+                                      "body": {
+                                        "Call": {
+                                          "func": {
+                                            "GetTraitMethod": {
+                                              "trait_name": [
+                                                "move_core_types",
+                                                "resolver",
+                                                "ResourceResolver"
+                                              ],
+                                              "self_ty": {
+                                                "type": "Var",
+                                                "name": "T"
+                                              },
+                                              "trait_tys": [],
+                                              "method_name": "get_resource",
+                                              "generic_tys": []
+                                            }
+                                          },
+                                          "args": [
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "address"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "tag"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            }
+                                          ],
+                                          "kind": "Closure"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "move_core_types",
+                    "resolver",
+                    "ModuleResolver"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "move_core_types",
+              "resolver",
+              "ModuleResolver"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "Error",
+                "snippet": [
+                  "    type Error = T::Error;"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Type": {
+                      "ty": {
+                        "type": "Associated"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "get_module",
+                "snippet": [
+                  "    fn get_module(&self, module_id: &ModuleId) -> Result<Option<Vec<u8>>, Self::Error> {",
+                  "        (**self).get_module(module_id)",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "module_id",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "language_storage",
+                                        "ModuleId"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "option",
+                                    "Option"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "alloc",
+                                        "vec",
+                                        "Vec"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Path",
+                                        "path": [
+                                          "u8"
+                                        ]
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "alloc",
+                                            "Global"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Associated"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "module_id",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "module_id"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetTraitMethod": {
+                                          "trait_name": [
+                                            "move_core_types",
+                                            "resolver",
+                                            "ModuleResolver"
+                                          ],
+                                          "self_ty": {
+                                            "type": "Var",
+                                            "name": "T"
+                                          },
+                                          "trait_tys": [],
+                                          "method_name": "get_module",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "module_id"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "move_core_types",
+                    "resolver",
+                    "ModuleResolver"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "alloc",
+                  "sync",
+                  "Arc"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                },
+                {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "alloc",
+                      "alloc",
+                      "Global"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": []
+                }
+              ]
+            },
+            "of_trait": [
+              "move_core_types",
+              "resolver",
+              "ModuleResolver"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "Error",
+                "snippet": [
+                  "    type Error = T::Error;"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Type": {
+                      "ty": {
+                        "type": "Associated"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "get_module",
+                "snippet": [
+                  "    fn get_module(&self, module_id: &ModuleId) -> Result<Option<Vec<u8>>, Self::Error> {",
+                  "        (**self).get_module(module_id)",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "alloc",
+                                        "sync",
+                                        "Arc"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "alloc",
+                                            "Global"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "module_id",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "language_storage",
+                                        "ModuleId"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "option",
+                                    "Option"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "alloc",
+                                        "vec",
+                                        "Vec"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Path",
+                                        "path": [
+                                          "u8"
+                                        ]
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "alloc",
+                                            "Global"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Associated"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "module_id",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "module_id"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetTraitMethod": {
+                                          "trait_name": [
+                                            "move_core_types",
+                                            "resolver",
+                                            "ModuleResolver"
+                                          ],
+                                          "self_ty": {
+                                            "type": "Var",
+                                            "name": "T"
+                                          },
+                                          "trait_tys": [],
+                                          "method_name": "get_module",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "GetTraitMethod": {
+                                                "trait_name": [
+                                                  "core",
+                                                  "ops",
+                                                  "deref",
+                                                  "Deref"
+                                                ],
+                                                "self_ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "alloc",
+                                                      "sync",
+                                                      "Arc"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    },
+                                                    {
+                                                      "type": "Application",
+                                                      "func": {
+                                                        "type": "Path",
+                                                        "path": [
+                                                          "alloc",
+                                                          "alloc",
+                                                          "Global"
+                                                        ]
+                                                      },
+                                                      "consts": [],
+                                                      "tys": []
+                                                    }
+                                                  ]
+                                                },
+                                                "trait_tys": [],
+                                                "method_name": "deref",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        },
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "module_id"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "crates/move-core-types/src/resolver.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "move_core_types",
+                    "resolver",
+                    "LinkageResolver"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "move_core_types",
+              "resolver",
+              "LinkageResolver"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "Error",
+                "snippet": [
+                  "    type Error = T::Error;"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Type": {
+                      "ty": {
+                        "type": "Associated"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "link_context",
+                "snippet": [
+                  "    fn link_context(&self) -> AccountAddress {",
+                  "        (**self).link_context()",
+                  "    }"
+                ],
+                "kind": {
+                  "OptionalValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "move_core_types",
+                                "account_address",
+                                "AccountAddress"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "GetTraitMethod": {
+                                      "trait_name": [
+                                        "move_core_types",
+                                        "resolver",
+                                        "LinkageResolver"
+                                      ],
+                                      "self_ty": {
+                                        "type": "Var",
+                                        "name": "T"
+                                      },
+                                      "trait_tys": [],
+                                      "method_name": "link_context",
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Closure"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "relocate",
+                "snippet": [
+                  "    fn relocate(&self, module_id: &ModuleId) -> Result<ModuleId, Self::Error> {",
+                  "        (**self).relocate(module_id)",
+                  "    }"
+                ],
+                "kind": {
+                  "OptionalValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "module_id",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "language_storage",
+                                        "ModuleId"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "language_storage",
+                                    "ModuleId"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              {
+                                "type": "Associated"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "module_id",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "module_id"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetTraitMethod": {
+                                          "trait_name": [
+                                            "move_core_types",
+                                            "resolver",
+                                            "LinkageResolver"
+                                          ],
+                                          "self_ty": {
+                                            "type": "Var",
+                                            "name": "T"
+                                          },
+                                          "trait_tys": [],
+                                          "method_name": "relocate",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "module_id"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "defining_module",
+                "snippet": [
+                  "    fn defining_module(",
+                  "        &self,",
+                  "        module_id: &ModuleId,",
+                  "        struct_: &IdentStr,",
+                  "    ) -> Result<ModuleId, Self::Error> {",
+                  "        (**self).defining_module(module_id, struct_)",
+                  "    }"
+                ],
+                "kind": {
+                  "OptionalValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "module_id",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "language_storage",
+                                        "ModuleId"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "struct_",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "move_core_types",
+                                        "identifier",
+                                        "IdentStr"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "move_core_types",
+                                    "language_storage",
+                                    "ModuleId"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              {
+                                "type": "Associated"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "module_id",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "module_id"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Let": {
+                                      "name": "struct_",
+                                      "is_user": false,
+                                      "init": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.alloc"
+                                          },
+                                          "args": [
+                                            {
+                                              "LocalVar": "struct_"
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      },
+                                      "body": {
+                                        "Call": {
+                                          "func": {
+                                            "GetTraitMethod": {
+                                              "trait_name": [
+                                                "move_core_types",
+                                                "resolver",
+                                                "LinkageResolver"
+                                              ],
+                                              "self_ty": {
+                                                "type": "Var",
+                                                "name": "T"
+                                              },
+                                              "trait_tys": [],
+                                              "method_name": "defining_module",
+                                              "generic_tys": []
+                                            }
+                                          },
+                                          "args": [
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "module_id"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "struct_"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            }
+                                          ],
+                                          "kind": "Closure"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]
