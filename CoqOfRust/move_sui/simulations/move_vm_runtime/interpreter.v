@@ -31,6 +31,9 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - Implement `Callstack` for Interpreter
 - Implement `Interpreter::binop_int`
+- Implement `Value::deserialize_constant`
+- Implement `Resolver::constant_at`
+- (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
 *)
 
 (* NOTE: In the future when lens are more frequently defined, we might want to stub the lens into 
@@ -343,8 +346,6 @@ Module Stack.
         letS?? v := pop in
         returnS? $ Value.cast.cast_IndexedRef v.
     End pop_as.
-    (* TODO: write a `pop_as` for every case? or use polymorphic type? *)
-    (* TODO: move `cast` module to here from `values_impl` to directly implement each case for `pop_as` *)
 
   End Impl_Stack.
 End Stack.
@@ -416,28 +417,6 @@ End Frame.
 
         match instruction {
 
-            Bytecode::LdConst(idx) => {
-                let constant = resolver.constant_at(*idx); //*)
-                gas_meter.charge_ld_const(NumBytes::new(constant.data.len() as u64))?;
-
-                let val = Value::deserialize_constant(constant).ok_or_else(|| {
-                    PartialVMError::new(StatusCode::VERIFIER_INVARIANT_VIOLATION).with_message(
-                        "Verifier failed to verify the deserialization of constants".to_owned(),
-                    )
-                })?;
-
-                gas_meter.charge_ld_const_after_deserialization(&val)?;
-
-                interpreter.operand_stack.push(val)?
-            }
-            Bytecode::LdTrue => {
-                gas_meter.charge_simple_instr(S::LdTrue)?;
-                interpreter.operand_stack.push(Value::bool(true))?;
-            }
-            Bytecode::LdFalse => {
-                gas_meter.charge_simple_instr(S::LdFalse)?;
-                interpreter.operand_stack.push(Value::bool(false))?;
-            }
             Bytecode::CopyLoc(idx) => {
                 // TODO(Gas): We should charge gas before copying the value.
                 let local = locals.copy_loc(*idx as usize)?; //*)
@@ -919,7 +898,6 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(Value::u8(*int_const))?; //*)
   }
   *)
-  (* TODO: Finish below *)
   | Bytecode.LdU8 int_const => 
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U8 int_const) in 
@@ -974,6 +952,36 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U256 int_const) in 
     returnS? $ Result.Ok InstrRet.Ok
+
+  (* 
+  Bytecode::LdConst(idx) => {
+      let constant = resolver.constant_at(*idx); //*)
+      gas_meter.charge_ld_const(NumBytes::new(constant.data.len() as u64))?;
+
+      let val = Value::deserialize_constant(constant).ok_or_else(|| {
+          PartialVMError::new(StatusCode::VERIFIER_INVARIANT_VIOLATION).with_message(
+              "Verifier failed to verify the deserialization of constants".to_owned(),
+          )
+      })?;
+
+      gas_meter.charge_ld_const_after_deserialization(&val)?;
+
+      interpreter.operand_stack.push(val)?
+  }
+  *)
+  (* TODO: Finish below *)
+  | Bytecode.LdConst idx => 
+
+  (* 
+  Bytecode::LdTrue => {
+      gas_meter.charge_simple_instr(S::LdTrue)?;
+      interpreter.operand_stack.push(Value::bool(true))?;
+  }
+  Bytecode::LdFalse => {
+      gas_meter.charge_simple_instr(S::LdFalse)?;
+      interpreter.operand_stack.push(Value::bool(false))?;
+  }
+  *)
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.

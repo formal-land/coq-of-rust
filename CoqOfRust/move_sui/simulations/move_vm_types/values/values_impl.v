@@ -169,4 +169,35 @@ Module Value.
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
   End cast.
+
+  Module Impl_Value.
+    (* 
+    fn constant_sig_token_to_layout(constant_signature: &SignatureToken) -> Option<MoveTypeLayout> {
+        use MoveTypeLayout as L;
+        use SignatureToken as S;
+
+        Some(match constant_signature {
+            S::Bool => L::Bool,
+            S::U8 => L::U8,
+            S::U16 => L::U16,
+            S::U32 => L::U32,
+            S::U64 => L::U64,
+            S::U128 => L::U128,
+            S::U256 => L::U256,
+            S::Address => L::Address,
+            S::Signer => return None,
+            S::Vector(inner) => L::Vector(Box::new(Self::constant_sig_token_to_layout(inner)?)),
+            // Not yet supported
+            S::Struct(_) | S::StructInstantiation(_) => return None,
+            // Not allowed/Not meaningful
+            S::TypeParameter(_) | S::Reference(_) | S::MutableReference(_) => return None,
+        })
+    }
+
+    pub fn deserialize_constant(constant: &Constant) -> Option<Value> {
+        let layout = Self::constant_sig_token_to_layout(&constant.type_)?;
+        Value::simple_deserialize(&constant.data, &layout)
+    }
+    *)
+  End Impl_Value.
 End Value.
